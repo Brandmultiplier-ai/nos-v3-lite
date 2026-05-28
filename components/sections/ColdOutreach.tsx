@@ -14,7 +14,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
 } from "recharts";
 import { CustomTooltip } from "@/components/charts/CustomTooltip";
-import { Flame, Shield, AlertTriangle, ChevronDown, ChevronUp, Zap, Target, TrendingUp, Users, Phone, Mail, Linkedin, Activity } from "lucide-react";
+import { Flame, Shield, AlertTriangle, ChevronDown, ChevronUp } from "lucide-react";
 import type { EmailCampaign, InboxHealth, SalesloftData } from "@/lib/data/types";
 
 const OUTREACH_TABS = [

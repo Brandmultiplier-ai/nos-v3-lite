@@ -284,13 +284,13 @@ function LinkedInTab() {
 }
 
 // ── Blog Tab (Optimizely) ─────────────────────────────────────────────────────
-function SignificanceCurve({ curve, significance, status }: ContentExperiment) {
+function SignificanceCurve({ significanceCurve, significance, status }: ContentExperiment) {
   const isWon = status === "won";
   const color = isWon ? "var(--nos-positive)" : significance >= 80 ? "var(--nos-signal-warm)" : "var(--nos-accent)";
   return (
     <div style={{ height: 120 }}>
       <ResponsiveContainer width="100%" height={120}>
-        <LineChart data={curve} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
+        <LineChart data={significanceCurve} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
           <CartesianGrid stroke="var(--border)" strokeDasharray="4 4" vertical={false} />
           <XAxis dataKey="day" tick={{ fill: "var(--nos-text-muted)", fontSize: 9 }} tickLine={false} axisLine={false} label={{ value: "Days", position: "insideBottom", offset: -2, style: { fontSize: 9, fill: "var(--nos-text-muted)" } }} />
           <YAxis domain={[0, 100]} tick={{ fill: "var(--nos-text-muted)", fontSize: 9 }} tickLine={false} axisLine={false} tickFormatter={(v) => `${v}%`} />

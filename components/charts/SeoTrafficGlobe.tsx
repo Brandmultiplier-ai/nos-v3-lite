@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback, memo } from "react";
-import { geoOrthographic, geoPath, geoGraticule10 } from "d3-geo";
+import { geoOrthographic, geoPath, geoGraticule10, type GeoSphere } from "d3-geo";
 import type { CountryRow } from "@/lib/data/types";
 
 const WORLD_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
@@ -112,8 +112,9 @@ export const SeoTrafficGlobe = memo(function SeoTrafficGlobe({
     const path = geoPath(proj, ctx);
 
     // Sphere fill
+    const sphere: GeoSphere = { type: "Sphere" };
     ctx.beginPath();
-    path({ type: "Sphere" } as GeoJSON.GeoJsonObject);
+    path(sphere);
     ctx.fillStyle = "rgba(12,12,20,0.98)";
     ctx.fill();
     ctx.strokeStyle = "rgba(124,127,255,0.2)";
