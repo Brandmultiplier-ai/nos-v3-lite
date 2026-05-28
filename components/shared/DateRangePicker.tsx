@@ -4,7 +4,8 @@ import { useNOSStore, type DateRange } from "@/lib/store";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CalendarDays, ChevronDown } from "lucide-react";
@@ -20,7 +21,8 @@ interface DateRangePickerProps {
 }
 
 export function DateRangePicker({ compact = false }: DateRangePickerProps) {
-  const { dateRange, setDateRange } = useNOSStore();
+  const dateRange = useNOSStore((s) => s.dateRange);
+  const setDateRange = useNOSStore((s) => s.setDateRange);
   const current = ranges.find((r) => r.id === dateRange)!;
 
   return (
@@ -45,19 +47,25 @@ export function DateRangePicker({ compact = false }: DateRangePickerProps) {
         <div className="px-3 py-2 border-b border-[var(--border)]">
           <p className="text-[10px] text-label-caps text-[var(--nos-text-muted)]">Date range</p>
         </div>
-        {ranges.map((range) => (
-          <DropdownMenuItem
-            key={range.id}
-            onClick={() => setDateRange(range.id)}
-            className={`cursor-pointer text-sm py-2 ${
-              range.id === dateRange
-                ? "bg-[var(--nos-accent-muted)] text-[var(--nos-accent)]"
-                : "text-[var(--nos-text-primary)]"
-            }`}
-          >
-            {range.label}
-          </DropdownMenuItem>
-        ))}
+        <DropdownMenuRadioGroup
+          value={dateRange}
+          onValueChange={(value) => setDateRange(value as DateRange)}
+        >
+          {ranges.map((range) => (
+            <DropdownMenuRadioItem
+              key={range.id}
+              value={range.id}
+              closeOnClick
+              className={`cursor-pointer text-sm py-2 ${
+                range.id === dateRange
+                  ? "bg-[var(--nos-accent-muted)] text-[var(--nos-accent)]"
+                  : "text-[var(--nos-text-primary)]"
+              }`}
+            >
+              {range.label}
+            </DropdownMenuRadioItem>
+          ))}
+        </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   );

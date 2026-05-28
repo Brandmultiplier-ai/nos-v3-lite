@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 
 interface BrandHealthGaugeProps {
   score: number;
+  change?: number;
   size?: number;
 }
 
@@ -20,7 +21,7 @@ function getScoreLabel(score: number) {
   return "Needs Work";
 }
 
-export function BrandHealthGauge({ score, size = 200 }: BrandHealthGaugeProps) {
+export function BrandHealthGauge({ score, change, size = 200 }: BrandHealthGaugeProps) {
   const color = getScoreColor(score);
   const label = getScoreLabel(score);
 
@@ -42,10 +43,10 @@ export function BrandHealthGauge({ score, size = 200 }: BrandHealthGaugeProps) {
   return (
     <div className="flex flex-col items-center w-full">
       <p className="text-sm font-semibold text-[var(--nos-text-primary)] self-start mb-0.5">
-        Brand Health Score
+        Brand Score
       </p>
       <p className="text-xs text-[var(--nos-text-muted)] self-start mb-4">
-        0–100 composite index
+        Composite brand health · 0–100
       </p>
 
       <div className="relative" style={{ width: size, height: size * 0.62 }}>
@@ -77,6 +78,20 @@ export function BrandHealthGauge({ score, size = 200 }: BrandHealthGaugeProps) {
           className="absolute inset-x-0 flex flex-col items-center"
           style={{ bottom: size * 0.08 }}
         >
+          {change !== undefined && (
+            <motion.span
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.25 }}
+              className="text-[10px] font-semibold px-2 py-0.5 rounded-full mb-1"
+              style={{
+                color: change >= 0 ? "var(--nos-positive)" : "var(--nos-negative)",
+                background: change >= 0 ? "rgba(52,211,153,0.12)" : "rgba(255,68,85,0.12)",
+              }}
+            >
+              {change >= 0 ? "↑" : "↓"} {Math.abs(change)} pts
+            </motion.span>
+          )}
           <motion.span
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}

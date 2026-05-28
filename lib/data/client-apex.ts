@@ -1,4 +1,5 @@
 import type { ClientDataByRange, ClientData } from "./types";
+import { makeApexBrand } from "./brand-builders";
 
 function makeApex(range: "7d" | "30d" | "90d"): ClientData {
   const mult = range === "7d" ? 0.23 : range === "30d" ? 1 : 3.1;
@@ -64,29 +65,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         cta: "View keyword map",
       },
     ],
-    brand: {
-      healthScore: 71,
-      storyConsistency: [
-        { channel: "LinkedIn", score: 88 },
-        { channel: "Website", score: 74 },
-        { channel: "Email", score: 92 },
-        { channel: "Search", score: 68 },
-      ],
-      shareOfVoice: [
-        { name: "Apex Systems", value: 22, isClient: true },
-        { name: "EnterpriseLayer", value: 38, isClient: false },
-        { name: "CoreTech Systems", value: 28, isClient: false },
-        { name: "Others", value: 12, isClient: false },
-      ],
-      attributionFunnel: [
-        { stage: "Impressions", value: 240000 },
-        { stage: "Engaged", value: 18000 },
-        { stage: "Converted", value: 820 },
-        { stage: "Pipeline", value: 2100000 },
-      ],
-      aiInsight:
-        "Apex's brand narrative is strongest in email (92/100) where CISO-specific messaging is highly consistent. The website lags at 74/100 — category-level messaging doesn't match the executive audience specificity in email. Aligning website copy to CISO personas could reduce CAC by an estimated 12% through improved intent signal quality.",
-    },
+    brand: makeApexBrand(mult),
     positioning: {
       quadrant: [
         { name: "Apex Systems", x: 62, y: 68, isClient: true },
@@ -118,10 +97,75 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
       ],
     },
     search: {
+      geo: {
+        visibilityScore: 61.4,
+        visibilityChange: 5.2,
+        shareOfVoice: 44,
+        shareOfVoiceChange: 6,
+        aiInsight: "Apex dominates GEO for enterprise IT infrastructure and CIO-level queries. ChatGPT and Microsoft Copilot are your highest-performing platforms — align more content with enterprise buying committee questions to extend this lead. Analyst citations (Gartner, Forrester) are your top citation multipliers.",
+        allBotVisits: { value: Math.round(58400 * mult), change: 72, sparkline: spark() },
+        aiCitations: { value: Math.round(142000 * mult), change: 34, sparkline: spark() },
+        aiTraining: { value: Math.round(28600 * mult), change: 4, sparkline: spark() },
+        aiIndexing: { value: Math.round(36400 * mult), change: 3, sparkline: spark() },
+        visibilityTrend: Array.from({ length: 14 }, (_, i) => ({
+          date: new Date(2026, 3, 11 + i).toISOString().split("T")[0],
+          client: Math.round(52 + Math.sin(i * 0.7) * 10 + i * 0.7),
+          prev: Math.round(46 + Math.cos(i * 0.5) * 7 + i * 0.4),
+        })),
+        competitors: [
+          { name: "Apex Systems",        isClient: true, visibilityScore: 61.4, change: 5.2, trend: [54, 56, 57, 58.5, 59.5, 60.5, 61.4] },
+          { name: "EnterpriseNarrative", isClient: false, visibilityScore: 55.8, change: -1.2, trend: [58, 57.5, 57, 56.5, 56, 56, 55.8] },
+          { name: "Pinnacle GTM",        isClient: false, visibilityScore: 48.2, change: 3.1, trend: [43, 44, 45, 46, 47, 47.8, 48.2] },
+          { name: "CoreSignal",          isClient: false, visibilityScore: 31.6, change: -0.8, trend: [33, 32.5, 32, 31.8, 31.7, 31.6, 31.6] },
+        ],
+        platforms: [
+          { platform: "ChatGPT",    visibilityPct: 68, change: 8,  color: "#34D399" },
+          { platform: "Copilot",    visibilityPct: 62, change: 6,  color: "#A78BFA" },
+          { platform: "Gemini",     visibilityPct: 54, change: 3,  color: "#FBBF24" },
+          { platform: "Perplexity", visibilityPct: 48, change: 4,  color: "#0EA5E9" },
+          { platform: "Anthropic",  visibilityPct: 41, change: 9,  color: "#FF6B4A" },
+          { platform: "Grok",       visibilityPct: 28, change: 2,  color: "#F0F0FF" },
+        ],
+        citationDomains: [
+          { domain: "apexsystems.com",  citations: 284, change: 38, category: "Own Site" },
+          { domain: "gartner.com",       citations: 198, change: 24, category: "Analyst" },
+          { domain: "forrester.com",     citations: 142, change: 18, category: "Analyst" },
+          { domain: "linkedin.com",      citations: 116, change: 15, category: "Social" },
+          { domain: "computerworld.com", citations: 84,  change: 9,  category: "Media" },
+          { domain: "techrepublic.com",  citations: 62,  change: 6,  category: "Media" },
+          { domain: "g2.com",            citations: 48,  change: 5,  category: "Review" },
+          { domain: "reddit.com",        citations: 32,  change: -3, category: "Community" },
+        ],
+      },
+      healthScore: 97,
+      domainRating: 81,
+      organicKeywordsTotal: { value: Math.round(48600 * mult), change: 9, sparkline: spark() },
+      backlinks: { value: Math.round(4800 * mult), change: 35, sparkline: spark() },
+      referringDomains: { value: Math.round(892 * mult), change: 128, sparkline: spark() },
+      trafficValue: { value: Math.round(683000 * mult), change: 28, sparkline: spark(), prefix: "$" },
       organicSessions: dates.map((date, i) => ({
         date,
         value: Math.round(5400 + i * 62 + Math.sin(i * 0.6) * 280),
       })),
+      referringDomainsTrend: dates.map((date, i) => ({
+        date,
+        value: Math.round(680 + i * 8 + Math.sin(i * 0.7) * 30),
+      })),
+      keywordBuckets: [
+        { bucket: "1-3", label: "#1–3", count: Math.round(118 * mult), change: 10 },
+        { bucket: "4-10", label: "#4–10", count: Math.round(205 * mult), change: -10 },
+        { bucket: "11-50", label: "#11–50", count: Math.round(643 * mult), change: 112 },
+        { bucket: "51-100", label: "#51–100", count: Math.round(174 * mult), change: 47 },
+      ],
+      countryBreakdown: [
+        { code: "US", name: "United States", flag: "🇺🇸", traffic: Math.round(84100 * mult), trafficChange: -12200, lat: 38, lon: -97 },
+        { code: "IN", name: "India",          flag: "🇮🇳", traffic: Math.round(25300 * mult), trafficChange: -3100,  lat: 20, lon: 77 },
+        { code: "RU", name: "Russia",         flag: "🇷🇺", traffic: Math.round(17800 * mult), trafficChange: -1300,  lat: 60, lon: 90 },
+        { code: "DE", name: "Germany",        flag: "🇩🇪", traffic: Math.round(17100 * mult), trafficChange: -1200,  lat: 51, lon: 10 },
+        { code: "CA", name: "Canada",         flag: "🇨🇦", traffic: Math.round(11900 * mult), trafficChange: -1500,  lat: 56, lon: -106 },
+        { code: "GB", name: "United Kingdom", flag: "🇬🇧", traffic: Math.round(9400 * mult),  trafficChange: 820,    lat: 51, lon: -1 },
+        { code: "JP", name: "Japan",          flag: "🇯🇵", traffic: Math.round(6200 * mult),  trafficChange: 540,    lat: 36, lon: 138 },
+      ],
       keywords: [
         { keyword: "enterprise IT infrastructure strategy", ranking: 3, volume: 1800, change: 4, intent: "commercial" },
         { keyword: "CIO narrative alignment platform", ranking: 1, volume: 620, change: 8, intent: "commercial" },
@@ -158,14 +202,22 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
     },
     website: {
       visitors: { value: Math.round(12800 * mult), change: 16, sparkline: spark() },
+      sessions: { value: Math.round(17200 * mult), change: 21, sparkline: spark() },
       companiesIdentified: { value: Math.round(280 * mult), change: 28, sparkline: spark() },
       avgTimeOnSite: { value: 5.8, change: 12, sparkline: spark(), suffix: "m" },
       returning: { value: Math.round(4200 * mult), change: 22, sparkline: spark() },
       hotAccounts: { value: Math.round(22 * mult), change: 52, sparkline: spark() },
-      visitorTrend: dates.map((date, i) => ({
-        date,
-        value: Math.round(400 + i * 7 + Math.sin(i * 0.5) * 50),
-      })),
+      rageclickRate: { value: 9.4, change: -4, sparkline: spark() },
+      deadclickRate: { value: 5.8, change: -6, sparkline: spark() },
+      scrollDepth: { value: 71, change: 7, sparkline: spark() },
+      jsErrors: { value: Math.round(88 * mult), change: -18, sparkline: spark() },
+      quickBackRate: { value: 3.2, change: -2, sparkline: spark() },
+      readingBehavior: [
+        { label: "Casual", pct: 67.4, sessions: Math.round(858 * mult), color: "#7C7FFF" },
+        { label: "Serious", pct: 22.8, sessions: Math.round(290 * mult), color: "#FBBF24" },
+        { label: "Reader", pct: 9.8, sessions: Math.round(125 * mult), color: "#34D399" },
+      ],
+      visitorTrend: dates.map((date, i) => ({ date, value: Math.round(400 + i * 7 + Math.sin(i * 0.5) * 50) })),
       trafficSources: [
         { name: "Organic", value: 44 },
         { name: "LinkedIn", value: 32 },
@@ -173,19 +225,46 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         { name: "Referral", value: 6 },
         { name: "Email", value: 4 },
       ],
+      visitorCountries: [
+        { code: "US", name: "United States", flag: "🇺🇸", traffic: Math.round(6200 * mult), trafficChange: 18, lat: 37.09, lon: -95.71 },
+        { code: "GB", name: "United Kingdom", flag: "🇬🇧", traffic: Math.round(2400 * mult), trafficChange: 12, lat: 55.38, lon: -3.44 },
+        { code: "DE", name: "Germany", flag: "🇩🇪", traffic: Math.round(1600 * mult), trafficChange: 8, lat: 51.17, lon: 10.45 },
+        { code: "FR", name: "France", flag: "🇫🇷", traffic: Math.round(980 * mult), trafficChange: 5, lat: 46.23, lon: 2.21 },
+        { code: "SG", name: "Singapore", flag: "🇸🇬", traffic: Math.round(720 * mult), trafficChange: 34, lat: 1.35, lon: 103.82 },
+        { code: "CA", name: "Canada", flag: "🇨🇦", traffic: Math.round(580 * mult), trafficChange: 4, lat: 56.13, lon: -106.35 },
+        { code: "AU", name: "Australia", flag: "🇦🇺", traffic: Math.round(420 * mult), trafficChange: 11, lat: -25.27, lon: 133.78 },
+      ],
+      topPages: [
+        { url: "/enterprise", sessions: Math.round(5200 * mult), scrollDepth: 78, exitRate: 22 },
+        { url: "/security", sessions: Math.round(3800 * mult), scrollDepth: 82, exitRate: 18 },
+        { url: "/pricing", sessions: Math.round(3200 * mult), scrollDepth: 89, exitRate: 26 },
+        { url: "/roi-calculator", sessions: Math.round(2400 * mult), scrollDepth: 74, exitRate: 12 },
+        { url: "/case-studies", sessions: Math.round(1900 * mult), scrollDepth: 94, exitRate: 8 },
+        { url: "/integrations", sessions: Math.round(1400 * mult), scrollDepth: 61, exitRate: 34 },
+      ],
+      funnelSteps: [
+        { label: "Homepage", sessions: Math.round(12800 * mult), dropoffPct: 0 },
+        { label: "Enterprise / Product", sessions: Math.round(7400 * mult), dropoffPct: 42 },
+        { label: "Pricing", sessions: Math.round(3200 * mult), dropoffPct: 57 },
+        { label: "Demo Request", sessions: Math.round(1100 * mult), dropoffPct: 66 },
+        { label: "Confirmed", sessions: Math.round(420 * mult), dropoffPct: 62 },
+      ],
+      sessionRecordings: [
+        { id: "sr1", page: "/pricing", duration: "9m 42s", flags: [], country: "🇺🇸 US", device: "desktop" },
+        { id: "sr2", page: "/security", duration: "7m 18s", flags: ["dead-click"], country: "🇬🇧 UK", device: "desktop" },
+        { id: "sr3", page: "/enterprise", duration: "1m 12s", flags: ["quick-back"], country: "🇩🇪 DE", device: "mobile" },
+        { id: "sr4", page: "/roi-calculator", duration: "11m 06s", flags: [], country: "🇸🇬 SG", device: "desktop" },
+        { id: "sr5", page: "/case-studies", duration: "0m 48s", flags: ["rage-click", "js-error"], country: "🇫🇷 FR", device: "tablet" },
+        { id: "sr6", page: "/integrations", duration: "4m 32s", flags: [], country: "🇦🇺 AU", device: "desktop" },
+      ],
       intentHeatmap: (() => {
-        const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+        const hDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
         const hours = ["9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm"];
-        return days.flatMap((day) =>
+        return hDays.flatMap((day) =>
           hours.map((hour) => ({
             day,
             hour,
-            value: Math.round(
-              25 +
-                (["Tue", "Wed", "Thu", "Fri"].includes(day) ? 35 : 0) +
-                (["10am", "11am", "2pm", "4pm"].includes(hour) ? 28 : 0) +
-                Math.random() * 22
-            ),
+            value: Math.round(25 + (["Tue", "Wed", "Thu", "Fri"].includes(day) ? 35 : 0) + (["10am", "11am", "2pm", "4pm"].includes(hour) ? 28 : 0) + Math.random() * 22),
           }))
         );
       })(),
@@ -208,10 +287,47 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         { date: "2026-02-11", channel: "linkedin", title: "The CISO deal influencer pattern — data from 40 enterprise deals", reach: 14200, engagementRate: 6.8, pipeline: 210000, content: "We analyzed 40 enterprise deals. CISO involvement correlated with 68% higher deal values and 22% faster velocity. The narrative strategy behind this..." },
         { date: "2026-02-04", channel: "linkedin", title: "Enterprise narrative intelligence: the 2026 benchmark", reach: 11800, engagementRate: 5.9, pipeline: 180000, content: "Our Q1 2026 benchmark data on enterprise narrative strength across 200 companies in IT infrastructure. The gap between leaders and laggards is widening..." },
       ],
-      linkedinFollowerGrowth: dates.map((date, i) => ({
-        date,
-        value: Math.round(8200 + i * 42 + Math.sin(i * 0.5) * 60),
+      platformStats: [
+        { platform: "LinkedIn", color: "#0A66C2", followers: Math.round(22400 * mult), followersChange: 14, reach: Math.round(62000 * mult), engagementRate: 5.4, posts: Math.round(8 * mult) },
+        { platform: "X / Twitter", color: "#FFFFFF", followers: Math.round(8400 * mult), followersChange: 8, reach: Math.round(24000 * mult), engagementRate: 2.8, posts: Math.round(18 * mult) },
+        { platform: "YouTube", color: "#FF0000", followers: Math.round(4200 * mult), followersChange: 22, reach: Math.round(18000 * mult), engagementRate: 6.8, posts: Math.round(4 * mult), reelsWatchTime: 42 },
+        { platform: "Newsletter", color: "#22C55E", followers: Math.round(4800 * mult), followersChange: 11, reach: Math.round(4800 * mult), engagementRate: 42, posts: Math.round(3 * mult) },
+      ],
+      audienceGrowthStacked: Array.from({ length: 12 }, (_, i) => ({
+        date: new Date(2026, i - 10 + 2, 1).toISOString().split("T")[0].slice(0, 7),
+        linkedin: Math.round(18200 + i * 350 + Math.sin(i * 0.4) * 120),
+        instagram: Math.round(0),
+        facebook: Math.round(2800 + i * 40),
+        x: Math.round(7200 + i * 100 + Math.cos(i * 0.4) * 60),
       })),
+      sentiment: {
+        positive: 68, neutral: 22, negative: 10,
+        volume: Math.round(3480 * mult), volumeChange: 12,
+        themes: [
+          { theme: "Enterprise security narrative", count: 820, sentiment: "positive" },
+          { theme: "CIO/CISO alignment", count: 620, sentiment: "positive" },
+          { theme: "Infrastructure thought leadership", count: 480, sentiment: "positive" },
+          { theme: "Integration complexity", count: 124, sentiment: "negative" },
+          { theme: "Implementation timeline", count: 96, sentiment: "neutral" },
+        ],
+      },
+      linkedinKPIs: {
+        followers:    { value: Math.round(22400 * mult), change: 14.2, sparkline: spark() },
+        impressions:  { value: Math.round(6840000 * mult), change: 28.4, sparkline: spark() },
+        engagements:  { value: Math.round(48200 * mult), change: 22.6, sparkline: spark() },
+        posts:        { value: Math.round(8 * mult), change: 14.3, sparkline: spark() },
+        comments:     { value: Math.round(4820 * mult), change: 18.4, sparkline: spark() },
+        likes:        { value: Math.round(38400 * mult), change: 24.8, sparkline: spark() },
+        shares:       { value: Math.round(580 * mult), change: 32.6, sparkline: spark() },
+        profileViews: { value: Math.round(184000 * mult), change: 46.2, sparkline: spark() },
+      },
+      linkedinPosts: [
+        { id: "lp1", date: "2026-02-18", content: "The CIOs buying in 2026 aren't looking for features. They're looking for alignment with their strategic narrative. Here's what that means for vendor GTM and why most IT vendors are losing deals they should be winning...", impressions: 18400, engagementRate: 7.2, likes: 824, comments: 128, pipeline: 280000, isViral: true },
+        { id: "lp2", date: "2026-02-11", content: "We analyzed 40 enterprise deals. CISO involvement correlated with 68% higher deal values and 22% faster velocity. The narrative strategy behind why the CISOs champion some vendors and block others...", impressions: 14200, engagementRate: 6.8, likes: 642, comments: 96, pipeline: 210000, isViral: true },
+        { id: "lp3", date: "2026-02-04", content: "Our Q1 2026 benchmark data on enterprise narrative strength across 200 companies in IT infrastructure. The gap between narrative leaders and laggards is widening. Thread on the full findings...", impressions: 11800, engagementRate: 5.9, likes: 488, comments: 72, pipeline: 180000, isViral: false },
+        { id: "lp4", date: "2026-01-28", content: "Enterprise vendor selection isn't about features anymore. It's about story alignment. When the vendor's narrative matches the CIO's board presentation, deals close in half the time...", impressions: 8400, engagementRate: 5.2, likes: 348, comments: 52, pipeline: 140000, isViral: false },
+      ],
+      linkedinFollowerGrowth: dates.map((date, i) => ({ date, value: Math.round(8200 + i * 42 + Math.sin(i * 0.5) * 60) })),
       contentCalendar: (() => {
         const posts: import("./types").CalendarPost[] = [];
         for (let d = 1; d <= 28; d++) {
@@ -220,33 +336,128 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         }
         return posts;
       })(),
+      blogPosts: [
+        { title: "Why Enterprise IT Vendors Lose Deals They Should Win", url: "/blog/enterprise-vendor-narrative", pageviews: Math.round(12400 * mult), avgAttentionTime: "6m 48s", engagementRate: 88, pipeline: Math.round(480000 * mult), published: "2026-02-14" },
+        { title: "CIO Decision Framework: Narrative Alignment Checklist for 2026", url: "/blog/cio-decision-framework", pageviews: Math.round(9800 * mult), avgAttentionTime: "7m 22s", engagementRate: 91, pipeline: Math.round(380000 * mult), published: "2026-02-07" },
+        { title: "The CISO Influence Factor: 40-Deal Analysis", url: "/blog/ciso-influence-enterprise-deals", pageviews: Math.round(8200 * mult), avgAttentionTime: "8m 14s", engagementRate: 94, pipeline: Math.round(320000 * mult), published: "2026-01-31" },
+        { title: "Enterprise IT Narrative Intelligence: Q1 2026 Benchmark", url: "/blog/enterprise-narrative-benchmark-q1", pageviews: Math.round(7400 * mult), avgAttentionTime: "5m 54s", engagementRate: 86, pipeline: Math.round(240000 * mult), published: "2026-01-24" },
+        { title: "Security Narrative ROI: Quantifying the CISO Advantage", url: "/blog/security-narrative-roi", pageviews: Math.round(5800 * mult), avgAttentionTime: "4m 42s", engagementRate: 78, pipeline: Math.round(180000 * mult), published: "2026-01-17" },
+      ],
+      blogExperiments: [
+        {
+          id: "exp1", name: "Enterprise landing page: Feature-list vs. CIO narrative",
+          status: "won", daysRunning: 68, visitors: 42800,
+          baseline: { label: "Feature List", conversions: 482, visitors: 21200, conversionRate: 2.27 },
+          variation: { label: "CIO Narrative", conversions: 728, visitors: 21600, conversionRate: 3.37, improvement: 48.4 },
+          significance: 99,
+          significanceCurve: [0,4,9,15,22,30,38,47,56,64,72,79,84,88,92,94,96,97,98,99,99,99,99,99,99].map((v, i) => ({ day: i * 3, value: v })),
+        },
+        {
+          id: "exp2", name: "Whitepaper CTA: 'Download Report' vs. 'Get the Benchmark'",
+          status: "running", daysRunning: 31, visitors: 14200,
+          baseline: { label: "Download Report", conversions: 224, visitors: 7080, conversionRate: 3.16 },
+          variation: { label: "Get the Benchmark", conversions: 256, visitors: 7120, conversionRate: 3.60, improvement: 13.8 },
+          significance: 74,
+          significanceCurve: [0,2,5,9,13,18,23,28,34,40,46,52,58,63,68,72,76,79,81,83,84,85,86].map((v, i) => ({ day: i * 1.5, value: v })),
+        },
+      ],
+      blogPageviewsTrend: dates.map((date, i) => ({ date, value: Math.round(5200 + i * 120 + Math.sin(i * 0.6) * 600) })),
+      activeSubscribers: { value: Math.round(4800 * mult), change: 14, sparkline: spark() },
+      openRate: { value: 42, change: 2, sparkline: spark() },
+      clickRate: { value: 10.4, change: 0.8, sparkline: spark() },
       newsletters: [
         { id: "n1", subject: "CIO Narrative Alignment Report: Q1 2026 Enterprise Benchmarks", sent: 4800, openRate: 38, clickRate: 10.4, unsubscribes: 8, pipeline: 320000, date: "2026-02-11" },
         { id: "n2", subject: "The CISO Influence Factor: How security narrative drives enterprise deals", sent: 4750, openRate: 42, clickRate: 8.8, unsubscribes: 6, pipeline: 248000, date: "2026-02-04" },
         { id: "n3", subject: "Enterprise GTM Intelligence: Signal patterns from 40 closed deals", sent: 4700, openRate: 46, clickRate: 13.2, unsubscribes: 4, pipeline: 420000, date: "2026-01-28" },
       ],
-      subscriberGrowth: dates.map((date, i) => ({
-        date,
-        value: Math.round(4400 + i * 18 + Math.sin(i * 0.3) * 25),
-      })),
-      openRateTrend: dates.map((date, i) => ({
-        date,
-        value: Math.round(38 + Math.cos(i * 0.6) * 4 + i * 0.08),
-      })),
+      subscriberGrowth: dates.map((date, i) => ({ date, value: Math.round(4400 + i * 18 + Math.sin(i * 0.3) * 25) })),
+      openRateTrend: dates.map((date, i) => ({ date, value: Math.round(38 + Math.cos(i * 0.6) * 4 + i * 0.08) })),
+      acquisitionSources: [
+        { source: "LinkedIn organic", subscribers: Math.round(2240 * mult), pct: 47, openRate: 72, unsubscribeRate: 0.6 },
+        { source: "website: direct / none", subscribers: Math.round(1104 * mult), pct: 23, openRate: 68, unsubscribeRate: 0.8 },
+        { source: "website: google.com / organic", subscribers: Math.round(624 * mult), pct: 13, openRate: 74, unsubscribeRate: 0.7 },
+        { source: "Event / Webinar", subscribers: Math.round(432 * mult), pct: 9, openRate: 84, unsubscribeRate: 0.3 },
+        { source: "Partner referral", subscribers: Math.round(288 * mult), pct: 6, openRate: 78, unsubscribeRate: 0.5 },
+        { source: "X / Twitter", subscribers: Math.round(112 * mult), pct: 2, openRate: 38, unsubscribeRate: 4.2 },
+      ],
     },
     outreach: {
       emailPipeline: { value: Math.round(840000 * mult), change: 34, sparkline: spark(), prefix: "$" },
+      totalSent: { value: Math.round(62400 * mult), change: 28, sparkline: spark() },
+      openRate: { value: 63.4, change: 6, sparkline: spark() },
+      clickRate: { value: 0, change: 0, sparkline: spark() },
+      replyRate: { value: 6.8, change: 2.2, sparkline: spark() },
+      opportunitiesCount: { value: Math.round(68 * mult), change: 38, sparkline: spark() },
+      masterTrend: Array.from({ length: 14 }, (_, i) => {
+        const base = Math.round(1200 + Math.sin(i * 0.5) * 400 + i * 60);
+        return { date: new Date(2026, 2, 1 + i * 6).toISOString().split("T")[0], sent: base, opens: Math.round(base * 0.63), uniqueOpens: Math.round(base * 0.56), replies: Math.round(base * 0.068) };
+      }),
       emailCampaigns: [
-        { id: "e1", name: "CISO — Cybersecurity Narrative Sequence", status: "active", sequence: 5, sent: Math.round(180 * mult), opens: Math.round(82 * mult), replies: Math.round(38 * mult), meetings: Math.round(12 * mult), pipeline: Math.round(580000 * mult) },
-        { id: "e2", name: "CIO — Infrastructure Intelligence", status: "active", sequence: 4, sent: Math.round(120 * mult), opens: Math.round(54 * mult), replies: Math.round(22 * mult), meetings: Math.round(7 * mult), pipeline: Math.round(380000 * mult) },
-        { id: "e3", name: "VP IT — Vendor Alignment Story", status: "completed", sequence: 3, sent: Math.round(80 * mult), opens: Math.round(30 * mult), replies: Math.round(10 * mult), meetings: Math.round(3 * mult), pipeline: Math.round(180000 * mult) },
+        {
+          id: "e1", name: "CISO — Cybersecurity Narrative Sequence", status: "active", sequence: 5,
+          sent: Math.round(180 * mult), opens: Math.round(114 * mult), replies: Math.round(38 * mult), meetings: Math.round(12 * mult), pipeline: Math.round(580000 * mult),
+          openRate: 63.4, replyRate: 21.1, positiveReplyRate: 14.8, bounceRate: 1.4,
+          leads: Math.round(180 * mult), completed: Math.round(52 * mult), bounced: Math.round(8 * mult), unsubscribed: Math.round(4 * mult),
+          sequenceSteps: [
+            { step: "Step 1", sent: Math.round(180 * mult), opened: Math.round(114 * mult), replied: Math.round(22 * mult), openRate: 63.4, replyRate: 12.2 },
+            { step: "Step 2", sent: Math.round(152 * mult), opened: Math.round(88 * mult), replied: Math.round(9 * mult), openRate: 57.9, replyRate: 5.9 },
+            { step: "Step 3", sent: Math.round(128 * mult), opened: Math.round(68 * mult), replied: Math.round(5 * mult), openRate: 53.1, replyRate: 3.9 },
+            { step: "Step 4", sent: Math.round(104 * mult), opened: Math.round(48 * mult), replied: Math.round(2 * mult), openRate: 46.2, replyRate: 1.9 },
+            { step: "Step 5", sent: Math.round(82 * mult), opened: Math.round(32 * mult), replied: Math.round(0), openRate: 39.0, replyRate: 0.5 },
+          ],
+          trend: Array.from({ length: 7 }, (_, i) => ({ date: new Date(2026, 3, 12 + i).toISOString().split("T")[0], sent: Math.round(110 + i * 14), opens: Math.round(70 + i * 9), replies: Math.round(7 + Math.sin(i) * 2) })),
+        },
+        {
+          id: "e2", name: "CIO — Infrastructure Intelligence", status: "active", sequence: 4,
+          sent: Math.round(120 * mult), opens: Math.round(72 * mult), replies: Math.round(22 * mult), meetings: Math.round(7 * mult), pipeline: Math.round(380000 * mult),
+          openRate: 60.0, replyRate: 18.3, positiveReplyRate: 12.1, bounceRate: 1.6,
+          leads: Math.round(120 * mult), completed: Math.round(38 * mult), bounced: Math.round(6 * mult), unsubscribed: Math.round(3 * mult),
+          sequenceSteps: [
+            { step: "Step 1", sent: Math.round(120 * mult), opened: Math.round(72 * mult), replied: Math.round(14 * mult), openRate: 60.0, replyRate: 11.7 },
+            { step: "Step 2", sent: Math.round(98 * mult), opened: Math.round(54 * mult), replied: Math.round(6 * mult), openRate: 55.1, replyRate: 6.1 },
+            { step: "Step 3", sent: Math.round(80 * mult), opened: Math.round(38 * mult), replied: Math.round(2 * mult), openRate: 47.5, replyRate: 2.5 },
+            { step: "Step 4", sent: Math.round(64 * mult), opened: Math.round(24 * mult), replied: Math.round(0), openRate: 37.5, replyRate: 0.6 },
+          ],
+          trend: Array.from({ length: 7 }, (_, i) => ({ date: new Date(2026, 3, 12 + i).toISOString().split("T")[0], sent: Math.round(72 + i * 9), opens: Math.round(44 + i * 5), replies: Math.round(5 + Math.cos(i)) })),
+        },
+        {
+          id: "e3", name: "VP IT — Vendor Alignment Story", status: "completed", sequence: 3,
+          sent: Math.round(80 * mult), opens: Math.round(40 * mult), replies: Math.round(10 * mult), meetings: Math.round(3 * mult), pipeline: Math.round(180000 * mult),
+          openRate: 50.0, replyRate: 12.5, positiveReplyRate: 8.2, bounceRate: 2.0,
+          leads: Math.round(80 * mult), completed: Math.round(68 * mult), bounced: Math.round(6 * mult), unsubscribed: Math.round(3 * mult),
+          sequenceSteps: [
+            { step: "Step 1", sent: Math.round(80 * mult), opened: Math.round(40 * mult), replied: Math.round(7 * mult), openRate: 50.0, replyRate: 8.8 },
+            { step: "Step 2", sent: Math.round(62 * mult), opened: Math.round(28 * mult), replied: Math.round(2 * mult), openRate: 45.2, replyRate: 3.2 },
+            { step: "Step 3", sent: Math.round(48 * mult), opened: Math.round(18 * mult), replied: Math.round(1 * mult), openRate: 37.5, replyRate: 2.1 },
+          ],
+          trend: Array.from({ length: 7 }, (_, i) => ({ date: new Date(2026, 3, 12 + i).toISOString().split("T")[0], sent: Math.round(48 + i * 4), opens: Math.round(24 + i * 2), replies: Math.round(3) })),
+        },
+      ],
+      inboxHealth: [
+        { email: "intel@apexsystems.com",    warmupScore: 97, deliverabilityScore: 98, spamScore: 0.4, blacklisted: false, daysWarmedUp: 84, status: "healthy" },
+        { email: "cxo@apexsystems.com",      warmupScore: 94, deliverabilityScore: 96, spamScore: 0.7, blacklisted: false, daysWarmedUp: 68, status: "healthy" },
+        { email: "security@apexsystems.com", warmupScore: 88, deliverabilityScore: 91, spamScore: 1.2, blacklisted: false, daysWarmedUp: 52, status: "healthy" },
+        { email: "gtm@apexsystems.com",      warmupScore: 71, deliverabilityScore: 74, spamScore: 2.8, blacklisted: false, daysWarmedUp: 18, status: "warming" },
+      ],
+      emailFunnel: [
+        { stage: "Contacted", count: Math.round(62400 * mult), rate: 100,  color: "#0EA5E9" },
+        { stage: "Opened",    count: Math.round(39560 * mult), rate: 63.4, color: "#22C55E" },
+        { stage: "Clicked",   count: Math.round(4742 * mult),  rate: 12.0, color: "#FBBF24" },
+        { stage: "Replied",   count: Math.round(4243 * mult),  rate: 10.7, color: "#A78BFA" },
+        { stage: "Meetings",  count: Math.round(680 * mult),   rate: 16.0, color: "#FF6B9D" },
+        { stage: "Opps",      count: Math.round(68 * mult),    rate: 10.0, color: "#34D399" },
+      ],
+      crmPipelineFunnel: [
+        { stage: "Request For Info", value: Math.round(2400000 * mult), deals: Math.round(42 * mult), pct: 100,  color: "#0EA5E9" },
+        { stage: "Presentation",     value: Math.round(1820000 * mult), deals: Math.round(30 * mult), pct: 75.8, color: "#22C55E" },
+        { stage: "Qualified",        value: Math.round(1380000 * mult), deals: Math.round(22 * mult), pct: 57.5, color: "#FBBF24" },
+        { stage: "Negotiation",      value: Math.round(980000 * mult),  deals: Math.round(14 * mult), pct: 40.8, color: "#A78BFA" },
+        { stage: "Won",              value: Math.round(580000 * mult),  deals: Math.round(7 * mult),  pct: 24.2, color: "#34D399" },
+        { stage: "Lost",             value: Math.round(240000 * mult),  deals: Math.round(10 * mult), pct: 10.0, color: "#FF4455" },
       ],
       replyWaterfall: [
-        { step: "Step 1", value: 100 },
-        { step: "Step 2", value: 74 },
-        { step: "Step 3", value: 52 },
-        { step: "Step 4", value: 38 },
-        { step: "Step 5", value: 28 },
+        { step: "Step 1", value: 100 }, { step: "Step 2", value: 74 }, { step: "Step 3", value: 52 },
+        { step: "Step 4", value: 38 }, { step: "Step 5", value: 28 },
       ],
       topSubjectLines: [
         { subject: "CIO at {{Company}} — I found your vendor alignment gap", replyRate: 34.2 },
@@ -255,23 +466,85 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         { subject: "CISO alignment strategy for {{Company}} — 12-minute call?", replyRate: 18.8 },
       ],
       linkedinFunnel: [
-        { stage: "Connection Sent", value: 320 },
-        { stage: "Accepted", value: 198 },
-        { stage: "Replied", value: 92 },
-        { stage: "Meeting Booked", value: 34 },
+        { stage: "Connection Sent", value: 320 }, { stage: "Accepted", value: 198 },
+        { stage: "Replied", value: 92 }, { stage: "Meeting Booked", value: 34 },
       ],
       linkedinCampaigns: [
         { id: "l1", name: "CXO Enterprise — Narrative Intelligence", status: "active", sent: Math.round(120 * mult), accepted: Math.round(78 * mult), replied: Math.round(38 * mult), meetings: Math.round(14 * mult), pipeline: Math.round(480000 * mult) },
         { id: "l2", name: "CISO Network — Security Narrative", status: "active", sent: Math.round(100 * mult), accepted: Math.round(62 * mult), replied: Math.round(28 * mult), meetings: Math.round(10 * mult), pipeline: Math.round(320000 * mult) },
       ],
       icpScoreDistribution: [
-        { score: "90-100", count: 42 },
-        { score: "80-89", count: 96 },
-        { score: "70-79", count: 124 },
-        { score: "60-69", count: 88 },
-        { score: "50-59", count: 52 },
-        { score: "<50", count: 28 },
+        { score: "90-100", count: 42 }, { score: "80-89", count: 96 }, { score: "70-79", count: 124 },
+        { score: "60-69", count: 88 }, { score: "50-59", count: 52 }, { score: "<50", count: 28 },
       ],
+      salesloft: {
+        rhythm: {
+          prioritizedActions: 58,
+          completed: 36,
+          allActivitiesMonth: Math.round(1020 * mult),
+          activityTrend: dates.map((date, i) => ({ date, count: Math.round((24 + Math.sin(i * 0.6) * 8 + Math.random() * 10) * mult) })),
+        },
+        outcomes: [
+          { label: "Opportunities Created", current: Math.round(84 * mult), projection: Math.round(118 * mult), goal: 160, unit: "count", color: "#6366F1", byRep: [{ name: "HP", value: 16 }, { name: "RW", value: 13 }, { name: "HG", value: 11 }, { name: "SH", value: 9 }, { name: "NL", value: 8 }, { name: "DM", value: 6 }] },
+          { label: "Weighted Pipeline", current: Math.round(280000 * mult), projection: Math.round(390000 * mult), goal: 550000, unit: "money", color: "#8B5CF6", byRep: [{ name: "HP", value: 68000 }, { name: "RW", value: 52000 }, { name: "HG", value: 44000 }, { name: "SH", value: 38000 }, { name: "NL", value: 30000 }, { name: "DM", value: 24000 }] },
+          { label: "Closed Won", current: Math.round(480000 * mult), projection: Math.round(660000 * mult), goal: 820000, unit: "money", color: "#10B981", byRep: [{ name: "HP", value: 118000 }, { name: "RW", value: 92000 }, { name: "HG", value: 80000 }, { name: "SH", value: 66000 }, { name: "NL", value: 56000 }, { name: "DM", value: 46000 }] },
+        ],
+        cadenceMetrics: {
+          callsLogged: Math.round(7420 * mult), callsPerDay: Math.round(148 * mult), voicemails: Math.round(1020 * mult), conversations: Math.round(542 * mult), positiveConversations: Math.round(138 * mult), callTrend: Array.from({ length: 8 }, () => Math.round(100 + Math.random() * 55)), callChangePct: 11,
+          emailsSent: Math.round(16480 * mult), pctPersonalized: 51.2, pctOpened: 44.8, pctClicked: 6.4, pctReplied: 14.8, emailTrend: Array.from({ length: 8 }, () => Math.round(400 + Math.random() * 160)), emailChangePct: 12,
+          totalTouches: Math.round(19680 * mult), totalMeetings: Math.round(396 * mult), meetingChangePct: 10, effectivenessScore: 5.2, effectivenessChangePct: 9,
+          linkedinSteps: Math.round(4488 * mult), linkedinResearch: Math.round(2220 * mult), linkedinIntroductions: Math.round(1160 * mult), linkedinConnections: Math.round(588 * mult), linkedinInMail: Math.round(520 * mult),
+          otherStepsCompleted: Math.round(24480 * mult),
+        },
+        topCadences: [
+          { name: "Enterprise CRO Playbook", opportunities: Math.round(428 * mult), meetings: Math.round(268 * mult), successes: Math.round(194 * mult), effectivenessScore: 9.1, oppChangePct: 18 },
+          { name: "VP Sales — AI Narrative", opportunities: Math.round(338 * mult), meetings: Math.round(212 * mult), successes: Math.round(152 * mult), effectivenessScore: 7.8, oppChangePct: 12 },
+          { name: "Series C Expansion", opportunities: Math.round(258 * mult), meetings: Math.round(162 * mult), successes: Math.round(116 * mult), effectivenessScore: 6.4, oppChangePct: -5 },
+          { name: "EMEA Enterprise Push", opportunities: Math.round(194 * mult), meetings: Math.round(122 * mult), successes: Math.round(88 * mult), effectivenessScore: 5.8, oppChangePct: 8 },
+          { name: "SMB Inbound Nurture", opportunities: Math.round(132 * mult), meetings: Math.round(84 * mult), successes: Math.round(60 * mult), effectivenessScore: 4.7, oppChangePct: -12 },
+        ],
+        topReps: [
+          { name: "Marcus Rivera", successes: 194, meetings: 134, opportunities: 92, totalActivity: 3880, emailsSent: 1680, callsLogged: 1220, integrationSteps: 420 },
+          { name: "Diana Foster", successes: 172, meetings: 118, opportunities: 80, totalActivity: 3440, emailsSent: 1480, callsLogged: 1080, integrationSteps: 380 },
+          { name: "Alex Winters", successes: 152, meetings: 104, opportunities: 70, totalActivity: 3040, emailsSent: 1300, callsLogged: 960, integrationSteps: 340 },
+          { name: "Priya Sharma", successes: 132, meetings: 90, opportunities: 60, totalActivity: 2640, emailsSent: 1120, callsLogged: 840, integrationSteps: 300 },
+          { name: "Tom Callahan", successes: 114, meetings: 78, opportunities: 52, totalActivity: 2280, emailsSent: 960, callsLogged: 720, integrationSteps: 260 },
+        ],
+        dealFlow: {
+          startPeriod: "Dec 1, 2025", endPeriod: "Dec 31, 2025",
+          startTotal: Math.round(5680000 * mult), endTotal: Math.round(6520000 * mult), delta: Math.round(840000 * mult),
+          sources: [
+            { label: "Pipeline", value: Math.round(1020000 * mult), color: "#6366F1" },
+            { label: "Best Case", value: Math.round(1500000 * mult), color: "#8B5CF6" },
+            { label: "Commit", value: Math.round(3160000 * mult), color: "#A78BFA" },
+            { label: "Pulled In", value: Math.round(1160000 * mult), color: "#F59E0B" },
+            { label: "New", value: Math.round(1920000 * mult), color: "#10B981" },
+          ],
+          destinations: [
+            { label: "Won", value: Math.round(4840000 * mult), color: "#10B981" },
+            { label: "Idle", value: Math.round(1660000 * mult), color: "#64748B" },
+            { label: "Pushed Out", value: Math.round(1140000 * mult), color: "#F59E0B" },
+            { label: "Lost", value: Math.round(1080000 * mult), color: "#EF4444" },
+          ],
+          links: [
+            { from: "Pipeline", to: "Won", value: Math.round(540000 * mult) },
+            { from: "Pipeline", to: "Idle", value: Math.round(280000 * mult) },
+            { from: "Pipeline", to: "Pushed Out", value: Math.round(200000 * mult) },
+            { from: "Best Case", to: "Won", value: Math.round(1020000 * mult) },
+            { from: "Best Case", to: "Idle", value: Math.round(280000 * mult) },
+            { from: "Best Case", to: "Lost", value: Math.round(200000 * mult) },
+            { from: "Commit", to: "Won", value: Math.round(2480000 * mult) },
+            { from: "Commit", to: "Idle", value: Math.round(480000 * mult) },
+            { from: "Commit", to: "Lost", value: Math.round(200000 * mult) },
+            { from: "Pulled In", to: "Won", value: Math.round(680000 * mult) },
+            { from: "Pulled In", to: "Pushed Out", value: Math.round(480000 * mult) },
+            { from: "New", to: "Won", value: Math.round(120000 * mult) },
+            { from: "New", to: "Idle", value: Math.round(600000 * mult) },
+            { from: "New", to: "Pushed Out", value: Math.round(460000 * mult) },
+            { from: "New", to: "Lost", value: Math.round(680000 * mult) },
+          ],
+        },
+      },
     },
     integrations: [
       { id: "crm", name: "CRM", category: "crm", connected: true, lastSync: "1 min ago" },

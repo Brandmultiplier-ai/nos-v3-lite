@@ -9,6 +9,7 @@ interface DashboardCardProps {
   info?: string;
   children: React.ReactNode;
   className?: string;
+  glow?: boolean;
 }
 
 export function DashboardCard({
@@ -17,16 +18,27 @@ export function DashboardCard({
   info,
   children,
   className,
+  glow = false,
 }: DashboardCardProps) {
   return (
-    <div className={cn("nos-card relative", className)}>
+    <div
+      className={cn(
+        "nos-card relative",
+        glow && "glow-accent",
+        className
+      )}
+    >
       {(title || subtitle) && (
         <div className={cn("mb-3", info && "pr-8")}>
           {title && (
-            <p className="text-sm font-semibold text-[var(--nos-text-primary)]">{title}</p>
+            <p className="text-sm font-semibold" style={{ color: "var(--nos-text-primary)" }}>
+              {title}
+            </p>
           )}
           {subtitle && (
-            <p className="text-xs text-[var(--nos-text-muted)] mt-0.5">{subtitle}</p>
+            <p className="text-xs mt-0.5" style={{ color: "var(--nos-text-muted)" }}>
+              {subtitle}
+            </p>
           )}
         </div>
       )}

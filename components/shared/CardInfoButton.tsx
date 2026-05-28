@@ -18,12 +18,12 @@ export function CardInfoButton({ description }: CardInfoButtonProps) {
     const button = buttonRef.current;
     if (!button) return;
     const rect = button.getBoundingClientRect();
-    const panelWidth = 256;
+    const panelWidth = 264;
     const left = Math.min(
       Math.max(8, rect.right - panelWidth),
       window.innerWidth - panelWidth - 8
     );
-    setCoords({ top: rect.bottom + 6, left });
+    setCoords({ top: rect.bottom + 8, left });
   }, []);
 
   useEffect(() => {
@@ -76,18 +76,35 @@ export function CardInfoButton({ description }: CardInfoButtonProps) {
           }
           const rect = buttonRef.current?.getBoundingClientRect();
           if (rect) {
-            const panelWidth = 256;
+            const panelWidth = 264;
             const left = Math.min(
               Math.max(8, rect.right - panelWidth),
               window.innerWidth - panelWidth - 8
             );
-            setCoords({ top: rect.bottom + 6, left });
+            setCoords({ top: rect.bottom + 8, left });
           }
           setOpen(true);
         }}
-        className="w-6 h-6 rounded-full flex items-center justify-center text-[var(--nos-text-muted)] hover:text-[var(--nos-text-primary)] hover:bg-[var(--nos-bg-elevated)] border border-transparent hover:border-[var(--border)] transition-colors cursor-pointer shrink-0"
+        className="w-6 h-6 rounded-full flex items-center justify-center cursor-pointer shrink-0 transition-all"
+        style={{
+          color: open ? "var(--nos-accent)" : "var(--nos-text-muted)",
+          background: open ? "var(--nos-accent-muted)" : "transparent",
+          border: `1px solid ${open ? "var(--nos-accent-border)" : "transparent"}`,
+        }}
+        onMouseEnter={(e) => {
+          if (!open) {
+            (e.currentTarget as HTMLButtonElement).style.color = "var(--nos-accent)";
+            (e.currentTarget as HTMLButtonElement).style.background = "var(--nos-accent-muted)";
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (!open) {
+            (e.currentTarget as HTMLButtonElement).style.color = "var(--nos-text-muted)";
+            (e.currentTarget as HTMLButtonElement).style.background = "transparent";
+          }
+        }}
       >
-        <Info size={13} strokeWidth={2} />
+        <Info size={11} strokeWidth={2.5} />
       </button>
 
       {open &&
@@ -98,11 +115,49 @@ export function CardInfoButton({ description }: CardInfoButtonProps) {
             ref={panelRef}
             role="dialog"
             aria-label="Card description"
-            style={{ top: coords.top, left: coords.left }}
-            className="fixed z-[9999] w-64 rounded-lg border border-[var(--border)] bg-[var(--nos-bg-surface)] p-3 text-xs leading-relaxed text-[var(--nos-text-secondary)] shadow-2xl"
+            style={{
+              top: coords.top,
+              left: coords.left,
+              position: "fixed",
+              zIndex: 9999,
+              width: 264,
+              background: "var(--nos-bg-overlay)",
+              border: "1px solid var(--nos-accent-border)",
+              borderRadius: 12,
+              padding: "12px 14px",
+              boxShadow: "0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px var(--nos-accent-border), 0 0 20px var(--nos-accent-glow)",
+            }}
             onClick={(event) => event.stopPropagation()}
           >
-            {description}
+            {/* Top accent */}
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: "20%",
+                right: "20%",
+                height: 1,
+                borderRadius: "0 0 4px 4px",
+                background: "linear-gradient(90deg, transparent, var(--nos-accent), transparent)",
+                opacity: 0.6,
+              }}
+            />
+            <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+              <Info
+                size={12}
+                style={{ color: "var(--nos-accent)", marginTop: 2, flexShrink: 0 }}
+              />
+              <p
+                style={{
+                  fontSize: 12,
+                  lineHeight: 1.55,
+                  color: "var(--nos-text-secondary)",
+                  margin: 0,
+                }}
+              >
+                {description}
+              </p>
+            </div>
           </div>,
           document.body
         )}

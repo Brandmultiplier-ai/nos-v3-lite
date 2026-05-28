@@ -42,7 +42,9 @@ const clients = [
 ];
 
 export function CommandPalette() {
-  const { commandOpen, setCommandOpen, setClient } = useNOSStore();
+  const commandOpen = useNOSStore((s) => s.commandOpen);
+  const setCommandOpen = useNOSStore((s) => s.setCommandOpen);
+  const setClient = useNOSStore((s) => s.setClient);
   const router = useRouter();
 
   useEffect(() => {

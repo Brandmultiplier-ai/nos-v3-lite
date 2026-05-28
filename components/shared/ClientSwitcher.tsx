@@ -4,7 +4,8 @@ import { useNOSStore, type ClientId } from "@/lib/store";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, Check } from "lucide-react";
@@ -20,7 +21,8 @@ interface ClientSwitcherProps {
 }
 
 export function ClientSwitcher({ compact = false }: ClientSwitcherProps) {
-  const { activeClient, setClient } = useNOSStore();
+  const activeClient = useNOSStore((s) => s.activeClient);
+  const setClient = useNOSStore((s) => s.setClient);
   const current = clients.find((c) => c.id === activeClient)!;
 
   return (
@@ -47,28 +49,34 @@ export function ClientSwitcher({ compact = false }: ClientSwitcherProps) {
         <div className="px-3 py-2 border-b border-[var(--border)]">
           <p className="text-[10px] text-label-caps text-[var(--nos-text-muted)]">Workspace</p>
         </div>
-        {clients.map((client) => (
-          <DropdownMenuItem
-            key={client.id}
-            onClick={() => setClient(client.id)}
-            className={`gap-3 cursor-pointer py-2.5 ${
-              client.id === activeClient ? "bg-[var(--nos-accent-muted)]" : ""
-            }`}
-          >
-            <span className="w-8 h-8 rounded-lg bg-[var(--nos-accent-muted)] flex items-center justify-center shrink-0 text-[10px] font-bold text-[var(--nos-accent)]">
-              {client.initials}
-            </span>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-[var(--nos-text-primary)]">{client.name}</p>
-              <p className="text-xs text-[var(--nos-text-muted)]">
-                {client.type} · {client.stage}
-              </p>
-            </div>
-            {client.id === activeClient && (
-              <Check size={14} className="text-[var(--nos-accent)] shrink-0" />
-            )}
-          </DropdownMenuItem>
-        ))}
+        <DropdownMenuRadioGroup
+          value={activeClient}
+          onValueChange={(value) => setClient(value as ClientId)}
+        >
+          {clients.map((client) => (
+            <DropdownMenuRadioItem
+              key={client.id}
+              value={client.id}
+              closeOnClick
+              className={`gap-3 cursor-pointer py-2.5 ${
+                client.id === activeClient ? "bg-[var(--nos-accent-muted)]" : ""
+              }`}
+            >
+              <span className="w-8 h-8 rounded-lg bg-[var(--nos-accent-muted)] flex items-center justify-center shrink-0 text-[10px] font-bold text-[var(--nos-accent)]">
+                {client.initials}
+              </span>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-[var(--nos-text-primary)]">{client.name}</p>
+                <p className="text-xs text-[var(--nos-text-muted)]">
+                  {client.type} · {client.stage}
+                </p>
+              </div>
+              {client.id === activeClient && (
+                <Check size={14} className="text-[var(--nos-accent)] shrink-0" />
+              )}
+            </DropdownMenuRadioItem>
+          ))}
+        </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   );

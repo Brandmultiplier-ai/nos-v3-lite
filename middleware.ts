@@ -10,10 +10,13 @@ export function middleware(request: NextRequest) {
   if (pathname === "/outreach") {
     return NextResponse.redirect(new URL("/outreach/email", request.url));
   }
+  if (pathname === "/search") {
+    return NextResponse.redirect(new URL("/search/seo", request.url));
+  }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/content", "/outreach"],
+  matcher: ["/content", "/outreach", "/search"],
 };

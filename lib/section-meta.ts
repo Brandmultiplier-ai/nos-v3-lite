@@ -40,11 +40,11 @@ export const SECTION_META: Record<string, SectionMeta> = {
     title: "Brand Intelligence",
     breadcrumb: "Brand Intel",
     description:
-      "Measures how consistently your brand story lands across channels and how much narrative share you own versus competitors.",
+      "Real-time competitive brand scoreboard comparing your client against 7 competitors across Brand Score, Awareness, Impact, and Trust — plus audience growth signals from connected social channels.",
     highlights: [
-      "Brand health score from sentiment, reach, and consistency",
-      "Story alignment per channel and share of voice",
-      "Content-to-pipeline attribution funnel",
+      "Competitive scoreboard with directional movement per dimension",
+      "Brand Score gauge with AI narrative explaining what drove change",
+      "Audience & social metrics — total audience, net new, and channel breakdown",
     ],
     icon: BarChart3,
     path: "/brand",
