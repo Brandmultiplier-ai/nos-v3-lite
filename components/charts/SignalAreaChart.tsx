@@ -11,16 +11,17 @@ import {
   Legend,
 } from "recharts";
 import { CustomTooltip } from "./CustomTooltip";
+import { ChartAxisLabels } from "./ChartAxisLabels";
 import type { SignalPoint } from "@/lib/data/types";
 import { ChartSkeleton } from "@/components/shared/ChartSkeleton";
 import { useState, useEffect } from "react";
 
 const channels = [
-  { key: "linkedin", label: "LinkedIn Signal", color: "#0A66C2" },
-  { key: "website", label: "Website Intent", color: "#6366F1" },
-  { key: "email", label: "Email Engagement", color: "#F59E0B" },
-  { key: "search", label: "Search Visibility", color: "#8B5CF6" },
-  { key: "content", label: "Content Velocity", color: "#22C55E" },
+  { key: "linkedin", label: "LinkedIn Signal",   color: "var(--nos-ch-linkedin)" },
+  { key: "website",  label: "Website Intent",    color: "var(--nos-ch-website)" },
+  { key: "email",    label: "Email Engagement",  color: "var(--nos-ch-email)" },
+  { key: "search",   label: "Search Visibility", color: "var(--nos-ch-search)" },
+  { key: "content",  label: "Content Velocity",  color: "var(--nos-ch-newsletter)" },
 ];
 
 interface SignalAreaChartProps {
@@ -33,15 +34,20 @@ export function SignalAreaChart({ data }: SignalAreaChartProps) {
 
   if (!ready) return <ChartSkeleton height={280} />;
 
+  const xInterval = data.length <= 7 ? 0 : Math.ceil(data.length / 6) - 1;
+  const dateRange = data.length > 0
+    ? `${data[0].date.slice(5)} – ${data[data.length - 1].date.slice(5)}`
+    : "";
+
   return (
     <div>
       <div className="mb-1">
         <p className="text-sm font-semibold text-[var(--nos-text-primary)]">Composite Signal Intelligence</p>
-        <p className="text-xs text-[var(--nos-text-muted)]">All channels · {data.length} data points</p>
+        <p className="text-xs text-[var(--nos-text-muted)]">All channels · Signal strength 0–100 · {dateRange}</p>
       </div>
       <div style={{ width: "100%", height: 260 }}>
         <ResponsiveContainer width="100%" height={260}>
-          <AreaChart data={data} margin={{ top: 8, right: 4, left: -20, bottom: 0 }}>
+          <AreaChart data={data} margin={{ top: 8, right: 4, left: -16, bottom: 0 }}>
             <defs>
               {channels.map((ch) => (
                 <linearGradient key={ch.key} id={`grad-${ch.key}`} x1="0" y1="0" x2="0" y2="1">
@@ -57,9 +63,16 @@ export function SignalAreaChart({ data }: SignalAreaChartProps) {
               axisLine={false}
               tick={{ fill: "var(--nos-text-muted)", fontSize: 10 }}
               tickFormatter={(v) => v.slice(5)}
-              interval="preserveStartEnd"
+              interval={xInterval}
             />
-            <YAxis tickLine={false} axisLine={false} tick={{ fill: "var(--nos-text-muted)", fontSize: 10 }} />
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              tick={{ fill: "var(--nos-text-muted)", fontSize: 10 }}
+              domain={[0, 100]}
+              tickFormatter={(v: number) => `${v}`}
+              ticks={[0, 25, 50, 75, 100]}
+            />
             <Tooltip content={<CustomTooltip />} />
             <Legend
               iconType="circle"
@@ -84,6 +97,7 @@ export function SignalAreaChart({ data }: SignalAreaChartProps) {
           </AreaChart>
         </ResponsiveContainer>
       </div>
+      <ChartAxisLabels xLabel="Date" yLabel="Signal strength (0–100)" />
     </div>
   );
 }

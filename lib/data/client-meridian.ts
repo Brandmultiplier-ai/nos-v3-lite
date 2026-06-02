@@ -1,4 +1,5 @@
 import type { ClientDataByRange, ClientData } from "./types";
+import { createSparklineFactory } from "./sparkline";
 import { makeMeridianBrand } from "./brand-builders";
 
 function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
@@ -14,7 +15,7 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
   };
 
   const dates = generateDates(days > 30 ? 24 : days > 7 ? 12 : 7);
-  const spark = () => Array.from({ length: 7 }, (_, i) => Math.round(60 + Math.cos(i * 0.8) * 20 + Math.random() * 12));
+  const spark = createSparklineFactory(60, (i) => Math.cos(i * 0.8) * 20, 12);
 
   return {
     meta: {
@@ -31,6 +32,8 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
       dealsCreated: { value: Math.round(22 * mult), change: 18, sparkline: spark() },
       closedWon: { value: Math.round(7 * mult), change: 34, sparkline: spark() },
       attributedRevenue: { value: Math.round(78000 * mult), change: 28, sparkline: spark(), prefix: "$" },
+      ltv: { value: 14200, change: 14, sparkline: spark(), prefix: "$" },
+      avgDealSize: { value: 11000, change: 8, sparkline: spark(), prefix: "$" },
     },
     signalTimeline: dates.map((date, i) => ({
       date,
@@ -40,9 +43,34 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
       search: Math.round(38 + Math.cos(i * 0.5) * 8 + i * 0.2),
       content: Math.round(68 + Math.sin(i * 0.3) * 14 + i * 0.6),
     })),
-    aiNarrative:
-      "Instagram engagement is driving 2.1× more top-of-funnel leads than LinkedIn for Meridian's audience segment. Your newsletter has the highest content-to-pipeline conversion rate at 38%, suggesting your owned audience is your biggest untapped pipeline lever. Recommend a newsletter-first content strategy with social amplification on Instagram and Facebook.",
-    recommendedActions: [
+    aiNarrative: range === "7d"
+      ? "This week, Instagram engagement is 34% above last week's average with 4 posts reaching above-benchmark impressions. Newsletter open rate is 42% — above the monthly average. One Facebook post unexpectedly drove 12 qualified email sign-ups. Act on the newsletter momentum while engagement is high."
+      : range === "30d"
+      ? "Instagram engagement is driving 2.1× more top-of-funnel leads than LinkedIn for Meridian's audience. Your newsletter has the highest content-to-pipeline conversion rate at 38% — your owned audience is your biggest untapped pipeline lever. Recommend a newsletter-first content strategy with social amplification on Instagram and Facebook."
+      : "Over the quarter, the newsletter-first strategy has proven its value with $78k in attributed pipeline from owned channels. Instagram follower quality has improved — engagement-to-visit conversion is 12% above Q2. The multi-channel brand consistency improvements are showing in lower CAC and higher deal velocity.",
+    recommendedActions: range === "7d" ? [
+      {
+        priority: "high",
+        icon: "Mail",
+        title: "Send a follow-up to this week's newsletter opens",
+        description: "41% of this week's newsletter openers have not yet visited a product page. A short follow-up email with a specific case study link could move them down funnel this week.",
+        cta: "Draft follow-up",
+      },
+      {
+        priority: "high",
+        icon: "Instagram",
+        title: "Boost the top Instagram post from today",
+        description: "Today's Instagram outcome post has 3.8× above-average early engagement. A $200 boost targeting lookalike audiences from your subscriber list will extend its reach window.",
+        cta: "Boost post",
+      },
+      {
+        priority: "medium",
+        icon: "BarChart",
+        title: "Update this week's content calendar",
+        description: "Based on this week's early engagement signals, shifting Thursday's post to a customer outcome format will likely outperform the planned product post.",
+        cta: "Update calendar",
+      },
+    ] : range === "30d" ? [
       {
         priority: "high",
         icon: "Mail",
@@ -53,20 +81,62 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
       {
         priority: "high",
         icon: "Instagram",
-        title: "Instagram-to-email funnel optimization",
-        description: "Instagram posts mentioning customer outcomes convert 3.8× better to email subscribers than product posts. A simple link-in-bio redirect could capture 180+ qualified leads/month.",
+        title: "Instagram-to-email funnel optimisation",
+        description: "Instagram posts mentioning customer outcomes convert 3.8× better to email subscribers than product posts. A simple link-in-bio redirect could capture 180+ qualified leads per month.",
         cta: "Set up funnel",
       },
       {
         priority: "medium",
         icon: "BarChart",
         title: "Facebook retargeting for mid-funnel",
-        description: "Website visitors from Instagram who don't convert are showing strong intent signals. A Facebook retargeting campaign targeting these visitors has estimated $28 CPL in your category.",
+        description: "Website visitors from Instagram who don't convert are showing strong intent signals. A Facebook retargeting campaign has estimated $28 CPL in your category.",
         cta: "Create audience",
+      },
+    ] : [
+      {
+        priority: "high",
+        icon: "Mail",
+        title: "Invest in newsletter subscriber acquisition",
+        description: "Newsletter subscribers have a 38% pipeline conversion rate — the highest of any channel. Allocating $2k/month to subscriber acquisition would generate an estimated $76k in incremental quarterly pipeline.",
+        cta: "Plan investment",
+      },
+      {
+        priority: "medium",
+        icon: "Instagram",
+        title: "Develop a quarterly social content strategy",
+        description: "This quarter's top-performing content themes are now clear. Document them as a repeatable content strategy to guide the next quarter and reduce content planning time.",
+        cta: "Build strategy",
+      },
+      {
+        priority: "medium",
+        icon: "BarChart",
+        title: "Measure brand consistency across channels",
+        description: "90 days of multi-channel data allows for a brand consistency audit — measuring whether messaging, tone, and visual identity are aligned across Instagram, LinkedIn, and email.",
+        cta: "Run audit",
       },
     ],
     brand: makeMeridianBrand(mult),
     positioning: {
+      tldr: {
+        summary: range === "7d"
+          ? "This week, BrandFlow Co published two articles targeting D2C attribution keywords where Meridian currently ranks. Monitor share-of-voice impact over the next 7 days and prepare a counter-narrative content brief if rankings shift."
+          : range === "30d"
+          ? "Meridian Brands holds a solid Challenger position with strong narrative differentiation in the D2C-adjacent space. With BrandFlow Co closing the gap, maintaining narrative clarity and speed of content is critical to protecting your market position and pipeline contribution."
+          : "Over the quarter, Meridian's positioning score improved by 14 points while SocialROI Pro declined. The narrative differentiation strategy is working — buyers in your segment are increasingly citing Meridian's content when explaining why they shortlisted you. Maintain the investment to sustain momentum.",
+        actions: range === "7d" ? [
+          { title: "Respond to BrandFlow Co's new content", description: "BrandFlow published two articles targeting your top keywords this week. A quick expert-angle counter-piece would protect your authority on these topics.", priority: "high", cta: "Draft content" },
+          { title: "Check ranking changes this week", description: "Monitor your top 10 keyword rankings daily this week following competitor content activity. Prepare to update existing pages if positions drop.", priority: "high", cta: "Check rankings" },
+          { title: "Update positioning page copy", description: "Your positioning/about page was last updated 60 days ago. Freshen it with this week's product updates to maintain search relevance.", priority: "medium", cta: "Update page" },
+        ] : range === "30d" ? [
+          { title: "Sharpen differentiation narrative", description: "BrandFlow Co is gaining ground on narrative presence. Publish a direct comparison guide to pre-empt buyer consideration of their offering.", priority: "high", cta: "Write guide" },
+          { title: "Own emerging keywords", description: "Two D2C attribution keywords are trending with low competition — publish content targeting them before larger players enter.", priority: "high", cta: "Target keywords" },
+          { title: "Promote analyst validation", description: "Buyer research shows third-party validation accelerates decisions in your segment. Surface any analyst or press mentions more prominently.", priority: "medium", cta: "Update sales enablement" },
+        ] : [
+          { title: "Formalise competitive differentiation strategy", description: "90 days of positioning data shows which messaging themes are winning against each competitor. Codify these into a positioning playbook for sales and marketing alignment.", priority: "high", cta: "Create playbook" },
+          { title: "Publish a category definition piece", description: "Meridian's narrative strength score (72) gives authority to publish a category-defining piece that establishes your framework as the industry standard.", priority: "medium", cta: "Commission piece" },
+          { title: "Monitor NarrativeLab's trajectory", description: "NarrativeLab has improved its narrative score by 8 points this quarter. Track their content output and SEO strategy to anticipate where they'll compete with you next.", priority: "medium", cta: "Set up monitoring" },
+        ],
+      },
       quadrant: [
         { name: "Meridian Brands", x: 58, y: 72, isClient: true },
         { name: "BrandFlow Co", x: 72, y: 58, isClient: false },
@@ -97,6 +167,26 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
       ],
     },
     search: {
+      tldr: {
+        summary: range === "7d"
+          ? "This week, a D2C attribution article published by ContentPulse is gaining early traction on keywords you currently own. Submit an updated FAQ response to Perplexity this week to protect your AI citation share before the new content indexes."
+          : range === "30d"
+          ? "Search is a developing channel for Meridian — organic traffic is growing steadily but hasn't yet reached the efficiency of your social and email channels. The GEO opportunity is significant: AI engines are beginning to surface D2C brand attribution queries where Meridian has no established presence. Building topical authority now will compound into organic pipeline over the next 2–3 quarters."
+          : "Organic search grew 22% this quarter from a low base. Three content pieces now rank on page 1 for D2C attribution queries. The search channel is transitioning from experimental to contributing — continued investment over the next two quarters will make it a primary top-of-funnel source.",
+        actions: range === "7d" ? [
+          { title: "Protect AI citation position this week", description: "ContentPulse published new D2C attribution content. Submit an updated Perplexity FAQ response this week to maintain your AI engine visibility.", priority: "high", cta: "Submit response" },
+          { title: "Optimise the top CTR opportunity", description: "Your highest-impression keyword has a 2.1% CTR — below the page-1 benchmark of 3.8%. A title tag update this week could unlock significant additional organic traffic.", priority: "high", cta: "Update title tag" },
+          { title: "Publish this week's blog post on schedule", description: "Maintaining content cadence is critical for Google's freshness signals. Ensure this week's scheduled post goes live as planned.", priority: "medium", cta: "Publish post" },
+        ] : range === "30d" ? [
+          { title: "Build D2C attribution content hub", description: "Create a cluster of 6–8 articles on D2C brand attribution — this is the highest-traffic topic in your category with low competition.", priority: "high", cta: "Plan content hub" },
+          { title: "Optimise top 5 ranking pages", description: "Your current top-ranking pages have sub-optimal CTR. Improve title tags and meta descriptions to capture more of your existing rankings.", priority: "high", cta: "Optimise pages" },
+          { title: "Submit brand Q&A to AI engines", description: "Submit structured Q&A content to improve GEO visibility on Perplexity and ChatGPT for D2C brand questions.", priority: "medium", cta: "Create GEO content" },
+        ] : [
+          { title: "Invest in a dedicated SEO roadmap", description: "With 3 page-1 rankings established, search is ready for a structured investment. A 90-day SEO roadmap targeting the top 20 category keywords would accelerate the channel's pipeline contribution.", priority: "high", cta: "Build roadmap" },
+          { title: "Expand into commercial-intent keywords", description: "Current rankings are informational. Moving into commercial-intent keywords like 'D2C attribution software' would increase demo-qualified organic traffic.", priority: "medium", cta: "Research keywords" },
+          { title: "Build a GEO content calendar", description: "AI engine citations are growing. A dedicated monthly output of structured GEO content (FAQ, definitions, comparisons) would compound visibility quarter over quarter.", priority: "medium", cta: "Plan calendar" },
+        ],
+      },
       geo: {
         visibilityScore: 34.1,
         visibilityChange: 1.8,
@@ -197,6 +287,26 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
       geoPipelineKPI: { value: 38000, change: 220, sparkline: spark(), prefix: "$" },
     },
     website: {
+      tldr: {
+        summary: range === "7d"
+          ? "This week, Instagram drove 34% of website traffic — above the monthly average. 4 new companies were identified as hot-intent accounts from social referral traffic. Track these through the week and trigger outreach before the intent window closes."
+          : range === "30d"
+          ? "Website signals for Meridian show solid audience quality with meaningful return visitor rates. Instagram is driving 2.1× more top-of-funnel website traffic than LinkedIn, confirming social-to-web as a key pipeline path. Expanding intent tracking on product pages will unlock better outreach targeting."
+          : "Over the quarter, 560 unique companies visited intent-heavy pages — a 24% increase from Q3. The Instagram-to-website-to-outreach pipeline is proving itself with 14 attributable opportunities this quarter. Return visitor rates continue to improve, indicating growing brand consideration.",
+        actions: range === "7d" ? [
+          { title: "Act on this week's social-referred hot accounts", description: "4 companies identified from Instagram traffic this week have no open opportunity. Route them to SDRs with the social context for personalised first outreach.", priority: "high", cta: "Route accounts" },
+          { title: "Check UTM tracking for this week's posts", description: "UTM data from 2 Instagram posts this week is not resolving correctly. Fix before posting tomorrow to ensure accurate attribution data.", priority: "high", cta: "Fix UTMs" },
+          { title: "Review this week's session recordings", description: "3 sessions this week show high engagement then drop-off at the demo CTA. Review these recordings to identify the friction point.", priority: "medium", cta: "View recordings" },
+        ] : range === "30d" ? [
+          { title: "Add intent tracking to product pages", description: "Only homepage and blog are currently instrumented. Add company-level identification to /pricing and /demo pages immediately.", priority: "high", cta: "Implement tracking" },
+          { title: "Create Instagram-to-website funnel tracking", description: "Set up UTM tracking on all Instagram link-in-bio posts to measure the social-to-pipeline path more precisely.", priority: "high", cta: "Set up UTMs" },
+          { title: "Retarget return visitors", description: "2,800 return visitors haven't requested a demo — set up a retargeting ad sequence triggered by their second visit.", priority: "medium", cta: "Build retargeting" },
+        ] : [
+          { title: "Build a social-to-pipeline attribution report", description: "90 days of UTM and intent data can now show the full social-to-website-to-pipeline path. Present this attribution report to justify next quarter's social content investment.", priority: "high", cta: "Build report" },
+          { title: "Scale the intent-to-outreach workflow", description: "The manual hot-account routing process handled 14 opportunities this quarter. Automating the routing via CRM workflows would scale this without adding headcount.", priority: "medium", cta: "Automate workflow" },
+          { title: "Plan Q3 website conversion improvements", description: "With clearer intent data, identify the top 3 conversion friction points on product pages and prioritise CRO fixes for next quarter.", priority: "medium", cta: "Plan improvements" },
+        ],
+      },
       visitors: { value: Math.round(9200 * mult), change: 11, sparkline: spark() },
       sessions: { value: Math.round(12400 * mult), change: 14, sparkline: spark() },
       companiesIdentified: { value: Math.round(180 * mult), change: 14, sparkline: spark() },
@@ -270,6 +380,26 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
       ],
     },
     content: {
+      tldr: {
+        summary: range === "7d"
+          ? "This week, the Monday newsletter drove the highest single-send open rate this month at 44%. One Instagram Reel outperformed all static posts. Maintain this week's content rhythm — consistency is the key driver of the audience growth trend."
+          : range === "30d"
+          ? "Content marketing is Meridian's most efficient pipeline channel per dollar spent. Instagram engagement is driving the most top-of-funnel leads, while the newsletter is your highest-converting owned channel at 38% content-to-pipeline rate. Distribution scale is the primary lever — message quality is already strong."
+          : "Content has compounded this quarter into Meridian's leading pipeline channel. Instagram and the newsletter together generated $124k in influenced pipeline. Brand voice consistency across channels improved, contributing to a 14% reduction in CAC over the quarter.",
+        actions: range === "7d" ? [
+          { title: "Repurpose this week's top newsletter content", description: "The Monday send had 44% open rate. Extract the key insight and post it as an Instagram carousel today while the topic is relevant.", priority: "high", cta: "Repurpose content" },
+          { title: "Add a newsletter CTA to today's Instagram post", description: "Only 12% of posts include a newsletter CTA. Adding one today to the high-performing Reel format could capture 40+ new subscribers.", priority: "high", cta: "Update post" },
+          { title: "Review this week's Facebook reach", description: "Facebook reach dropped 18% vs. last week. Check whether this is an algorithm or schedule issue before next week's posts.", priority: "medium", cta: "Review analytics" },
+        ] : range === "30d" ? [
+          { title: "Increase Instagram post frequency", description: "Instagram posts mentioning customer outcomes convert 3.8× better to subscribers. Post 5 days per week instead of 3.", priority: "high", cta: "Build calendar" },
+          { title: "Add newsletter CTA to every post", description: "Only 12% of Instagram posts include a newsletter CTA. Adding it consistently could add 180+ subscribers per month.", priority: "high", cta: "Update posts" },
+          { title: "Repurpose newsletter issues to blog", description: "Newsletter open rate of 38% signals great content quality. Publish full issues as blog posts to capture organic search traffic.", priority: "medium", cta: "Plan repurposing" },
+        ] : [
+          { title: "Invest in a formal newsletter growth strategy", description: "Newsletter delivers the highest pipeline ROI of any content channel. A structured list growth program investing $1.5k/month could add $45k in quarterly pipeline.", priority: "high", cta: "Plan strategy" },
+          { title: "Build a quarterly content calendar framework", description: "This quarter's top-performing formats and topics are now clear. Build a repeatable quarterly calendar template to reduce planning time and maintain output quality.", priority: "medium", cta: "Build template" },
+          { title: "Develop a content repurposing system", description: "Creating content once and distributing across Instagram, blog, and newsletter reduces cost per content piece by an estimated 60%. Formalise the repurposing workflow.", priority: "medium", cta: "Build system" },
+        ],
+      },
       socialOverview: [
         { channel: "LinkedIn", posts: Math.round(10 * mult), reach: Math.round(28000 * mult), engagementRate: 4.1, pipeline: Math.round(85000 * mult) },
         { channel: "Instagram", posts: Math.round(18 * mult), reach: Math.round(94000 * mult), engagementRate: 6.8, pipeline: Math.round(62000 * mult) },
@@ -285,7 +415,7 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
         { platform: "Instagram", color: "#E1306C", followers: Math.round(28400 * mult), followersChange: 12, reach: Math.round(94000 * mult), engagementRate: 6.8, posts: Math.round(18 * mult), reelsWatchTime: 38, hookRate: 64 },
         { platform: "Facebook", color: "#1877F2", followers: Math.round(14200 * mult), followersChange: 3, reach: Math.round(42000 * mult), engagementRate: 2.9, posts: Math.round(14 * mult) },
         { platform: "LinkedIn", color: "#0A66C2", followers: Math.round(6800 * mult), followersChange: 9, reach: Math.round(28000 * mult), engagementRate: 4.1, posts: Math.round(10 * mult) },
-        { platform: "Newsletter", color: "#22C55E", followers: Math.round(6800 * mult), followersChange: 18, reach: Math.round(6800 * mult), engagementRate: 44, posts: Math.round(4 * mult) },
+        { platform: "Newsletter", color: "#34D399", followers: Math.round(6800 * mult), followersChange: 18, reach: Math.round(6800 * mult), engagementRate: 44, posts: Math.round(4 * mult) },
       ],
       audienceGrowthStacked: Array.from({ length: 12 }, (_, i) => ({
         date: new Date(2026, i - 10 + 2, 1).toISOString().split("T")[0].slice(0, 7),
@@ -376,6 +506,26 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
       ],
     },
     outreach: {
+      tldr: {
+        summary: range === "7d"
+          ? "This week's outreach open rate is tracking at 54% — 2 points above the monthly average. 6 positive replies came in, with 2 booked meetings. Extend the highest-performing sequence from this week before end of day Friday to capture the mid-week engagement window."
+          : range === "30d"
+          ? "Cold outreach for Meridian is performing well given the shorter average deal size and faster sales cycle. Email personalisation is driving above-average open rates, and LinkedIn cadences are warming buyers who've engaged with brand content. The primary opportunity is improving follow-up consistency — reply rates spike on days 3 and 7, but many sequences end before reaching those intervals."
+          : "Over the quarter, outreach generated $95k in email pipeline across 28 opportunities. Reply rates improved each month as personalisation quality increased. The LinkedIn content warm-up strategy is validated — buyers who engage with content before receiving outreach reply at 2.1× the cold rate.",
+        actions: range === "7d" ? [
+          { title: "Extend this week's best-performing sequence", description: "The Tuesday persona sequence had a 62% open rate this week. Extend it with 2 additional follow-up steps before the engagement window closes on Friday.", priority: "high", cta: "Extend sequence" },
+          { title: "Follow up on this week's 6 positive replies", description: "6 positive replies are awaiting follow-up booking links. Respond before end of day today to maintain meeting conversion momentum.", priority: "high", cta: "Send follow-ups" },
+          { title: "Pause low-performing Friday sends", description: "Friday sends have 28% lower open rates than Tuesday or Wednesday. Reschedule any Friday sends to mid-week for better engagement.", priority: "medium", cta: "Reschedule sends" },
+        ] : range === "30d" ? [
+          { title: "Extend sequence length", description: "40% of sequences end before day 7 — the highest reply-rate day. Add 2 additional follow-up steps to all active sequences.", priority: "high", cta: "Update sequences" },
+          { title: "Personalise opening lines", description: "Sequences with brand-specific opening lines have 2.4× higher reply rate. Train SDRs to use Instagram or newsletter references in first lines.", priority: "high", cta: "Update playbook" },
+          { title: "Launch LinkedIn and email combined plays", description: "Coordinate LinkedIn views with email sends on day 1 of each sequence for a 2.1× uplift in reply rate.", priority: "medium", cta: "Set up plays" },
+        ] : [
+          { title: "Build a formal personalisation playbook", description: "90 days of data confirms personalised opening lines drive 2.4× higher reply rates. Document the best-performing openers by industry and persona as a repeatable SDR resource.", priority: "high", cta: "Build playbook" },
+          { title: "Scale the LinkedIn warm-up strategy", description: "Content-warmed sequences have proven their lift. Formalising the LinkedIn engagement → outreach trigger as a standard workflow would make the strategy scalable.", priority: "medium", cta: "Formalise workflow" },
+          { title: "Plan next quarter's outreach capacity", description: "At current conversion rates, a 25% increase in contact volume would generate an estimated $24k in additional quarterly pipeline.", priority: "medium", cta: "Plan capacity" },
+        ],
+      },
       emailPipeline: { value: Math.round(95000 * mult), change: 18, sparkline: spark(), prefix: "$" },
       totalSent: { value: Math.round(28400 * mult), change: 12, sparkline: spark() },
       openRate: { value: 52.8, change: 3, sparkline: spark() },
@@ -430,17 +580,17 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
       ],
       emailFunnel: [
         { stage: "Contacted", count: Math.round(28400 * mult), rate: 100,  color: "#0EA5E9" },
-        { stage: "Opened",    count: Math.round(15000 * mult), rate: 52.8, color: "#22C55E" },
-        { stage: "Clicked",   count: Math.round(1490 * mult),  rate: 9.9,  color: "#FBBF24" },
+        { stage: "Opened",    count: Math.round(15000 * mult), rate: 52.8, color: "#FBBF24" },
+        { stage: "Clicked",   count: Math.round(1490 * mult),  rate: 9.9,  color: "#F97316" },
         { stage: "Replied",   count: Math.round(1477 * mult),  rate: 9.8,  color: "#A78BFA" },
-        { stage: "Meetings",  count: Math.round(240 * mult),   rate: 16.3, color: "#FF6B9D" },
+        { stage: "Meetings",  count: Math.round(240 * mult),   rate: 16.3, color: "#7C7FFF" },
         { stage: "Opps",      count: Math.round(28 * mult),    rate: 11.7, color: "#34D399" },
       ],
       crmPipelineFunnel: [
         { stage: "Request For Info", value: Math.round(380000 * mult), deals: Math.round(18 * mult), pct: 100,  color: "#0EA5E9" },
-        { stage: "Presentation",     value: Math.round(268000 * mult), deals: Math.round(12 * mult), pct: 70.5, color: "#22C55E" },
-        { stage: "Qualified",        value: Math.round(182000 * mult), deals: Math.round(8 * mult),  pct: 47.9, color: "#FBBF24" },
-        { stage: "Negotiation",      value: Math.round(118000 * mult), deals: Math.round(5 * mult),  pct: 31.1, color: "#A78BFA" },
+        { stage: "Presentation",     value: Math.round(268000 * mult), deals: Math.round(12 * mult), pct: 70.5, color: "#6366F1" },
+        { stage: "Qualified",        value: Math.round(182000 * mult), deals: Math.round(8 * mult),  pct: 47.9, color: "#A78BFA" },
+        { stage: "Negotiation",      value: Math.round(118000 * mult), deals: Math.round(5 * mult),  pct: 31.1, color: "#FBBF24" },
         { stage: "Won",              value: Math.round(68000 * mult),  deals: Math.round(3 * mult),  pct: 17.9, color: "#34D399" },
         { stage: "Lost",             value: Math.round(42000 * mult),  deals: Math.round(4 * mult),  pct: 11.1, color: "#FF4455" },
       ],
@@ -478,7 +628,7 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
         outcomes: [
           { label: "Opportunities Created", current: Math.round(44 * mult), projection: Math.round(68 * mult), goal: 100, unit: "count", color: "#6366F1", byRep: [{ name: "HP", value: 9 }, { name: "RW", value: 7 }, { name: "HG", value: 6 }, { name: "SH", value: 5 }, { name: "NL", value: 4 }, { name: "DM", value: 3 }] },
           { label: "Weighted Pipeline", current: Math.round(155000 * mult), projection: Math.round(220000 * mult), goal: 320000, unit: "money", color: "#8B5CF6", byRep: [{ name: "HP", value: 38000 }, { name: "RW", value: 28000 }, { name: "HG", value: 24000 }, { name: "SH", value: 20000 }, { name: "NL", value: 16000 }, { name: "DM", value: 12000 }] },
-          { label: "Closed Won", current: Math.round(260000 * mult), projection: Math.round(360000 * mult), goal: 480000, unit: "money", color: "#10B981", byRep: [{ name: "HP", value: 62000 }, { name: "RW", value: 48000 }, { name: "HG", value: 44000 }, { name: "SH", value: 36000 }, { name: "NL", value: 32000 }, { name: "DM", value: 26000 }] },
+          { label: "Closed Won", current: Math.round(260000 * mult), projection: Math.round(360000 * mult), goal: 480000, unit: "money", color: "#34D399", byRep: [{ name: "HP", value: 62000 }, { name: "RW", value: 48000 }, { name: "HG", value: 44000 }, { name: "SH", value: 36000 }, { name: "NL", value: 32000 }, { name: "DM", value: 26000 }] },
         ],
         cadenceMetrics: {
           callsLogged: Math.round(4210 * mult), callsPerDay: Math.round(84 * mult), voicemails: Math.round(592 * mult), conversations: Math.round(308 * mult), positiveConversations: Math.round(78 * mult), callTrend: Array.from({ length: 8 }, () => Math.round(60 + Math.random() * 35)), callChangePct: 5,
@@ -509,10 +659,10 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
             { label: "Best Case", value: Math.round(860000 * mult), color: "#8B5CF6" },
             { label: "Commit", value: Math.round(1760000 * mult), color: "#A78BFA" },
             { label: "Pulled In", value: Math.round(660000 * mult), color: "#F59E0B" },
-            { label: "New", value: Math.round(1080000 * mult), color: "#10B981" },
+            { label: "New", value: Math.round(1080000 * mult), color: "#34D399" },
           ],
           destinations: [
-            { label: "Won", value: Math.round(2760000 * mult), color: "#10B981" },
+            { label: "Won", value: Math.round(2760000 * mult), color: "#34D399" },
             { label: "Idle", value: Math.round(940000 * mult), color: "#64748B" },
             { label: "Pushed Out", value: Math.round(640000 * mult), color: "#F59E0B" },
             { label: "Lost", value: Math.round(600000 * mult), color: "#EF4444" },
@@ -538,15 +688,104 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
       },
     },
     integrations: [
-      { id: "crm", name: "CRM", category: "crm", connected: true, lastSync: "4 min ago" },
+      { id: "crm", name: "Salesforce CRM", category: "crm", connected: true, lastSync: "4 min ago" },
       { id: "linkedin", name: "LinkedIn", category: "social", connected: true, lastSync: "8 min ago" },
       { id: "instagram", name: "Instagram", category: "social", connected: true, lastSync: "3 min ago" },
       { id: "facebook", name: "Facebook", category: "social", connected: true, lastSync: "6 min ago" },
-      { id: "email-seq", name: "Email Sequencer", category: "outreach", connected: true, lastSync: "15 min ago" },
-      { id: "analytics", name: "Web Analytics", category: "analytics", connected: true, lastSync: "Real-time" },
+      { id: "tiktok", name: "TikTok", category: "social", connected: true, lastSync: "10 min ago" },
+      { id: "x-twitter", name: "X (Twitter)", category: "social", connected: false },
+      { id: "reddit", name: "Reddit", category: "social", connected: false },
       { id: "google-search", name: "Google Search Console", category: "seo", connected: false },
+      { id: "email-seq", name: "Email Sequencer", category: "outreach", connected: true, lastSync: "15 min ago" },
       { id: "website-intel", name: "Website Intelligence", category: "website-intel", connected: false },
+      { id: "analytics", name: "Google Analytics", category: "analytics", connected: true, lastSync: "Real-time" },
+      { id: "meta-ads", name: "Meta Ads", category: "paid-media", connected: true, lastSync: "20 min ago" },
+      { id: "tiktok-ads", name: "TikTok Ads", category: "paid-media", connected: true, lastSync: "25 min ago" },
+      { id: "google-ads", name: "Google Ads", category: "paid-media", connected: true, lastSync: "1 hour ago" },
+      { id: "linkedin-ads", name: "LinkedIn Ads", category: "paid-media", connected: false },
+      { id: "x-ads", name: "X Ads", category: "paid-media", connected: false },
+      { id: "reddit-ads", name: "Reddit Ads", category: "paid-media", connected: false },
     ],
+    paidMedia: {
+      tldr: {
+        summary: range === "7d"
+          ? "Meta Ads and TikTok Ads drove strong top-of-funnel engagement this week, with Meta at 3.8× ROAS and TikTok at 2.9×. Google Ads is connected but underperforming at 1.4× ROAS — the search keyword strategy needs updating for the D2C audience."
+          : range === "30d"
+          ? "Paid media is performing well across Meta and TikTok, which are the best-fit channels for Meridian's D2C-adjacent audience. Combined ROAS this month is 3.4×. Google Ads is underdelivering relative to spend — consider reallocating to Meta where CPAs are 28% lower."
+          : "Paid media contributed $78k in revenue this quarter with a 3.1× blended ROAS. Meta Ads consistently outperformed Google Ads for D2C brand acquisition. TikTok Ads drove 34% of total impression volume at a competitive CPA — a strong signal to increase budget in Q3.",
+        actions: range === "7d" ? [
+          { title: "Scale the top TikTok creative", description: "Your TikTok customer outcome video is at 3.4× ROAS this week — the platform's best performer. Boost budget by 25% to capture the momentum window.", priority: "high", cta: "Scale budget" },
+          { title: "Review Google Ads keyword targeting", description: "Google Ads CPA is 2.1× higher than Meta this week. Your current keyword strategy targets generic D2C terms — switching to brand and competitor terms would improve efficiency.", priority: "high", cta: "Review keywords" },
+          { title: "Connect X Ads for brand awareness testing", description: "X Ads offers low CPMs for D2C brand awareness. A small $500 test budget this week would establish a baseline for the channel.", priority: "medium", cta: "Connect" },
+        ] : range === "30d" ? [
+          { title: "Shift 20% of Google Ads budget to Meta", description: "Meta Ads CPA is 28% lower than Google this month. Reallocating budget would reduce blended CPA and increase total conversion volume without increasing spend.", priority: "high", cta: "Adjust budget" },
+          { title: "Build a TikTok creative testing framework", description: "TikTok is performing well but using only 2 creative formats. A structured A/B test across 4 formats — outcomes, UGC, product demo, founder story — would identify the top performer.", priority: "medium", cta: "Plan tests" },
+          { title: "Connect LinkedIn Ads for B2B side", description: "Meridian's B2B adjacent buyers are active on LinkedIn. Adding LinkedIn Ads with a $2k/month budget would test whether B2B targeting complements the D2C funnel.", priority: "medium", cta: "Connect" },
+        ] : [
+          { title: "Build a channel attribution model", description: "With 3 paid channels active for a full quarter, the data is sufficient for a multi-touch attribution model. Understanding which channel assists vs. converts would optimise next quarter's budget allocation.", priority: "high", cta: "Build model" },
+          { title: "Develop a D2C creative library", description: "This quarter identified the top-performing creative formats: outcome stories on TikTok and social proof on Meta. Build a reusable creative library to reduce production cost per winning format.", priority: "medium", cta: "Build library" },
+          { title: "Test Reddit Ads for community-led acquisition", description: "Reddit communities in your product category have high buyer intent. A $1k/quarter test on Reddit Ads would establish whether community-based paid acquisition is viable.", priority: "medium", cta: "Plan test" },
+        ],
+      },
+      totalSpend: { value: Math.round(18200 * mult), change: 11, sparkline: spark(), prefix: "$" },
+      totalRevenue: { value: Math.round(61880 * mult), change: 18, sparkline: spark(), prefix: "$" },
+      roas: { value: 3.4, change: 6, sparkline: spark() },
+      cac: { value: 680, change: -8, sparkline: spark(), prefix: "$" },
+      campaigns: [
+        { id: "c1", name: "D2C Brand — Meta Reels", platform: "Meta Ads", status: "active", spend: Math.round(5400 * mult), revenue: Math.round(20520 * mult), roas: 3.8, impressions: Math.round(380000 * mult), clicks: Math.round(7600 * mult), conversions: Math.round(92 * mult), cpa: 59, cpc: 0.71 },
+        { id: "c2", name: "Outcome Stories — TikTok", platform: "TikTok Ads", status: "active", spend: Math.round(3800 * mult), revenue: Math.round(11020 * mult), roas: 2.9, impressions: Math.round(820000 * mult), clicks: Math.round(14760 * mult), conversions: Math.round(68 * mult), cpa: 56, cpc: 0.26 },
+        { id: "c3", name: "Brand Keywords — Google", platform: "Google Ads", status: "active", spend: Math.round(2600 * mult), revenue: Math.round(3640 * mult), roas: 1.4, impressions: Math.round(62000 * mult), clicks: Math.round(3720 * mult), conversions: Math.round(28 * mult), cpa: 93, cpc: 0.70 },
+        { id: "c4", name: "Lookalike — High LTV", platform: "Meta Ads", status: "active", spend: Math.round(3100 * mult), revenue: Math.round(10230 * mult), roas: 3.3, impressions: Math.round(210000 * mult), clicks: Math.round(4200 * mult), conversions: Math.round(48 * mult), cpa: 65, cpc: 0.74 },
+        { id: "c5", name: "TikTok Product Demo", platform: "TikTok Ads", status: "paused", spend: Math.round(1400 * mult), revenue: Math.round(3360 * mult), roas: 2.4, impressions: Math.round(340000 * mult), clicks: Math.round(5100 * mult), conversions: Math.round(22 * mult), cpa: 64, cpc: 0.27 },
+        { id: "c6", name: "Google Display — Retargeting", platform: "Google Ads", status: "active", spend: Math.round(900 * mult), revenue: Math.round(1260 * mult), roas: 1.4, impressions: Math.round(480000 * mult), clicks: Math.round(1920 * mult), conversions: Math.round(12 * mult), cpa: 75, cpc: 0.47 },
+      ],
+      platformBreakdown: [
+        { platform: "Meta Ads", spend: Math.round(8500 * mult), revenue: Math.round(30750 * mult), roas: 3.6, color: "#1877F2" },
+        { platform: "TikTok Ads", spend: Math.round(5200 * mult), revenue: Math.round(14380 * mult), roas: 2.8, color: "#FF0050" },
+        { platform: "Google Ads", spend: Math.round(3500 * mult), revenue: Math.round(4900 * mult), roas: 1.4, color: "#4285F4" },
+        { platform: "LinkedIn Ads", spend: 0, revenue: 0, roas: 0, color: "#0A66C2" },
+      ],
+      spendTrend: Array.from({ length: 14 }, (_, i) => ({
+        date: new Date(2026, 1, 1 + i * 2).toISOString().split("T")[0],
+        spend: Math.round((1200 + Math.sin(i * 0.5) * 280 + i * 50) * mult),
+        revenue: Math.round((4100 + Math.cos(i * 0.4) * 900 + i * 220) * mult),
+      })),
+      bestCampaigns: [
+        { name: "D2C Brand — Meta Reels", platform: "Meta Ads", revenue: Math.round(20520 * mult), conversions: Math.round(92 * mult), roas: 3.8 },
+        { name: "Lookalike — High LTV", platform: "Meta Ads", revenue: Math.round(10230 * mult), conversions: Math.round(48 * mult), roas: 3.3 },
+        { name: "Outcome Stories — TikTok", platform: "TikTok Ads", revenue: Math.round(11020 * mult), conversions: Math.round(68 * mult), roas: 2.9 },
+      ],
+      bestAds: [
+        { name: "Customer Outcome — Reel 15s", platform: "Meta Ads", revenue: Math.round(12400 * mult), conversions: Math.round(56 * mult), ctr: 3.6 },
+        { name: "Founder Story — TikTok UGC", platform: "TikTok Ads", revenue: Math.round(7800 * mult), conversions: Math.round(38 * mult), ctr: 2.9 },
+        { name: "Social Proof Carousel", platform: "Meta Ads", revenue: Math.round(8100 * mult), conversions: Math.round(36 * mult), ctr: 3.1 },
+      ],
+    },
+    narrativeIntel: {
+      nri: { current: 3, target: 3, tier: "DWY", trend: "stable" },
+      phaseMetrics: {
+        phase1: {
+          growthMetric: { name: "Market perception", value: "+12%", change: 12 },
+          emotionalIndicator: { name: "Sentiment score", value: "61/100", change: 5 },
+        },
+        phase2: {
+          growthMetric: { name: "Lead conversion", value: "+19%", change: 19 },
+          emotionalIndicator: { name: "Engagement time", value: "3m 04s", change: 9 },
+        },
+        phase3: {
+          growthMetric: { name: "Pipeline velocity", value: "21 days", change: -8 },
+          emotionalIndicator: { name: "NPS", value: "+28", change: 7 },
+        },
+        phase4: {
+          growthMetric: { name: "Deal size", value: "+14%", change: 14 },
+          emotionalIndicator: { name: "Affinity index", value: "52/100", change: 4 },
+        },
+        phase5: {
+          growthMetric: { name: "LTV:CAC", value: "2.9:1", change: 6 },
+          emotionalIndicator: { name: "Advocacy rate", value: "21%", change: 3 },
+        },
+      },
+    },
     pipelineBridge: {
       section: "Narrative Intel",
       attributed: Math.round(310000 * mult),

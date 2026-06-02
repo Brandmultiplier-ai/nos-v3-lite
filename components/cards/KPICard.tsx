@@ -1,8 +1,8 @@
 "use client";
 
 import { memo } from "react";
-import { TrendingUp, TrendingDown, Minus, Info } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { CardInfoButton } from "@/components/shared/CardInfoButton";
 import { MiniSparkline } from "@/components/charts/MiniSparkline";
 
 interface KPICardProps {
@@ -70,18 +70,7 @@ export const KPICard = memo(function KPICard({
 
       <div className="flex items-center justify-between mb-4">
         <span className="text-label-caps">{label}</span>
-        <Tooltip>
-          <TooltipTrigger render={<button className="w-5 h-5 rounded-md flex items-center justify-center transition-colors" style={{ color: "var(--nos-text-muted)" }} />}>
-            <Info size={11} />
-          </TooltipTrigger>
-          <TooltipContent
-            side="top"
-            className="max-w-[200px] text-xs"
-            style={{ background: "var(--nos-bg-overlay)", border: "1px solid var(--nos-accent-border)" }}
-          >
-            {tooltip}
-          </TooltipContent>
-        </Tooltip>
+        <CardInfoButton description={tooltip} />
       </div>
 
       <div className="font-mono-metric mb-1" style={{ color: "var(--nos-text-primary)" }}>

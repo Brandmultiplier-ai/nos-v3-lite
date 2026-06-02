@@ -11,7 +11,7 @@ const CHANNEL_COLORS: Record<string, string> = {
   instagram: "#E1306C",
   facebook: "#1877F2",
   x: "#FFFFFF",
-  newsletter: "#22C55E",
+  newsletter: "var(--nos-ch-newsletter)",
 };
 
 interface ContentCalendarProps {

@@ -1,5 +1,6 @@
 import type { ClientDataByRange, ClientData } from "./types";
 import { makeNexusBrand } from "./brand-builders";
+import { createSparklineFactory } from "./sparkline";
 
 function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
   const mult = range === "7d" ? 0.23 : range === "30d" ? 1 : 3.1;
@@ -14,7 +15,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
   };
 
   const dates = generateDates(days > 30 ? 24 : days > 7 ? 12 : 7);
-  const spark = () => Array.from({ length: 7 }, (_, i) => Math.round(80 + Math.sin(i * 0.9) * 20 + Math.random() * 15));
+  const spark = createSparklineFactory(80, (i) => Math.sin(i * 0.9) * 20);
 
   return {
     meta: {
@@ -31,6 +32,8 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
       dealsCreated: { value: Math.round(14 * mult), change: 22, sparkline: spark() },
       closedWon: { value: Math.round(4 * mult), change: 15, sparkline: spark() },
       attributedRevenue: { value: Math.round(210000 * mult), change: 31, sparkline: spark(), prefix: "$" },
+      ltv: { value: 28400, change: 9, sparkline: spark(), prefix: "$" },
+      avgDealSize: { value: Math.round(52000 * (mult > 1 ? 1 : mult + 0.8)), change: 6, sparkline: spark(), prefix: "$" },
     },
     signalTimeline: dates.map((date, i) => ({
       date,
@@ -40,9 +43,34 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
       search: Math.round(55 + Math.cos(i * 0.6) * 10 + i * 0.5),
       content: Math.round(40 + Math.sin(i * 0.4) * 8 + i * 0.3),
     })),
-    aiNarrative:
-      "Your LinkedIn signal velocity is 2.3× higher than your Q1 baseline, correlating with a 40% increase in inbound pipeline this month. Website intent signals from Series B SaaS companies are clustering around your pricing and ROI pages, suggesting high commercial intent. Recommend accelerating cadence on email sequences targeting CFO personas — open rates are 34% above benchmark.",
-    recommendedActions: [
+    aiNarrative: range === "7d"
+      ? "Over the last 7 days, LinkedIn engagement spiked 48% above weekly average — three posts reached above-benchmark impressions. Website intent from Series B accounts is elevated with 6 accounts visiting pricing 2+ times. Act now before this short window of intent cools."
+      : range === "30d"
+      ? "Your LinkedIn signal velocity is 2.3× higher than your Q1 baseline, correlating with a 40% increase in inbound pipeline this month. Website intent signals from Series B SaaS companies are clustering around your pricing and ROI pages, suggesting high commercial intent. Recommend accelerating cadence on email sequences targeting CFO personas — open rates are 34% above benchmark."
+      : "Over the past quarter, narrative-driven pipeline has grown 31% and deal velocity improved by 8 days. LinkedIn and website signals show a compounding flywheel — brands that sustain signal output for 90+ days see 2.1× lower CAC. Your current trajectory supports hitting annual revenue targets.",
+    recommendedActions: range === "7d" ? [
+      {
+        priority: "high",
+        icon: "TrendingUp",
+        title: "Follow up on this week's intent signals",
+        description: "6 high-intent accounts spiked on pricing pages in the last 48 hours. Reach them while context is fresh — reply rate drops 60% after 72 hours of no contact.",
+        cta: "View accounts",
+      },
+      {
+        priority: "high",
+        icon: "Target",
+        title: "Boost the top LinkedIn post from this week",
+        description: "Your Wednesday post is 2.8× above average engagement. Amplify it with a paid boost to capture the momentum window before reach decays.",
+        cta: "Boost post",
+      },
+      {
+        priority: "medium",
+        icon: "Search",
+        title: "Send a same-day follow-up to hot accounts",
+        description: "Accounts that receive outreach within 24 hours of a site visit convert at 3.4× the baseline rate. 6 accounts qualify today.",
+        cta: "Start sequence",
+      },
+    ] : range === "30d" ? [
       {
         priority: "high",
         icon: "TrendingUp",
@@ -64,9 +92,51 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
         description: "You rank #7 for 'pipeline analytics for SaaS'. A content refresh targeting this cluster could move you to top 3, adding ~340 monthly qualified sessions.",
         cta: "View keyword brief",
       },
+    ] : [
+      {
+        priority: "high",
+        icon: "TrendingUp",
+        title: "Scale the LinkedIn-to-email channel sequence",
+        description: "Accounts touched via LinkedIn then email over 90 days convert at 2.8× the single-channel rate. Formalise this as a standard multi-touch cadence.",
+        cta: "Build playbook",
+      },
+      {
+        priority: "medium",
+        icon: "Target",
+        title: "Invest in SEO for long-cycle terms",
+        description: "Three 90-day keyword clusters now show consistent ranking signals. Expanding long-form content on these terms compounds organic pipeline over the next quarter.",
+        cta: "Review clusters",
+      },
+      {
+        priority: "medium",
+        icon: "Search",
+        title: "Build a quarterly brand signal report",
+        description: "Quarter-over-quarter brand signal data shows a 28% improvement in narrative share-of-voice. Package this as an internal exec report to align GTM investment.",
+        cta: "Create report",
+      },
     ],
     brand: makeNexusBrand(mult),
     positioning: {
+      tldr: {
+        summary: range === "7d"
+          ? "This week's positioning signals are stable. NarrateIQ posted two comparison articles targeting your top keyword — monitor share-of-voice closely. No immediate quadrant movement, but early competitive activity warrants attention."
+          : range === "30d"
+          ? "Nexus Labs is positioned firmly in the Leaders quadrant with narrative strength above 74/100. A strong market position reduces CAC across every channel — buyers arrive with positive pre-existing associations, meaning shorter sales cycles and higher win rates against weaker-positioned competitors."
+          : "Over the quarter, your positioning score has improved by 12 points while NarrateIQ lost ground. The compounding effect of consistent narrative investment is showing — sustained Leaders quadrant presence correlates with a 28% improvement in brand-influenced pipeline this quarter.",
+        actions: range === "7d" ? [
+          { title: "Monitor NarrateIQ content", description: "Two comparison articles published this week target your 'narrative intelligence' keyword. Review and prepare a counter-narrative response before they gain traction.", priority: "high", cta: "Review content" },
+          { title: "Refresh homepage messaging", description: "A quick copy refresh on the homepage hero aligns with this week's trending pain points from intent data.", priority: "medium", cta: "Update copy" },
+          { title: "Check competitor ad spend", description: "Competitive ad signals this week suggest increased spend from #2. Validate before adjusting your own budget allocation.", priority: "medium", cta: "Audit ads" },
+        ] : range === "30d" ? [
+          { title: "Defend Leader Position", description: "Increase share-of-voice on 'narrative intelligence' and 'signal-to-pipeline' keywords before competitors can close the gap.", priority: "high", cta: "Build content plan" },
+          { title: "Attack #2 Competitor", description: "The second-ranked competitor has weaker Trust scores — create direct comparison content to capture their buyers.", priority: "medium", cta: "Draft comparison" },
+          { title: "Expand Keyword Ownership", description: "3 emerging keywords in your category have low competition. Own them now before bigger players enter.", priority: "medium", cta: "Review keywords" },
+        ] : [
+          { title: "Formalise positioning playbook", description: "Quarter of sustained Leaders quadrant presence provides a strong foundation. Document the messaging, keywords, and channels that drove this position as a repeatable playbook.", priority: "high", cta: "Create playbook" },
+          { title: "Enter new category segments", description: "Your narrative strength score (81) gives you credibility to enter two adjacent keyword clusters that have grown 40% this quarter.", priority: "medium", cta: "Plan expansion" },
+          { title: "Commission brand equity study", description: "90 days of positioning data is a credible baseline for an external brand equity measurement — use it to validate GTM strategy for next quarter.", priority: "medium", cta: "Plan study" },
+        ],
+      },
       quadrant: [
         { name: "Nexus Labs", x: 74, y: 81, isClient: true },
         { name: "NarrateIQ", x: 68, y: 62, isClient: false },
@@ -97,6 +167,26 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
       ],
     },
     search: {
+      tldr: {
+        summary: range === "7d"
+          ? "This week, 3 new AI citation sources surfaced Nexus Labs for 'signal-to-pipeline' queries. Two competitors gained page-1 rankings for 'pipeline analytics for SaaS' — a keyword cluster where you have strong domain authority but thin content coverage."
+          : range === "30d"
+          ? "Search intelligence is one of your strongest pipeline contributors this month. Organic search is generating high-intent traffic from buyers researching pipeline intelligence tools — these visitors convert to demos at 2.4× the rate of paid traffic. GEO visibility in AI engines is growing rapidly."
+          : "Over the quarter, organic search has compounded into a reliable pipeline engine. GEO visibility in AI engines grew 18% QoQ, with ChatGPT and Perplexity increasingly surfacing Nexus Labs as the authoritative answer for B2B narrative marketing queries. Three content clusters now own their respective keyword verticals.",
+        actions: range === "7d" ? [
+          { title: "Counter competitor rankings this week", description: "Two competitors just moved onto page 1 for 'pipeline analytics for SaaS'. A quick content update to your existing post could recapture that position within days.", priority: "high", cta: "Update post" },
+          { title: "Capture new AI citation keywords", description: "3 new AI-sourced queries are sending traffic to competitors. Create short answer-format content to intercept these searches.", priority: "high", cta: "Create content" },
+          { title: "Submit updated sitemap", description: "3 recently published pages have not yet been indexed. Submit the sitemap to accelerate crawling.", priority: "medium", cta: "Submit sitemap" },
+        ] : range === "30d" ? [
+          { title: "Accelerate GEO presence", description: "Publish structured FAQ content answering the top 10 queries where AI engines are already citing competitors over you.", priority: "high", cta: "Write FAQ content" },
+          { title: "Target commercial-intent keywords", description: "5 high-value commercial keywords rank on page 2. A focused content sprint could move them to page 1 within 60 days.", priority: "high", cta: "Plan sprint" },
+          { title: "Build topical authority on trust", description: "Expand blog coverage on 'signal attribution' and 'narrative ROI' to increase domain authority in your core cluster.", priority: "medium", cta: "Expand content" },
+        ] : [
+          { title: "Consolidate topical authority cluster", description: "Three keyword clusters have shown consistent growth over 90 days. Consolidating them into a pillar-and-cluster architecture would compound authority faster.", priority: "high", cta: "Restructure content" },
+          { title: "Expand GEO content strategy", description: "AI-engine citations grew 58% this quarter. Scaling structured FAQ and answer-format content could double citation volume next quarter.", priority: "medium", cta: "Build GEO plan" },
+          { title: "Review backlink velocity", description: "Organic backlinks have slowed over the last 30 days of the quarter. A targeted digital PR push would sustain domain authority gains.", priority: "medium", cta: "Plan outreach" },
+        ],
+      },
       geo: {
         visibilityScore: 48.3,
         visibilityChange: 3.5,
@@ -202,6 +292,26 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
       geoPipelineKPI: { value: 94000, change: 340, sparkline: spark(), prefix: "$" },
     },
     website: {
+      tldr: {
+        summary: range === "7d"
+          ? "This week's website activity is above the weekly average with 6 high-intent accounts visiting pricing and ROI calculator pages. Three accounts are repeat visitors with no open opportunity — the optimal outreach window is within 24 hours of each visit."
+          : range === "30d"
+          ? "Website signals show strong intent from identified accounts in your ICP. This month, 340 companies visited your pricing and ROI pages — a leading indicator of late-stage interest. High scroll depth and return visitor rates suggest your content is building genuine brand consideration before conversion."
+          : "Over the quarter, 1,100 unique companies visited intent-heavy pages. Website intent data has proven its value as an outreach trigger — accounts contacted within 24 hours of a hot-signal visit convert at 3.4× baseline. Scroll depth improvements indicate better content-market fit than the prior quarter.",
+        actions: range === "7d" ? [
+          { title: "Contact this week's hot accounts today", description: "6 accounts visited pricing 2+ times this week with no open opportunity. Same-day outreach on hot intent visits converts at 3.4× the standard rate.", priority: "high", cta: "Start outreach" },
+          { title: "Review this week's rage-click sessions", description: "3 session recordings this week flagged rage-clicks on the pricing page CTA. Watch and fix the UX issue before more leads are lost.", priority: "high", cta: "View recordings" },
+          { title: "Add intent data to CRM", description: "Sync this week's high-intent company identifications to your CRM to keep AEs informed before their next prospect call.", priority: "medium", cta: "Sync to CRM" },
+        ] : range === "30d" ? [
+          { title: "Trigger outreach on hot accounts", description: "22 companies scored 'Hot' this month with no open opportunity. Route them to SDRs immediately for personalised outreach.", priority: "high", cta: "Create workflow" },
+          { title: "Reduce quick-back rate", description: "9.4% of visitors leave within 8 seconds — review landing page clarity and headline alignment with ad messaging.", priority: "high", cta: "Review pages" },
+          { title: "Retarget warm accounts", description: "Build a retargeting audience from companies that visited pricing or case study pages but haven't requested a demo.", priority: "medium", cta: "Build audience" },
+        ] : [
+          { title: "Build an intent-to-pipeline workflow", description: "90 days of data validates the website intent signal. Build a formal workflow: hot score → SDR alert → 24h outreach sequence, to capture every future hot account.", priority: "high", cta: "Build workflow" },
+          { title: "Improve the pricing page conversion rate", description: "The pricing page has the highest intent traffic but a 28% exit rate. A CRO test on the page layout could meaningfully increase demo requests.", priority: "medium", cta: "Plan CRO test" },
+          { title: "Expand ICP identification coverage", description: "Currently identifying 340 companies per month from 18,400 visitors — a 1.8% identification rate. Improving this with better de-anonymisation tools could reveal more opportunities.", priority: "medium", cta: "Review tools" },
+        ],
+      },
       visitors: { value: Math.round(18400 * mult), change: 14, sparkline: spark() },
       sessions: { value: Math.round(24600 * mult), change: 18, sparkline: spark() },
       companiesIdentified: { value: Math.round(340 * mult), change: 22, sparkline: spark() },
@@ -280,6 +390,26 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
       ],
     },
     content: {
+      tldr: {
+        summary: range === "7d"
+          ? "This week, two LinkedIn posts significantly outperformed average reach — both contained proprietary data points. Newsletter open rate is tracking above the monthly benchmark. One blog post is showing strong early organic signals from a newly indexed keyword."
+          : range === "30d"
+          ? "Content marketing is generating consistent brand signals across LinkedIn and email. LinkedIn thought leadership is driving the highest-quality inbound — posts with specific data or frameworks outperform generic content by 3.1× in pipeline influence. The newsletter is the most efficient content-to-pipeline channel per dollar spent."
+          : "Over the quarter, content has compounded into a reliable pipeline engine. LinkedIn and newsletter together attributed $280k in influenced pipeline. Blog organic traffic grew 34% QoQ, and content-sourced leads now have a 22% lower CAC than paid channels.",
+        actions: range === "7d" ? [
+          { title: "Publish a data-led post today", description: "This week's top post pattern: proprietary data + a specific insight. You have unpublished benchmark data from last week that would perform well — draft and post today.", priority: "high", cta: "Draft post" },
+          { title: "Respond to newsletter replies", description: "18 subscribers replied to this week's newsletter. Personalised replies from the founder convert to demo calls at a high rate — action within 24 hours.", priority: "high", cta: "Review replies" },
+          { title: "Update the top-ranking blog post", description: "Your highest-traffic post was last updated 4 months ago. A freshness update keeps it ranking and improves on-page engagement.", priority: "medium", cta: "Update post" },
+        ] : range === "30d" ? [
+          { title: "Double down on data-led LinkedIn posts", description: "Your top 3 posts all featured proprietary data. Schedule 2 data-driven posts per week to replicate this pattern.", priority: "high", cta: "Plan posts" },
+          { title: "Grow newsletter list", description: "Newsletter subscribers convert to pipeline at 38% — every 100 new subscribers adds ~$8k in expected pipeline over 90 days.", priority: "high", cta: "Build growth plan" },
+          { title: "Launch blog content sprint", description: "Blog traffic from organic is growing but content cadence is low. Increase to 3 posts per week targeting commercial keywords.", priority: "medium", cta: "Plan sprint" },
+        ] : [
+          { title: "Build a content attribution model", description: "This quarter's data is sufficient to build a first-party attribution model showing content-to-pipeline contribution per channel. This will justify next quarter's content budget.", priority: "high", cta: "Build model" },
+          { title: "Plan Q3 editorial calendar", description: "The top 5 performing content themes from this quarter should anchor next quarter's editorial strategy. Define these themes now before budget planning.", priority: "medium", cta: "Plan calendar" },
+          { title: "Expand to a second newsletter segment", description: "Newsletter data shows two distinct audience personas with different content preferences. A segmented newsletter would increase relevant engagement by an estimated 24%.", priority: "medium", cta: "Plan segment" },
+        ],
+      },
       // ── Social / Meta (Sprout) ──
       socialOverview: [
         { channel: "LinkedIn", posts: Math.round(12 * mult), reach: Math.round(48000 * mult), engagementRate: 4.8, pipeline: Math.round(180000 * mult) },
@@ -407,6 +537,26 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
       ],
     },
     outreach: {
+      tldr: {
+        summary: range === "7d"
+          ? "This week's outreach metrics are on track with above-average open rates. Two sequences sent on Tuesday saw a 62% open rate — the highest this month. 8 new positive replies came in, with 3 converting to booked meetings. Follow up on all pending replies before the week ends."
+          : range === "30d"
+          ? "Cold outreach is performing above benchmark across both email and LinkedIn. Email sequences to CFO and VP Sales personas are generating 34% above-average reply rates, indicating strong message-market fit. LinkedIn cadences are amplifying brand recognition — prospects who've seen LinkedIn posts before receiving outreach respond at 2.1× the rate of cold contacts."
+          : "Over the quarter, outreach has generated $280k in attributed email pipeline across 43 opportunities. Reply rate improved steadily each month, validating the message-market fit refinements. The LinkedIn + Email multi-touch pattern has proven to be the highest-converting sequence structure with consistent 2.1× lift.",
+        actions: range === "7d" ? [
+          { title: "Follow up on this week's positive replies", description: "8 positive replies came in this week — 5 are still awaiting a follow-up booking link. Respond within 24 hours to maintain momentum.", priority: "high", cta: "Review replies" },
+          { title: "Pause the underperforming Tuesday sequence", description: "The Tuesday 9am sequence has a 14% open rate vs. the 59% account average. Pause and review subject line and send time before continuing.", priority: "high", cta: "Review sequence" },
+          { title: "Review inbox health for at-risk accounts", description: "One sending account dropped below the healthy threshold this week. A brief pause and warmup review will protect deliverability for next week.", priority: "medium", cta: "Check inbox health" },
+        ] : range === "30d" ? [
+          { title: "Scale CFO-persona sequences", description: "The CFO sequence is your highest-converting — build 2 new variations and increase contact volume by 40%.", priority: "high", cta: "Build sequences" },
+          { title: "Improve follow-up timing", description: "Days 3 and 7 follow-ups have the highest reply rates. Restructure all sequences to prioritise these intervals.", priority: "high", cta: "Restructure cadences" },
+          { title: "Combine LinkedIn and email", description: "Accounts touched via both LinkedIn and email convert at 2.1× rate. Sync LinkedIn view events into email trigger logic.", priority: "medium", cta: "Set up integration" },
+        ] : [
+          { title: "Build a formal multi-touch playbook", description: "90 days of data confirms the LinkedIn + Email sequence generates 2.1× the reply rate of single-channel outreach. Formalise this as the standard sequence structure for all reps.", priority: "high", cta: "Build playbook" },
+          { title: "Expand to VP Marketing persona sequences", description: "CFO sequences have proven their ROI. The VP Marketing persona shares similar pain points and has shown strong intent signals from website data this quarter.", priority: "medium", cta: "Build sequence" },
+          { title: "Plan Q3 outreach capacity", description: "At current reply-to-opportunity conversion rates, adding 20% more contact volume would generate an estimated $56k additional pipeline next quarter.", priority: "medium", cta: "Plan capacity" },
+        ],
+      },
       emailPipeline: { value: Math.round(280000 * mult), change: 26, sparkline: spark(), prefix: "$" },
       totalSent: { value: Math.round(46200 * mult), change: 18, sparkline: spark() },
       openRate: { value: 59.2, change: 4, sparkline: spark() },
@@ -469,17 +619,17 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
       ],
       emailFunnel: [
         { stage: "Contacted", count: Math.round(46200 * mult), rate: 100,  color: "#0EA5E9" },
-        { stage: "Opened",    count: Math.round(27340 * mult), rate: 59.2, color: "#22C55E" },
-        { stage: "Clicked",   count: Math.round(4140 * mult),  rate: 15.1, color: "#FBBF24" },
+        { stage: "Opened",    count: Math.round(27340 * mult), rate: 59.2, color: "#FBBF24" },
+        { stage: "Clicked",   count: Math.round(4140 * mult),  rate: 15.1, color: "#F97316" },
         { stage: "Replied",   count: Math.round(1894 * mult),  rate: 6.9,  color: "#A78BFA" },
-        { stage: "Meetings",  count: Math.round(372 * mult),   rate: 19.6, color: "#FF6B9D" },
+        { stage: "Meetings",  count: Math.round(372 * mult),   rate: 19.6, color: "#7C7FFF" },
         { stage: "Opps",      count: Math.round(43 * mult),    rate: 11.6, color: "#34D399" },
       ],
       crmPipelineFunnel: [
-        { stage: "Request For Info", value: Math.round(840000 * mult), deals: Math.round(28 * mult), pct: 100, color: "#0EA5E9" },
-        { stage: "Presentation",     value: Math.round(620000 * mult), deals: Math.round(20 * mult), pct: 73.8, color: "#22C55E" },
-        { stage: "Qualified",        value: Math.round(460000 * mult), deals: Math.round(14 * mult), pct: 54.8, color: "#FBBF24" },
-        { stage: "Negotiation",      value: Math.round(310000 * mult), deals: Math.round(9 * mult),  pct: 36.9, color: "#A78BFA" },
+        { stage: "Request For Info", value: Math.round(840000 * mult), deals: Math.round(28 * mult), pct: 100,  color: "#0EA5E9" },
+        { stage: "Presentation",     value: Math.round(620000 * mult), deals: Math.round(20 * mult), pct: 73.8, color: "#6366F1" },
+        { stage: "Qualified",        value: Math.round(460000 * mult), deals: Math.round(14 * mult), pct: 54.8, color: "#A78BFA" },
+        { stage: "Negotiation",      value: Math.round(310000 * mult), deals: Math.round(9 * mult),  pct: 36.9, color: "#FBBF24" },
         { stage: "Won",              value: Math.round(180000 * mult), deals: Math.round(4 * mult),  pct: 21.4, color: "#34D399" },
         { stage: "Lost",             value: Math.round(92000 * mult),  deals: Math.round(6 * mult),  pct: 11.0, color: "#FF4455" },
       ],
@@ -523,7 +673,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
         outcomes: [
           { label: "Opportunities Created", current: Math.round(60 * mult), projection: Math.round(90 * mult), goal: 120, unit: "count", color: "#6366F1", byRep: [{ name: "HP", value: 12 }, { name: "RW", value: 9 }, { name: "HG", value: 8 }, { name: "SH", value: 7 }, { name: "NL", value: 6 }, { name: "DM", value: 5 }] },
           { label: "Weighted Pipeline", current: Math.round(200000 * mult), projection: Math.round(280000 * mult), goal: 400000, unit: "money", color: "#8B5CF6", byRep: [{ name: "HP", value: 48000 }, { name: "RW", value: 36000 }, { name: "HG", value: 32000 }, { name: "SH", value: 28000 }, { name: "NL", value: 22000 }, { name: "DM", value: 18000 }] },
-          { label: "Closed Won", current: Math.round(340000 * mult), projection: Math.round(480000 * mult), goal: 600000, unit: "money", color: "#10B981", byRep: [{ name: "HP", value: 82000 }, { name: "RW", value: 64000 }, { name: "HG", value: 58000 }, { name: "SH", value: 48000 }, { name: "NL", value: 42000 }, { name: "DM", value: 36000 }] },
+          { label: "Closed Won", current: Math.round(340000 * mult), projection: Math.round(480000 * mult), goal: 600000, unit: "money", color: "#34D399", byRep: [{ name: "HP", value: 82000 }, { name: "RW", value: 64000 }, { name: "HG", value: 58000 }, { name: "SH", value: 48000 }, { name: "NL", value: 42000 }, { name: "DM", value: 36000 }] },
         ],
         cadenceMetrics: {
           callsLogged: Math.round(5489 * mult), callsPerDay: Math.round(109 * mult), voicemails: Math.round(758 * mult), conversations: Math.round(399 * mult), positiveConversations: Math.round(101 * mult), callTrend: Array.from({ length: 8 }, () => Math.round(80 + Math.random() * 40)), callChangePct: 7,
@@ -554,10 +704,10 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
             { label: "Best Case", value: Math.round(1100000 * mult), color: "#8B5CF6" },
             { label: "Commit", value: Math.round(2300000 * mult), color: "#A78BFA" },
             { label: "Pulled In", value: Math.round(850000 * mult), color: "#F59E0B" },
-            { label: "New", value: Math.round(1400000 * mult), color: "#10B981" },
+            { label: "New", value: Math.round(1400000 * mult), color: "#34D399" },
           ],
           destinations: [
-            { label: "Won", value: Math.round(3550000 * mult), color: "#10B981" },
+            { label: "Won", value: Math.round(3550000 * mult), color: "#34D399" },
             { label: "Idle", value: Math.round(1210000 * mult), color: "#64748B" },
             { label: "Pushed Out", value: Math.round(835000 * mult), color: "#F59E0B" },
             { label: "Lost", value: Math.round(800000 * mult), color: "#EF4444" },
@@ -583,15 +733,104 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
       },
     },
     integrations: [
-      { id: "crm", name: "CRM", category: "crm", connected: true, lastSync: "2 min ago" },
+      { id: "crm", name: "HubSpot CRM", category: "crm", connected: true, lastSync: "2 min ago" },
       { id: "linkedin", name: "LinkedIn", category: "social", connected: true, lastSync: "5 min ago" },
+      { id: "instagram", name: "Instagram", category: "social", connected: true, lastSync: "8 min ago" },
+      { id: "facebook", name: "Facebook", category: "social", connected: false },
+      { id: "tiktok", name: "TikTok", category: "social", connected: false },
+      { id: "x-twitter", name: "X (Twitter)", category: "social", connected: false },
+      { id: "reddit", name: "Reddit", category: "social", connected: false },
       { id: "google-search", name: "Google Search Console", category: "seo", connected: true, lastSync: "1 hour ago" },
       { id: "email-seq", name: "Email Sequencer", category: "outreach", connected: true, lastSync: "12 min ago" },
       { id: "website-intel", name: "Website Intelligence", category: "website-intel", connected: true, lastSync: "Real-time" },
-      { id: "analytics", name: "Web Analytics", category: "analytics", connected: true, lastSync: "Real-time" },
-      { id: "instagram", name: "Instagram", category: "social", connected: false },
-      { id: "facebook", name: "Facebook", category: "social", connected: false },
+      { id: "analytics", name: "Google Analytics", category: "analytics", connected: true, lastSync: "Real-time" },
+      { id: "meta-ads", name: "Meta Ads", category: "paid-media", connected: true, lastSync: "30 min ago" },
+      { id: "google-ads", name: "Google Ads", category: "paid-media", connected: true, lastSync: "45 min ago" },
+      { id: "linkedin-ads", name: "LinkedIn Ads", category: "paid-media", connected: false },
+      { id: "tiktok-ads", name: "TikTok Ads", category: "paid-media", connected: false },
+      { id: "x-ads", name: "X Ads", category: "paid-media", connected: false },
+      { id: "reddit-ads", name: "Reddit Ads", category: "paid-media", connected: false },
     ],
+    paidMedia: {
+      tldr: {
+        summary: range === "7d"
+          ? "This week, Meta Ads and Google Ads are running above ROAS benchmarks. Your top-performing campaign delivered 4.8× ROAS in the last 7 days. LinkedIn Ads are not yet connected — adding them could provide visibility into $48k estimated pipeline from paid social."
+          : range === "30d"
+          ? "Paid media is contributing 31% of total attributed revenue this month. Meta Ads leads on conversion volume, while Google Ads delivers the highest ROAS at 5.2×. LinkedIn Ads is disconnected — this is a high-opportunity channel for your ICP given the B2B SaaS profile."
+          : "Paid media generated $210k in attributed revenue this quarter across Meta and Google. ROAS improved month-over-month as creative optimisation took effect. Expanding to LinkedIn Ads and TikTok Ads could add an estimated $85k in incremental pipeline next quarter based on industry benchmarks for your category.",
+        actions: range === "7d" ? [
+          { title: "Scale the top Meta campaign", description: "Your CFO-targeting campaign delivered 4.8× ROAS this week. Increase daily budget by 30% to capture the full audience window before week ends.", priority: "high", cta: "Scale budget" },
+          { title: "Connect LinkedIn Ads", description: "LinkedIn Ads is disconnected. Your ICP is CISOs and VP Sales — LinkedIn is the highest-ROI paid channel for B2B SaaS in your category.", priority: "high", cta: "Connect" },
+          { title: "Pause underperforming Google Display", description: "Display network campaigns are at 0.8× ROAS this week — below breakeven. Pause and reallocate budget to Search which is at 5.2×.", priority: "medium", cta: "Pause campaign" },
+        ] : range === "30d" ? [
+          { title: "Allocate more budget to Google Search", description: "Google Search campaigns are delivering 5.2× ROAS — the highest of any paid channel. Shifting 20% of Meta display budget to Search would improve overall blended ROAS.", priority: "high", cta: "Adjust budget" },
+          { title: "Connect LinkedIn Ads for ICP targeting", description: "LinkedIn Ads provides the most precise B2B targeting for your ICP. Estimated 2.4× ROAS based on industry benchmarks for Series B SaaS companies targeting VP-level buyers.", priority: "high", cta: "Connect" },
+          { title: "Set up conversion tracking for all campaigns", description: "3 active campaigns are not tracking post-click conversions. Adding proper UTM tracking and goal completion events would improve attribution accuracy by an estimated 34%.", priority: "medium", cta: "Set up tracking" },
+        ] : [
+          { title: "Build a paid media attribution model", description: "This quarter's paid data is sufficient for a multi-touch attribution model. Combining Meta, Google, and website intent data would reveal the true channel contribution to pipeline.", priority: "high", cta: "Build model" },
+          { title: "Plan Q3 paid media expansion", description: "Based on this quarter's ROAS data, LinkedIn Ads and TikTok Ads are the highest-ROI expansion opportunities. Budget recommendations: LinkedIn $8k/month, TikTok $3k/month.", priority: "medium", cta: "Plan expansion" },
+          { title: "Audit creative performance", description: "Video ads delivered 1.8× higher click-through rate than static images this quarter. A creative refresh strategy for Q3 should prioritise short-form video across Meta and TikTok.", priority: "medium", cta: "Audit creatives" },
+        ],
+      },
+      totalSpend: { value: Math.round(28400 * mult), change: 14, sparkline: spark(), prefix: "$" },
+      totalRevenue: { value: Math.round(142000 * mult), change: 22, sparkline: spark(), prefix: "$" },
+      roas: { value: 5.0, change: 8, sparkline: spark() },
+      cac: { value: 1240, change: -12, sparkline: spark(), prefix: "$" },
+      campaigns: [
+        { id: "c1", name: "CFO Pipeline — Retargeting", platform: "Meta Ads", status: "active", spend: Math.round(4800 * mult), revenue: Math.round(23040 * mult), roas: 4.8, impressions: Math.round(142000 * mult), clicks: Math.round(3840 * mult), conversions: Math.round(58 * mult), cpa: 82, cpc: 1.25 },
+        { id: "c2", name: "B2B SaaS Search — Brand", platform: "Google Ads", status: "active", spend: Math.round(6200 * mult), revenue: Math.round(32240 * mult), roas: 5.2, impressions: Math.round(88000 * mult), clicks: Math.round(5280 * mult), conversions: Math.round(72 * mult), cpa: 86, cpc: 1.17 },
+        { id: "c3", name: "Pipeline Intelligence Keywords", platform: "Google Ads", status: "active", spend: Math.round(3400 * mult), revenue: Math.round(15640 * mult), roas: 4.6, impressions: Math.round(52000 * mult), clicks: Math.round(2860 * mult), conversions: Math.round(38 * mult), cpa: 89, cpc: 1.19 },
+        { id: "c4", name: "VP Sales — Lookalike", platform: "Meta Ads", status: "active", spend: Math.round(2900 * mult), revenue: Math.round(11600 * mult), roas: 4.0, impressions: Math.round(96000 * mult), clicks: Math.round(2400 * mult), conversions: Math.round(32 * mult), cpa: 91, cpc: 1.21 },
+        { id: "c5", name: "Narrative ROI — Awareness", platform: "Meta Ads", status: "paused", spend: Math.round(1800 * mult), revenue: Math.round(5400 * mult), roas: 3.0, impressions: Math.round(210000 * mult), clicks: Math.round(1680 * mult), conversions: Math.round(18 * mult), cpa: 100, cpc: 1.07 },
+        { id: "c6", name: "Google Display — Retargeting", platform: "Google Ads", status: "active", spend: Math.round(1200 * mult), revenue: Math.round(960 * mult), roas: 0.8, impressions: Math.round(380000 * mult), clicks: Math.round(760 * mult), conversions: Math.round(8 * mult), cpa: 150, cpc: 1.58 },
+      ],
+      platformBreakdown: [
+        { platform: "Meta Ads", spend: Math.round(9500 * mult), revenue: Math.round(40040 * mult), roas: 4.2, color: "#1877F2" },
+        { platform: "Google Ads", spend: Math.round(10800 * mult), revenue: Math.round(48840 * mult), roas: 4.5, color: "#4285F4" },
+        { platform: "LinkedIn Ads", spend: 0, revenue: 0, roas: 0, color: "#0A66C2" },
+        { platform: "TikTok Ads", spend: 0, revenue: 0, roas: 0, color: "#FF0050" },
+      ],
+      spendTrend: Array.from({ length: 14 }, (_, i) => ({
+        date: new Date(2026, 1, 1 + i * 2).toISOString().split("T")[0],
+        spend: Math.round((1800 + Math.sin(i * 0.6) * 400 + i * 80) * mult),
+        revenue: Math.round((8200 + Math.sin(i * 0.4) * 1800 + i * 380) * mult),
+      })),
+      bestCampaigns: [
+        { name: "B2B SaaS Search — Brand", platform: "Google Ads", revenue: Math.round(32240 * mult), conversions: Math.round(72 * mult), roas: 5.2 },
+        { name: "CFO Pipeline — Retargeting", platform: "Meta Ads", revenue: Math.round(23040 * mult), conversions: Math.round(58 * mult), roas: 4.8 },
+        { name: "Pipeline Intelligence Keywords", platform: "Google Ads", revenue: Math.round(15640 * mult), conversions: Math.round(38 * mult), roas: 4.6 },
+      ],
+      bestAds: [
+        { name: "CEO Walkthrough Video — 30s", platform: "Meta Ads", revenue: Math.round(14200 * mult), conversions: Math.round(36 * mult), ctr: 4.2 },
+        { name: "Pipeline ROI Static — Dark BG", platform: "Meta Ads", revenue: Math.round(8800 * mult), conversions: Math.round(22 * mult), ctr: 3.8 },
+        { name: "B2B SaaS Search — Exact Match", platform: "Google Ads", revenue: Math.round(18400 * mult), conversions: Math.round(42 * mult), ctr: 6.1 },
+      ],
+    },
+    narrativeIntel: {
+      nri: { current: 4, target: 4, tier: "DFY", trend: "up" },
+      phaseMetrics: {
+        phase1: {
+          growthMetric: { name: "Market perception", value: "+18%", change: 18 },
+          emotionalIndicator: { name: "Sentiment score", value: "74/100", change: 8 },
+        },
+        phase2: {
+          growthMetric: { name: "Lead conversion", value: "+31%", change: 31 },
+          emotionalIndicator: { name: "Engagement time", value: "4m 12s", change: 14 },
+        },
+        phase3: {
+          growthMetric: { name: "Pipeline velocity", value: "28 days", change: -18 },
+          emotionalIndicator: { name: "NPS", value: "+42", change: 12 },
+        },
+        phase4: {
+          growthMetric: { name: "Deal size", value: "+22%", change: 22 },
+          emotionalIndicator: { name: "Affinity index", value: "68/100", change: 9 },
+        },
+        phase5: {
+          growthMetric: { name: "LTV:CAC", value: "3.8:1", change: 11 },
+          emotionalIndicator: { name: "Advocacy rate", value: "34%", change: 6 },
+        },
+      },
+    },
     pipelineBridge: {
       section: "Narrative Intel",
       attributed: Math.round(840000 * mult),

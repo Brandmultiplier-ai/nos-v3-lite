@@ -11,6 +11,7 @@ import { WebsiteSignals } from "@/components/sections/WebsiteSignals";
 import { ContentMarketing } from "@/components/sections/ContentMarketing";
 import { ColdOutreach } from "@/components/sections/ColdOutreach";
 import { Integrations } from "@/components/sections/Integrations";
+import { PaidMedia } from "@/components/sections/PaidMedia";
 import { ChevronRight } from "lucide-react";
 import { useNOSStore } from "@/lib/store";
 
@@ -134,6 +135,7 @@ export default function DashboardPage() {
           {sectionId === "outreach" && (
             <ColdOutreach tab={(subTab as "email" | "linkedin") ?? "email"} />
           )}
+          {sectionId === "paid-media" && <PaidMedia />}
           {sectionId === "integrations" && <Integrations />}
         </motion.div>
       </AnimatePresence>

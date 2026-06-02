@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useClientData } from "@/lib/data";
-import { PipelineBridge } from "@/components/cards/PipelineBridge";
+import { SectionTLDR } from "@/components/shared/SectionTLDR";
 import { KPICard } from "@/components/cards/KPICard";
 import { DashboardCard } from "@/components/shared/DashboardCard";
 import { TrendLine } from "@/components/charts/TrendLine";
@@ -43,8 +43,8 @@ const intentBadge = (intent: CompanySignal["intent"]) => {
 };
 
 const flagColors: Record<SessionRecording["flags"][number], { label: string; color: string; icon: React.ReactNode }> = {
-  "rage-click":  { label: "Rage Click",  color: "#FF4455", icon: <MousePointerClick size={9} /> },
-  "dead-click":  { label: "Dead Click",  color: "#FBBF24", icon: <MousePointerClick size={9} /> },
+  "rage-click":  { label: "Rage Click",  color: "var(--nos-negative)", icon: <MousePointerClick size={9} /> },
+  "dead-click":  { label: "Dead Click",  color: "var(--nos-signal-warm)", icon: <MousePointerClick size={9} /> },
   "quick-back":  { label: "Quick-Back",  color: "#A78BFA", icon: <ArrowLeft size={9} /> },
   "js-error":    { label: "JS Error",    color: "#FF6B4A", icon: <Bug size={9} /> },
 };
@@ -192,7 +192,7 @@ function SignalRow({ signal, expanded, onToggle }: { signal: CompanySignal; expa
 // ── Main export ───────────────────────────────────────────────────────────────
 export function WebsiteSignals() {
   const data = useClientData();
-  const { website, pipelineBridge } = data;
+  const { website } = data;
 
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
   const [intentFilter, setIntentFilter] = useState<"all" | "hot" | "warm" | "cold">("all");
@@ -204,7 +204,8 @@ export function WebsiteSignals() {
 
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
-      <PipelineBridge attributed={pipelineBridge.attributed} deals={pipelineBridge.deals} velocity={pipelineBridge.velocity} section="Website Signals" info="Pipeline attributed to identified website visitors, intent signals, and behavioral events." />
+
+      <SectionTLDR tldr={website.tldr} />
 
       {/* ── Behavioral KPI strip ─────────────────────────────────────────────── */}
       <motion.div variants={itemVariants} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
@@ -219,7 +220,7 @@ export function WebsiteSignals() {
       {/* ── Visitor trend + Traffic sources + Reading behavior ─────────────────── */}
       <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-5 gap-4">
         <div className="lg:col-span-3 nos-card">
-          <TrendLine data={website.visitorTrend} title="Session Trend" subtitle="Weekly sessions" color="#7C7FFF" height={200} />
+          <TrendLine data={website.visitorTrend} title="Session Trend" subtitle="Weekly sessions" color="#7C7FFF" height={200} xAxisLabel="Week" yAxisLabel="Sessions" />
         </div>
 
         <div className="lg:col-span-2 flex flex-col gap-4">

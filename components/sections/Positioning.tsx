@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useClientData } from "@/lib/data";
-import { PipelineBridge } from "@/components/cards/PipelineBridge";
+import { SectionTLDR } from "@/components/shared/SectionTLDR";
 import { GartnerQuadrant } from "@/components/charts/GartnerQuadrant";
 import { TrendLine } from "@/components/charts/TrendLine";
 import { DashboardCard } from "@/components/shared/DashboardCard";
@@ -24,7 +24,7 @@ const trendIcon = (t: string) =>
 
 export function Positioning() {
   const data = useClientData();
-  const { positioning, pipelineBridge } = data;
+  const { positioning } = data;
 
   const movementData = positioning.movementTimeline.map((p) => ({
     date: p.date,
@@ -33,13 +33,8 @@ export function Positioning() {
 
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
-      <PipelineBridge
-        attributed={pipelineBridge.attributed}
-        deals={pipelineBridge.deals}
-        velocity={pipelineBridge.velocity}
-        section="Positioning"
-        info="Pipeline influenced by positioning and competitive narrative strength in the market."
-      />
+
+      <SectionTLDR tldr={positioning.tldr} />
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
         <motion.div variants={itemVariants} className="lg:col-span-3">
@@ -61,6 +56,8 @@ export function Positioning() {
                 subtitle="Composite score trajectory (6 months)"
                 color="#6366F1"
                 height={160}
+                xAxisLabel="Month"
+                yAxisLabel="Composite positioning score"
               />
             </DashboardCard>
           </motion.div>

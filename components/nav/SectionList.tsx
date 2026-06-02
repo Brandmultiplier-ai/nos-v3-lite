@@ -2,13 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { motion } from "framer-motion";
 import { useClientData } from "@/lib/data";
 import {
-  Brain, BarChart3, Target, Search, Globe, FileText, Mail, Puzzle,
-  ChevronRight,
+  Brain, BarChart3, Target, Search, Globe, FileText, Mail, DollarSign, Puzzle, Lock,
 } from "lucide-react";
+import { useState } from "react";
 
 const sections = [
   {
@@ -51,10 +50,6 @@ const sections = [
       `${data.search.geo.visibilityScore}%`,
     getChange: (data: ReturnType<typeof useClientData>) => data.search.geo.visibilityChange,
     invertChange: false,
-    subItems: [
-      { label: "SEO", path: "/search/seo" },
-      { label: "GEO", path: "/search/geo" },
-    ],
   },
   {
     id: "website",
@@ -79,12 +74,6 @@ const sections = [
     },
     getChange: () => 18,
     invertChange: false,
-    subItems: [
-      { label: "Social Channels", path: "/content/social" },
-      { label: "LinkedIn Content", path: "/content/linkedin" },
-      { label: "Blog & Content", path: "/content/blog" },
-      { label: "Newsletter", path: "/content/newsletter" },
-    ],
   },
   {
     id: "outreach",
@@ -98,10 +87,16 @@ const sections = [
     },
     getChange: (data: ReturnType<typeof useClientData>) => data.outreach.emailPipeline.change,
     invertChange: false,
-    subItems: [
-      { label: "Email", path: "/outreach/email" },
-      { label: "LinkedIn", path: "/outreach/linkedin" },
-    ],
+  },
+  {
+    id: "paid-media",
+    icon: DollarSign,
+    label: "Paid Media",
+    path: "/paid-media",
+    kpiLabel: "Blended ROAS",
+    getKPI: (data: ReturnType<typeof useClientData>) => `${data.paidMedia.roas.value.toFixed(1)}×`,
+    getChange: (data: ReturnType<typeof useClientData>) => data.paidMedia.roas.change,
+    invertChange: false,
   },
   {
     id: "integrations",
@@ -125,26 +120,18 @@ function getActiveSection(pathname: string) {
   if (pathname.includes("/website")) return "website";
   if (pathname.includes("/content")) return "content";
   if (pathname.includes("/outreach")) return "outreach";
+  if (pathname.includes("/paid-media")) return "paid-media";
   if (pathname.includes("/integrations")) return "integrations";
   return "narrative";
-}
-
-function isSubItemActive(pathname: string, path: string) {
-  return pathname === path;
 }
 
 export function SectionList() {
   const pathname = usePathname();
   const active = getActiveSection(pathname);
   const data = useClientData();
-  const [expanded, setExpanded] = useState<string[]>(["content", "outreach"]);
+  const [lockedTooltip, setLockedTooltip] = useState<string | null>(null);
 
-  const toggleExpand = (id: string) => {
-    setExpanded((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
-    );
-  };
-
+  const isEnterprise = data.meta.stage === "Enterprise";
   const connectedIntegrations = data.integrations.filter((i) => i.connected);
 
   return (
@@ -164,17 +151,14 @@ export function SectionList() {
         {sections.map((section) => {
           const Icon = section.icon;
           const isActive = active === section.id;
-          const hasSubItems = section.subItems && section.subItems.length > 0;
-          const isExpanded = expanded.includes(section.id);
-          const kpiValue = section.getKPI(data);
-          const kpiChange = section.getChange(data);
-          const isPositive = section.invertChange ? kpiChange < 0 : kpiChange > 0;
+          const isLocked = section.id === "paid-media" && !isEnterprise;
+          const showTooltip = lockedTooltip === section.id;
 
           return (
             <div key={section.id}>
               <div className="relative mb-0.5">
                 {/* Active background glow */}
-                {isActive && (
+                {isActive && !isLocked && (
                   <motion.div
                     layoutId="splitNavActive"
                     className="absolute inset-0 rounded-xl"
@@ -186,7 +170,7 @@ export function SectionList() {
                   />
                 )}
                 {/* Active left accent */}
-                {isActive && (
+                {isActive && !isLocked && (
                   <div
                     className="absolute left-0 top-2.5 bottom-2.5 w-0.5 rounded-r-full"
                     style={{ background: "linear-gradient(180deg, var(--nos-accent) 0%, var(--nos-accent-2) 100%)" }}
@@ -194,115 +178,93 @@ export function SectionList() {
                 )}
 
                 <div className="relative flex items-center">
-                  <Link
-                    href={section.path}
-                    className="flex-1 flex items-center gap-2.5 px-3 py-2.5 rounded-xl"
-                  >
-                    {/* Icon container */}
-                    <div
-                      className="w-6 h-6 rounded-md flex items-center justify-center shrink-0"
-                      style={{
-                        background: isActive ? "var(--nos-accent-muted)" : "transparent",
-                      }}
+                  {isLocked ? (
+                    /* Locked state — not clickable as a link */
+                    <button
+                      className="flex-1 flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left w-full cursor-not-allowed opacity-50"
+                      onClick={() => setLockedTooltip(showTooltip ? null : section.id)}
+                      onBlur={() => setLockedTooltip(null)}
+                      aria-label={`${section.label} — Enterprise only`}
                     >
-                      <Icon
-                        size={13}
-                        style={{ color: isActive ? "var(--nos-accent)" : "var(--nos-text-muted)" }}
-                      />
-                    </div>
-
-                    <div className="flex-1 min-w-0">
-                      <p
-                        className="text-xs font-medium truncate"
+                      <div className="w-6 h-6 rounded-md flex items-center justify-center shrink-0">
+                        <Icon size={13} style={{ color: "var(--nos-text-muted)" }} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-medium truncate" style={{ color: "var(--nos-text-muted)" }}>
+                          {section.label}
+                        </p>
+                        <p className="text-[10px] mt-0.5 truncate" style={{ color: "var(--nos-text-muted)" }}>
+                          {section.kpiLabel}
+                        </p>
+                      </div>
+                      <Lock size={11} style={{ color: "var(--nos-text-muted)" }} className="shrink-0" />
+                    </button>
+                  ) : (
+                    <Link
+                      href={section.path}
+                      className="flex-1 flex items-center gap-2.5 px-3 py-2.5 rounded-xl"
+                    >
+                      {/* Icon container */}
+                      <div
+                        className="w-6 h-6 rounded-md flex items-center justify-center shrink-0"
                         style={{
-                          color: isActive ? "var(--nos-text-primary)" : "var(--nos-text-secondary)",
+                          background: isActive ? "var(--nos-accent-muted)" : "transparent",
                         }}
                       >
-                        {section.label}
-                      </p>
-                      <p
-                        className="text-[10px] flex items-center gap-1 mt-0.5"
-                        style={{ color: "var(--nos-text-muted)" }}
-                      >
-                        <span>{section.kpiLabel}:</span>
-                        <span
-                          className="font-semibold"
+                        <Icon
+                          size={13}
+                          style={{ color: isActive ? "var(--nos-accent)" : "var(--nos-text-muted)" }}
+                        />
+                      </div>
+
+                      <div className="flex-1 min-w-0">
+                        <p
+                          className="text-xs font-medium truncate"
                           style={{
-                            color: isPositive
-                              ? "var(--nos-positive)"
-                              : kpiChange === 0
-                                ? "var(--nos-text-secondary)"
-                                : "var(--nos-negative)",
+                            color: isActive ? "var(--nos-text-primary)" : "var(--nos-text-secondary)",
                           }}
                         >
-                          {kpiValue}
-                        </span>
-                        {kpiChange !== 0 && (
-                          <span
-                            style={{
-                              color: isPositive ? "var(--nos-positive)" : "var(--nos-negative)",
-                            }}
-                          >
-                            {isPositive ? "↑" : "↓"}{Math.abs(kpiChange)}%
-                          </span>
-                        )}
-                      </p>
-                    </div>
-                  </Link>
-
-                  {hasSubItems && (
-                    <button
-                      onClick={() => toggleExpand(section.id)}
-                      className="w-6 h-6 flex items-center justify-center rounded-md mr-1 transition-colors"
-                      style={{ color: "var(--nos-text-muted)" }}
-                    >
-                      <motion.div
-                        animate={{ rotate: isExpanded ? 90 : 0 }}
-                        transition={{ duration: 0.15 }}
-                      >
-                        <ChevronRight size={11} />
-                      </motion.div>
-                    </button>
+                          {section.label}
+                        </p>
+                        <p
+                          className="text-[10px] mt-0.5 truncate"
+                          style={{ color: "var(--nos-text-muted)" }}
+                        >
+                          {section.kpiLabel}
+                        </p>
+                      </div>
+                    </Link>
                   )}
                 </div>
-              </div>
 
-              {/* Sub-items */}
-              <AnimatePresence>
-                {hasSubItems && isExpanded && (
+                {/* Lock tooltip */}
+                {isLocked && showTooltip && (
                   <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.18 }}
-                    className="overflow-hidden"
+                    initial={{ opacity: 0, x: 8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="absolute left-full top-0 ml-2 z-50 w-56 rounded-xl p-3 shadow-xl"
+                    style={{
+                      background: "var(--nos-bg-card)",
+                      border: "1px solid var(--border)",
+                      boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
+                    }}
                   >
-                    <div className="ml-9 mr-1 mb-1 pl-2 border-l border-[var(--border)]">
-                      {section.subItems!.map((sub) => {
-                        const subActive = isSubItemActive(pathname, sub.path);
-                        return (
-                          <Link
-                            key={sub.label}
-                            href={sub.path}
-                            className="flex items-center gap-2 px-2 py-1.5 rounded-lg text-[11px] transition-all"
-                            style={{
-                              color: subActive ? "var(--nos-accent)" : "var(--nos-text-muted)",
-                              background: subActive ? "var(--nos-accent-muted)" : "transparent",
-                              fontWeight: subActive ? 500 : 400,
-                            }}
-                          >
-                            <span
-                              className="w-1 h-1 rounded-full shrink-0"
-                              style={{ background: subActive ? "var(--nos-accent)" : "currentColor", opacity: subActive ? 1 : 0.4 }}
-                            />
-                            {sub.label}
-                          </Link>
-                        );
-                      })}
+                    <div className="flex items-start gap-2">
+                      <Lock size={13} className="mt-0.5 shrink-0" style={{ color: "var(--nos-neutral)" }} />
+                      <div>
+                        <p className="text-xs font-semibold text-[var(--nos-text-primary)] mb-1">Enterprise plan required</p>
+                        <p className="text-[11px] text-[var(--nos-text-muted)] leading-relaxed">
+                          Paid Media analytics is available on the Enterprise plan.{" "}
+                          <span className="font-medium" style={{ color: "var(--nos-text-secondary)" }}>
+                            {data.meta.name}
+                          </span>{" "}
+                          is currently on the <span className="font-medium" style={{ color: "var(--nos-neutral)" }}>{data.meta.stage}</span> plan. Upgrade to unlock cross-platform ad intelligence.
+                        </p>
+                      </div>
                     </div>
                   </motion.div>
                 )}
-              </AnimatePresence>
+              </div>
             </div>
           );
         })}

@@ -7,6 +7,7 @@ import {
   FileText,
   Mail,
   Puzzle,
+  DollarSign,
   type LucideIcon,
 } from "lucide-react";
 
@@ -118,6 +119,20 @@ export const SECTION_META: Record<string, SectionMeta> = {
     ],
     icon: Mail,
     path: "/outreach",
+  },
+  "paid-media": {
+    id: "paid-media",
+    title: "Paid Media",
+    breadcrumb: "Paid Media",
+    description:
+      "Cross-channel paid media intelligence — ad spend, ROAS, campaign performance, and creative analysis across Meta, Google, LinkedIn, TikTok, and more.",
+    highlights: [
+      "Blended ROAS and ad spend across all platforms",
+      "Campaign-level performance with sortable table",
+      "Best performing campaigns and creatives",
+    ],
+    icon: DollarSign,
+    path: "/paid-media",
   },
   integrations: {
     id: "integrations",

@@ -20,6 +20,7 @@ import {
   Globe,
   FileText,
   Mail,
+  DollarSign,
   Puzzle,
   Building2,
 } from "lucide-react";
@@ -32,6 +33,7 @@ const sections = [
   { id: "website", label: "Website Signals", icon: Globe, path: "/website" },
   { id: "content", label: "Content Marketing", icon: FileText, path: "/content/social" },
   { id: "outreach", label: "Cold Outreach", icon: Mail, path: "/outreach/email" },
+  { id: "paid-media", label: "Paid Media", icon: DollarSign, path: "/paid-media" },
   { id: "integrations", label: "Integrations", icon: Puzzle, path: "/integrations" },
 ];
 

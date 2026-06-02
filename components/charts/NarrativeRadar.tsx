@@ -2,6 +2,7 @@
 
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { ChartSkeleton } from "@/components/shared/ChartSkeleton";
+import { ChartAxisLabels } from "./ChartAxisLabels";
 import { useState, useEffect } from "react";
 
 interface NarrativeRadarProps {
@@ -55,6 +56,7 @@ export function NarrativeRadar({ data, title = "Topic Authority Radar" }: Narrat
           />
         </RadarChart>
       </ResponsiveContainer>
+      <ChartAxisLabels xLabel="Topic category" yLabel="Authority score (0–100)" />
     </div>
   );
 }

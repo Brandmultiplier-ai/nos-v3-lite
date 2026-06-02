@@ -9,7 +9,7 @@ interface BrandHealthGaugeProps {
 }
 
 function getScoreColor(score: number) {
-  if (score >= 80) return "#22C55E";
+  if (score >= 80) return "#34D399";
   if (score >= 60) return "#F59E0B";
   return "#EF4444";
 }

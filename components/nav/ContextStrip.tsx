@@ -38,7 +38,7 @@ export function ContextStrip() {
           <span className="text-[11px] font-bold text-[var(--nos-text-primary)] tracking-wide">
             NOS
           </span>
-          <span className="text-[9px] text-[var(--nos-text-muted)] tracking-widest uppercase">
+          <span className="text-label-caps">
             Intelligence
           </span>
         </div>

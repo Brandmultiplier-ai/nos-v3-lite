@@ -1,5 +1,6 @@
 import type { ClientDataByRange, ClientData } from "./types";
 import { makeApexBrand } from "./brand-builders";
+import { createSparklineFactory } from "./sparkline";
 
 function makeApex(range: "7d" | "30d" | "90d"): ClientData {
   const mult = range === "7d" ? 0.23 : range === "30d" ? 1 : 3.1;
@@ -14,7 +15,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
   };
 
   const dates = generateDates(days > 30 ? 24 : days > 7 ? 12 : 7);
-  const spark = () => Array.from({ length: 7 }, (_, i) => Math.round(70 + Math.sin(i * 1.1) * 15 + Math.random() * 10));
+  const spark = createSparklineFactory(70, (i) => Math.sin(i * 1.1) * 15, 10);
 
   return {
     meta: {
@@ -31,6 +32,8 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
       dealsCreated: { value: Math.round(8 * mult), change: 14, sparkline: spark() },
       closedWon: { value: Math.round(1.5 * mult), change: 19, sparkline: spark() },
       attributedRevenue: { value: Math.round(540000 * mult), change: 22, sparkline: spark(), prefix: "$" },
+      ltv: { value: 148000, change: 7, sparkline: spark(), prefix: "$" },
+      avgDealSize: { value: 186000, change: 11, sparkline: spark(), prefix: "$" },
     },
     signalTimeline: dates.map((date, i) => ({
       date,
@@ -40,9 +43,34 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
       search: Math.round(62 + Math.cos(i * 0.6) * 12 + i * 0.4),
       content: Math.round(45 + Math.sin(i * 0.3) * 6 + i * 0.2),
     })),
-    aiNarrative:
-      "Apex's LinkedIn thought leadership is generating the highest account engagement scores in the enterprise IT infrastructure category, with 78% of deal-influencing interactions traced to executive posts. Email sequences targeting CISOs have a 34% reply rate — 2.2× above industry benchmark. SEO is the fastest-growing pipeline channel with $290k attributed in the last 90 days.",
-    recommendedActions: [
+    aiNarrative: range === "7d"
+      ? "This week, two executive LinkedIn posts from Apex reached above-benchmark enterprise engagement. A CISO sequence launched Monday has already generated 5 positive replies in 4 days — above the expected 7-day rate. Enterprise search volume for 'IT infrastructure narrative' is spiking. Act on the intent surge this week."
+      : range === "30d"
+      ? "Apex's LinkedIn thought leadership is generating the highest account engagement scores in the enterprise IT infrastructure category, with 78% of deal-influencing interactions traced to executive posts. Email sequences targeting CISOs have a 34% reply rate — 2.2× above industry benchmark. SEO is the fastest-growing pipeline channel with $290k attributed this quarter."
+      : "Over the quarter, narrative-driven pipeline for Apex grew 22% to $540k attributed revenue. LinkedIn executive posts have compounded into an authoritative brand signal in the CIO community. Email outreach is benefiting from this warm narrative foundation — CISO reply rates are consistently 2.2× benchmark. Search is emerging as a third significant pipeline source.",
+    recommendedActions: range === "7d" ? [
+      {
+        priority: "high",
+        icon: "Building2",
+        title: "Capitalise on this week's exec LinkedIn momentum",
+        description: "Two executive posts this week are outperforming — amplify via the company page and share into 3 enterprise LinkedIn groups where CIOs are active, while the posts are still gaining traction.",
+        cta: "Amplify posts",
+      },
+      {
+        priority: "high",
+        icon: "Mail",
+        title: "Fast-track the 5 early CISO sequence replies",
+        description: "5 positive replies in 4 days is exceptional pacing. Get all 5 onto the calendar this week — enterprise reply windows close quickly when buying-committee attention shifts.",
+        cta: "Book meetings",
+      },
+      {
+        priority: "medium",
+        icon: "Search",
+        title: "Respond to this week's enterprise search spike",
+        description: "Search volume for 'IT infrastructure narrative' is elevated this week. Publishing a short expert-angle post today would capture the intent surge before it passes.",
+        cta: "Publish post",
+      },
+    ] : range === "30d" ? [
       {
         priority: "high",
         icon: "Building2",
@@ -64,9 +92,51 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         description: "Searches for 'enterprise IT infrastructure narrative' and 'CIO alignment strategy' are up 44% QoQ. A content cluster targeting these terms could capture 820 qualified monthly sessions.",
         cta: "View keyword map",
       },
+    ] : [
+      {
+        priority: "high",
+        icon: "Building2",
+        title: "Scale the executive narrative program",
+        description: "This quarter's data confirms: executive posts drive 78% of deal-influencing interactions. Formalising a 12-week rolling executive narrative program would systematise this into a reliable pipeline engine.",
+        cta: "Design program",
+      },
+      {
+        priority: "medium",
+        icon: "Mail",
+        title: "Expand CISO sequences to adjacent personas",
+        description: "CISO outreach has proven its pipeline value. Apply the same infrastructure security narrative framework to CTO and VP Engineering personas — they share similar buying committee influence in enterprise IT deals.",
+        cta: "Build personas",
+      },
+      {
+        priority: "medium",
+        icon: "Search",
+        title: "Build a quarterly enterprise content strategy",
+        description: "Search is emerging as a third major pipeline source. A quarterly enterprise content strategy anchored to this quarter's top-performing keywords would sustain the growth trajectory.",
+        cta: "Plan strategy",
+      },
     ],
     brand: makeApexBrand(mult),
     positioning: {
+      tldr: {
+        summary: range === "7d"
+          ? "This week, EnterpriseLayer published a CIO-targeting LinkedIn series with strong early engagement. Monitor whether this shifts their narrative share-of-voice score before your executive posts go out Thursday — timing your response will maximise counter-narrative visibility."
+          : range === "30d"
+          ? "Apex Systems sits in a competitive Challenger position with strong enterprise credibility, but EnterpriseLayer holds the Leader slot with higher narrative scores. The gap is primarily in brand Impact — buyers recognise Apex but don't yet instinctively associate it as the definitive enterprise IT narrative platform. Closing this gap will directly improve win rates in competitive deals."
+          : "Over the quarter, Apex's positioning score improved by 9 points while GovITConsult declined. Executive thought leadership is moving the needle — enterprise buyers increasingly cite Apex content during the buying process. The gap to EnterpriseLayer narrowed from 24 to 16 points, indicating the strategy is working.",
+        actions: range === "7d" ? [
+          { title: "Time your executive response to EnterpriseLayer", description: "EnterpriseLayer posted a CIO series this week. Scheduling your exec post for Thursday morning — peak CIO LinkedIn engagement window — will maximise counter-narrative visibility.", priority: "high", cta: "Schedule post" },
+          { title: "Monitor share-of-voice daily this week", description: "Competitive content activity this week warrants daily monitoring of your top 5 brand keywords. Flag any position changes to adjust the following week's content plan.", priority: "high", cta: "Set up monitoring" },
+          { title: "Refresh case study page with recent proof points", description: "Enterprise buyers evaluating this week are reading case studies. A quick update with recent customer outcomes strengthens your competitive positioning in active deals.", priority: "medium", cta: "Update page" },
+        ] : range === "30d" ? [
+          { title: "Close the gap on EnterpriseLayer", description: "EnterpriseLayer leads on narrative score but lags on Trust. Publish a thought leadership series on enterprise IT security narrative to erode their advantage.", priority: "high", cta: "Plan series" },
+          { title: "Increase executive visibility", description: "Enterprise buyers want to buy from recognised experts. Increase exec LinkedIn presence to 4 posts per week.", priority: "high", cta: "Build exec calendar" },
+          { title: "Obtain third-party validation", description: "Commission or solicit a Gartner Market Guide placement — your Trust scores justify the investment and it will accelerate competitive wins.", priority: "medium", cta: "Initiate outreach" },
+        ] : [
+          { title: "Accelerate the move toward Leader quadrant", description: "At current trajectory, Apex could enter the Leaders quadrant within two quarters. An increased executive content cadence and analyst engagement program would accelerate this timeline.", priority: "high", cta: "Build acceleration plan" },
+          { title: "Commission a Gartner Market Guide placement", description: "Your narrative strength (68) and market presence (74) now justify a formal analyst engagement. A Gartner Market Guide inclusion would significantly close the gap to EnterpriseLayer.", priority: "medium", cta: "Initiate outreach" },
+          { title: "Document positioning progress for exec team", description: "A 9-point positioning score improvement in one quarter is significant. Present this to the exec team as evidence of the narrative investment ROI to secure next quarter's budget.", priority: "medium", cta: "Prepare report" },
+        ],
+      },
       quadrant: [
         { name: "Apex Systems", x: 62, y: 68, isClient: true },
         { name: "EnterpriseLayer", x: 82, y: 74, isClient: false },
@@ -97,6 +167,26 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
       ],
     },
     search: {
+      tldr: {
+        summary: range === "7d"
+          ? "This week, Apex was cited in 3 new AI engine responses for CIO-level infrastructure queries. GEO visibility is at 61.4% — monitor for any shifts following EnterpriseLayer's new content this week, which targets overlapping queries."
+          : range === "30d"
+          ? "Search intelligence is Apex's fastest-growing pipeline channel. GEO visibility at 61.4% means AI engines are increasingly citing Apex as the authoritative source for enterprise IT infrastructure and CIO-level queries. Organic search is attributing $290k in pipeline this quarter."
+          : "Search has been the fastest-growing pipeline channel for Apex this quarter, growing from $180k to $290k in attributed pipeline. GEO visibility grew 5.2 points QoQ, and Apex now dominates AI engine citations for enterprise IT infrastructure queries. This channel is set to surpass email in pipeline contribution next quarter.",
+        actions: range === "7d" ? [
+          { title: "Protect GEO citation position this week", description: "EnterpriseLayer's new content targets overlapping AI engine queries. Submit updated Q&A responses to Perplexity and ChatGPT this week to protect your citation position.", priority: "high", cta: "Submit responses" },
+          { title: "Optimise the top featured snippet opportunity", description: "Your highest-traffic page is position 4 for a featured snippet that sends 340 monthly visits to a competitor. A concise definition section addition could capture it this week.", priority: "high", cta: "Update page" },
+          { title: "Check analyst citation backlinks this week", description: "Three Gartner and Forrester mentions from last month should have generated backlinks. Verify they are indexed and contributing to domain authority.", priority: "medium", cta: "Check backlinks" },
+        ] : range === "30d" ? [
+          { title: "Expand GEO content for CIO queries", description: "AI engines already cite Apex for infrastructure queries. Build structured Q&A content for the top 20 CIO buying-committee questions.", priority: "high", cta: "Develop content" },
+          { title: "Target Gartner and Forrester citation keywords", description: "Analyst-cited content is your top citation multiplier. Create content that references and builds on recent analyst reports.", priority: "high", cta: "Plan content" },
+          { title: "Optimise for featured snippets", description: "12 ranking pages are in position 4–7 with featured snippet opportunities. Add concise definition sections to capture them.", priority: "medium", cta: "Optimise pages" },
+        ] : [
+          { title: "Build a GEO dominance strategy", description: "At 61.4% GEO visibility, Apex is already the category leader in AI engine citations. A structured quarterly GEO content program would extend this lead and make it defensible.", priority: "high", cta: "Build strategy" },
+          { title: "Commission analyst content to compound citations", description: "Analyst-cited content generates 3× the citation velocity of brand-authored content. Commission or co-author content with Gartner or Forrester for next quarter.", priority: "medium", cta: "Initiate discussions" },
+          { title: "Prepare a search-to-pipeline attribution report", description: "Search is on track to surpass email as a pipeline channel. A detailed attribution report presented to the exec team would justify scaling the search investment next quarter.", priority: "medium", cta: "Build report" },
+        ],
+      },
       geo: {
         visibilityScore: 61.4,
         visibilityChange: 5.2,
@@ -201,6 +291,26 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
       geoPipelineKPI: { value: 158000, change: 420, sparkline: spark(), prefix: "$" },
     },
     website: {
+      tldr: {
+        summary: range === "7d"
+          ? "This week, 4 enterprise accounts with $500k+ deal potential visited pricing and case study pages. Three are repeat visitors. At $186k average deal size, each is a high-priority outreach target — route to AEs today before their buying-committee evaluation window closes."
+          : range === "30d"
+          ? "Website signals for Apex are extremely high-quality — visitors are primarily enterprise decision-makers (CIOs, CISOs, and VPs of IT) with long session times and deep page engagement. The 280 identified companies represents a rich outreach list: ABM on these visitors is one of the highest-ROI plays given Apex's $186k average deal size."
+          : "Over the quarter, 868 unique enterprise companies visited intent-heavy pages — 28% more than Q3. The ABM workflow triggered by hot account signals generated 68 opportunities this quarter. Website intent data has proven to be Apex's most reliable account identification signal for enterprise sales.",
+        actions: range === "7d" ? [
+          { title: "Route this week's hot enterprise accounts to AEs now", description: "4 enterprise accounts visited pricing 2+ times this week. At Apex's $186k average deal size, each represents a major opportunity — assign to AEs with intent context within 24 hours.", priority: "high", cta: "Route accounts" },
+          { title: "Review this week's session recordings for deal risks", description: "2 session recordings this week from active opportunities show friction at the technical specifications page. Watch and share insights with the AE handling each account.", priority: "high", cta: "Review recordings" },
+          { title: "Check for JS errors in this week's sessions", description: "JS error rate in enterprise sessions is flagged this week. Identifying and fixing the specific error before more enterprise visitors arrive protects deal quality.", priority: "medium", cta: "Check errors" },
+        ] : range === "30d" ? [
+          { title: "Build ABM sequences for hot accounts", description: "38 enterprise accounts scored 'Hot' with no open opportunity. Assign them to AEs immediately for personalised ABM outreach.", priority: "high", cta: "Build ABM play" },
+          { title: "Add enterprise-specific CTAs", description: "Current CTAs are generic. Add 'Book an Enterprise Assessment' CTA on pricing and case study pages — enterprise buyers respond better to consultative offers.", priority: "high", cta: "Update CTAs" },
+          { title: "Reduce JS errors on product pages", description: "JS errors affect 8.4% of enterprise visits — for a buyer evaluating a technical platform, a broken experience can kill deals.", priority: "high", cta: "Fix errors" },
+        ] : [
+          { title: "Scale the hot-account ABM workflow", description: "68 opportunities this quarter came from the hot-account ABM workflow. Automating the AE assignment and first-touch sequence would scale this without adding SDR capacity.", priority: "high", cta: "Automate workflow" },
+          { title: "Build an enterprise buyer journey map", description: "90 days of session data reveals the typical enterprise buying journey on the website. Map this journey and optimise each stage's content and CTA to reduce friction.", priority: "medium", cta: "Build journey map" },
+          { title: "Invest in enterprise CRO testing", description: "With 280 monthly enterprise company identifications, even a 5% improvement in demo request rate would add 14 qualified opportunities per month at current visit volume.", priority: "medium", cta: "Plan CRO tests" },
+        ],
+      },
       visitors: { value: Math.round(12800 * mult), change: 16, sparkline: spark() },
       sessions: { value: Math.round(17200 * mult), change: 21, sparkline: spark() },
       companiesIdentified: { value: Math.round(280 * mult), change: 28, sparkline: spark() },
@@ -278,6 +388,26 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
       ],
     },
     content: {
+      tldr: {
+        summary: range === "7d"
+          ? "This week, two executive LinkedIn posts reached the highest engagement scores of the month. The Tuesday newsletter had a 38% open rate — above the monthly average. Maintain this week's executive content rhythm and ensure the newsletter goes out Thursday on schedule."
+          : range === "30d"
+          ? "Content marketing is Apex's strongest brand-building channel. LinkedIn thought leadership from executives generates the highest account engagement scores in the enterprise IT category, with 78% of deal-influencing interactions traced to executive posts. The enterprise intelligence newsletter has a 36% open rate from a high-value audience."
+          : "Content has been Apex's highest-ROI channel this quarter, generating $480k in LinkedIn-attributed pipeline and $280k from the newsletter. Executive thought leadership has become a recognised signal in the enterprise IT community — buyer-side references to Apex content in deal conversations increased 34% this quarter.",
+        actions: range === "7d" ? [
+          { title: "Publish the planned CIO framework post this week", description: "This week's scheduled CIO-framework post is the highest-potential content on the calendar. Ensure it goes live Thursday at 8am EST for peak enterprise LinkedIn engagement.", priority: "high", cta: "Publish post" },
+          { title: "Follow up with newsletter openers from Tuesday", description: "38% of Tuesday's newsletter readers opened — 12 are active opportunities. A personalised one-line follow-up from the AE today would be contextually relevant.", priority: "high", cta: "Send follow-ups" },
+          { title: "Repurpose Tuesday's top post for the newsletter", description: "Tuesday's LinkedIn post reached above-benchmark engagement. Include the key insight in Thursday's newsletter to give subscribers the same signal as LinkedIn followers.", priority: "medium", cta: "Include in newsletter" },
+        ] : range === "30d" ? [
+          { title: "Increase executive post frequency", description: "Executive thought leadership posts outperform all other content 4:1 on pipeline influence. Go from 2 to 5 executive posts per week.", priority: "high", cta: "Update strategy" },
+          { title: "Build content for buying committee", description: "Enterprise deals involve 6+ stakeholders. Create content specifically for CFO, CISO, and CTO personas in addition to the CIO.", priority: "high", cta: "Plan content" },
+          { title: "Promote newsletter to enterprise prospects", description: "Add newsletter subscription CTA to all outreach sequences — subscribers have a 34% demo conversion rate.", priority: "medium", cta: "Update sequences" },
+        ] : [
+          { title: "Formalise the executive content program", description: "This quarter's data confirms executive posts are Apex's highest-ROI content investment. Formalise a 12-week rolling executive narrative program to sustain and scale the output.", priority: "high", cta: "Design program" },
+          { title: "Develop a buying committee content library", description: "Build a content library with dedicated pieces for each enterprise buying-committee persona: CIO, CISO, CFO, and CTO. This would reduce sales cycle friction by providing AEs with persona-specific proof points.", priority: "medium", cta: "Plan library" },
+          { title: "Launch a newsletter referral program", description: "With 36% open rates and 34% demo conversion from subscribers, growing the newsletter list is one of the highest-leverage actions for next quarter. A subscriber referral program could double list size in 60 days.", priority: "medium", cta: "Design program" },
+        ],
+      },
       socialOverview: [
         { channel: "LinkedIn", posts: Math.round(8 * mult), reach: Math.round(62000 * mult), engagementRate: 5.4, pipeline: Math.round(480000 * mult) },
         { channel: "Email", posts: Math.round(3 * mult), reach: Math.round(4800 * mult), engagementRate: 34, pipeline: Math.round(280000 * mult) },
@@ -291,7 +421,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         { platform: "LinkedIn", color: "#0A66C2", followers: Math.round(22400 * mult), followersChange: 14, reach: Math.round(62000 * mult), engagementRate: 5.4, posts: Math.round(8 * mult) },
         { platform: "X / Twitter", color: "#FFFFFF", followers: Math.round(8400 * mult), followersChange: 8, reach: Math.round(24000 * mult), engagementRate: 2.8, posts: Math.round(18 * mult) },
         { platform: "YouTube", color: "#FF0000", followers: Math.round(4200 * mult), followersChange: 22, reach: Math.round(18000 * mult), engagementRate: 6.8, posts: Math.round(4 * mult), reelsWatchTime: 42 },
-        { platform: "Newsletter", color: "#22C55E", followers: Math.round(4800 * mult), followersChange: 11, reach: Math.round(4800 * mult), engagementRate: 42, posts: Math.round(3 * mult) },
+        { platform: "Newsletter", color: "#34D399", followers: Math.round(4800 * mult), followersChange: 11, reach: Math.round(4800 * mult), engagementRate: 42, posts: Math.round(3 * mult) },
       ],
       audienceGrowthStacked: Array.from({ length: 12 }, (_, i) => ({
         date: new Date(2026, i - 10 + 2, 1).toISOString().split("T")[0].slice(0, 7),
@@ -382,6 +512,26 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
       ],
     },
     outreach: {
+      tldr: {
+        summary: range === "7d"
+          ? "This week, the CISO sequence launched Monday already has 5 positive replies in 4 days — the fastest-pacing enterprise sequence this quarter. Three AEs have follow-ups pending. Get all 5 onto the calendar before end of week while the buying-committee attention window is open."
+          : range === "30d"
+          ? "Cold outreach for Apex is performing exceptionally well, with CISO-targeting email sequences generating a 34% reply rate — 2.2× above enterprise benchmark. Prospects who arrive at email outreach after seeing LinkedIn posts reply at 2.1× the cold rate, validating the LinkedIn-first warm-up strategy."
+          : "Over the quarter, outreach generated $840k in email-attributed pipeline across 68 opportunities. The LinkedIn-first strategy has been fully validated — reps using it consistently outperform those who don't by 2.1× on reply rates. CISO sequences are the top-performing segment by both reply rate and average deal size.",
+        actions: range === "7d" ? [
+          { title: "Book all 5 CISO sequence replies this week", description: "5 positive replies from the Monday CISO sequence need meeting links sent today. Enterprise reply windows close quickly — all 5 should be on the calendar before Thursday.", priority: "high", cta: "Book meetings" },
+          { title: "Check LinkedIn-first pacing for this week's sequences", description: "Verify that all sequences that launched this week have LinkedIn view steps completed before the email day-1 sends. Reps who skip this step see 2.1× lower reply rates.", priority: "high", cta: "Audit sequences" },
+          { title: "Review response handling for this week's pending replies", description: "3 replies from this week are awaiting a response. Use the enterprise-specific response script to maximise meeting booking rate from each.", priority: "medium", cta: "Send responses" },
+        ] : range === "30d" ? [
+          { title: "Scale CISO-targeting sequences", description: "CISO sequences are your highest-performing by reply rate and deal size. Build 3 new variations and increase volume by 50%.", priority: "high", cta: "Build sequences" },
+          { title: "Standardise LinkedIn-first approach", description: "Reps who send a LinkedIn view before email day 1 see 2.1× reply rates. Make this standard practice across all AEs.", priority: "high", cta: "Update playbook" },
+          { title: "Improve response-to-meeting conversion", description: "18% of replies don't convert to booked meetings — improve the response handling script and meeting CTA language.", priority: "medium", cta: "Update scripts" },
+        ] : [
+          { title: "Formalise the LinkedIn-first playbook", description: "The LinkedIn-first warm-up strategy is proven across a full quarter. Document it as a mandatory AE standard: LinkedIn view on day 0, email on day 1. Train all reps and measure compliance.", priority: "high", cta: "Formalise playbook" },
+          { title: "Scale CISO sequence to CTO and CISO adjacent titles", description: "The CISO sequence framework works for security and infrastructure leaders. Apply the same narrative framework to VP Engineering and Chief Digital Officer personas — they share buying committee authority in enterprise IT.", priority: "medium", cta: "Build personas" },
+          { title: "Plan next quarter outreach capacity expansion", description: "At current reply-to-opportunity rates, increasing contact volume by 30% would generate an estimated $252k in additional quarterly pipeline.", priority: "medium", cta: "Plan expansion" },
+        ],
+      },
       emailPipeline: { value: Math.round(840000 * mult), change: 34, sparkline: spark(), prefix: "$" },
       totalSent: { value: Math.round(62400 * mult), change: 28, sparkline: spark() },
       openRate: { value: 63.4, change: 6, sparkline: spark() },
@@ -441,17 +591,17 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
       ],
       emailFunnel: [
         { stage: "Contacted", count: Math.round(62400 * mult), rate: 100,  color: "#0EA5E9" },
-        { stage: "Opened",    count: Math.round(39560 * mult), rate: 63.4, color: "#22C55E" },
-        { stage: "Clicked",   count: Math.round(4742 * mult),  rate: 12.0, color: "#FBBF24" },
+        { stage: "Opened",    count: Math.round(39560 * mult), rate: 63.4, color: "#FBBF24" },
+        { stage: "Clicked",   count: Math.round(4742 * mult),  rate: 12.0, color: "#F97316" },
         { stage: "Replied",   count: Math.round(4243 * mult),  rate: 10.7, color: "#A78BFA" },
-        { stage: "Meetings",  count: Math.round(680 * mult),   rate: 16.0, color: "#FF6B9D" },
+        { stage: "Meetings",  count: Math.round(680 * mult),   rate: 16.0, color: "#7C7FFF" },
         { stage: "Opps",      count: Math.round(68 * mult),    rate: 10.0, color: "#34D399" },
       ],
       crmPipelineFunnel: [
         { stage: "Request For Info", value: Math.round(2400000 * mult), deals: Math.round(42 * mult), pct: 100,  color: "#0EA5E9" },
-        { stage: "Presentation",     value: Math.round(1820000 * mult), deals: Math.round(30 * mult), pct: 75.8, color: "#22C55E" },
-        { stage: "Qualified",        value: Math.round(1380000 * mult), deals: Math.round(22 * mult), pct: 57.5, color: "#FBBF24" },
-        { stage: "Negotiation",      value: Math.round(980000 * mult),  deals: Math.round(14 * mult), pct: 40.8, color: "#A78BFA" },
+        { stage: "Presentation",     value: Math.round(1820000 * mult), deals: Math.round(30 * mult), pct: 75.8, color: "#6366F1" },
+        { stage: "Qualified",        value: Math.round(1380000 * mult), deals: Math.round(22 * mult), pct: 57.5, color: "#A78BFA" },
+        { stage: "Negotiation",      value: Math.round(980000 * mult),  deals: Math.round(14 * mult), pct: 40.8, color: "#FBBF24" },
         { stage: "Won",              value: Math.round(580000 * mult),  deals: Math.round(7 * mult),  pct: 24.2, color: "#34D399" },
         { stage: "Lost",             value: Math.round(240000 * mult),  deals: Math.round(10 * mult), pct: 10.0, color: "#FF4455" },
       ],
@@ -487,7 +637,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         outcomes: [
           { label: "Opportunities Created", current: Math.round(84 * mult), projection: Math.round(118 * mult), goal: 160, unit: "count", color: "#6366F1", byRep: [{ name: "HP", value: 16 }, { name: "RW", value: 13 }, { name: "HG", value: 11 }, { name: "SH", value: 9 }, { name: "NL", value: 8 }, { name: "DM", value: 6 }] },
           { label: "Weighted Pipeline", current: Math.round(280000 * mult), projection: Math.round(390000 * mult), goal: 550000, unit: "money", color: "#8B5CF6", byRep: [{ name: "HP", value: 68000 }, { name: "RW", value: 52000 }, { name: "HG", value: 44000 }, { name: "SH", value: 38000 }, { name: "NL", value: 30000 }, { name: "DM", value: 24000 }] },
-          { label: "Closed Won", current: Math.round(480000 * mult), projection: Math.round(660000 * mult), goal: 820000, unit: "money", color: "#10B981", byRep: [{ name: "HP", value: 118000 }, { name: "RW", value: 92000 }, { name: "HG", value: 80000 }, { name: "SH", value: 66000 }, { name: "NL", value: 56000 }, { name: "DM", value: 46000 }] },
+          { label: "Closed Won", current: Math.round(480000 * mult), projection: Math.round(660000 * mult), goal: 820000, unit: "money", color: "#34D399", byRep: [{ name: "HP", value: 118000 }, { name: "RW", value: 92000 }, { name: "HG", value: 80000 }, { name: "SH", value: 66000 }, { name: "NL", value: 56000 }, { name: "DM", value: 46000 }] },
         ],
         cadenceMetrics: {
           callsLogged: Math.round(7420 * mult), callsPerDay: Math.round(148 * mult), voicemails: Math.round(1020 * mult), conversations: Math.round(542 * mult), positiveConversations: Math.round(138 * mult), callTrend: Array.from({ length: 8 }, () => Math.round(100 + Math.random() * 55)), callChangePct: 11,
@@ -518,10 +668,10 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
             { label: "Best Case", value: Math.round(1500000 * mult), color: "#8B5CF6" },
             { label: "Commit", value: Math.round(3160000 * mult), color: "#A78BFA" },
             { label: "Pulled In", value: Math.round(1160000 * mult), color: "#F59E0B" },
-            { label: "New", value: Math.round(1920000 * mult), color: "#10B981" },
+            { label: "New", value: Math.round(1920000 * mult), color: "#34D399" },
           ],
           destinations: [
-            { label: "Won", value: Math.round(4840000 * mult), color: "#10B981" },
+            { label: "Won", value: Math.round(4840000 * mult), color: "#34D399" },
             { label: "Idle", value: Math.round(1660000 * mult), color: "#64748B" },
             { label: "Pushed Out", value: Math.round(1140000 * mult), color: "#F59E0B" },
             { label: "Lost", value: Math.round(1080000 * mult), color: "#EF4444" },
@@ -547,15 +697,107 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
       },
     },
     integrations: [
-      { id: "crm", name: "CRM", category: "crm", connected: true, lastSync: "1 min ago" },
+      { id: "crm", name: "Salesforce CRM", category: "crm", connected: true, lastSync: "1 min ago" },
       { id: "linkedin", name: "LinkedIn", category: "social", connected: true, lastSync: "4 min ago" },
+      { id: "instagram", name: "Instagram", category: "social", connected: false },
+      { id: "facebook", name: "Facebook", category: "social", connected: false },
+      { id: "tiktok", name: "TikTok", category: "social", connected: false },
+      { id: "x-twitter", name: "X (Twitter)", category: "social", connected: false },
+      { id: "reddit", name: "Reddit", category: "social", connected: false },
       { id: "google-search", name: "Google Search Console", category: "seo", connected: true, lastSync: "2 hours ago" },
       { id: "email-seq", name: "Email Sequencer", category: "outreach", connected: true, lastSync: "8 min ago" },
       { id: "website-intel", name: "Website Intelligence", category: "website-intel", connected: true, lastSync: "Real-time" },
-      { id: "analytics", name: "Web Analytics", category: "analytics", connected: true, lastSync: "Real-time" },
-      { id: "instagram", name: "Instagram", category: "social", connected: false },
-      { id: "facebook", name: "Facebook", category: "social", connected: false },
+      { id: "analytics", name: "Google Analytics", category: "analytics", connected: true, lastSync: "Real-time" },
+      { id: "meta-ads", name: "Meta Ads", category: "paid-media", connected: true, lastSync: "15 min ago" },
+      { id: "google-ads", name: "Google Ads", category: "paid-media", connected: true, lastSync: "22 min ago" },
+      { id: "linkedin-ads", name: "LinkedIn Ads", category: "paid-media", connected: true, lastSync: "35 min ago" },
+      { id: "tiktok-ads", name: "TikTok Ads", category: "paid-media", connected: true, lastSync: "40 min ago" },
+      { id: "x-ads", name: "X Ads", category: "paid-media", connected: true, lastSync: "1 hour ago" },
+      { id: "reddit-ads", name: "Reddit Ads", category: "paid-media", connected: false },
     ],
+    paidMedia: {
+      tldr: {
+        summary: range === "7d"
+          ? "Apex's paid media engine is running at enterprise scale across 5 connected platforms. LinkedIn Ads delivered 6.1× ROAS this week targeting VP Engineering buyers. Meta Ads retargeting is fueling 38% of all demo bookings from paid. Reddit Ads is the only disconnected channel — worth testing for developer-adjacent personas."
+          : range === "30d"
+          ? "Enterprise paid media delivered $1.2M in attributed revenue this month with a 5.8× blended ROAS — above benchmark for enterprise B2B SaaS. LinkedIn continues to be the highest-quality channel for enterprise buyers, contributing 41% of enterprise pipeline from paid sources. TikTok Ads drove strong brand awareness metrics among the next-generation practitioner persona."
+          : "Paid media contributed $4.8M in attributed revenue this quarter across 5 platforms. LinkedIn Ads ROAS of 6.4× is the top performer among all channels — directly attributable to precise Tier-1 enterprise account targeting. The quarter saw a significant improvement in creative quality as video ads across all platforms outperformed static by 2.4×. Recommend increasing LinkedIn budget by 35% in Q3.",
+        actions: range === "7d" ? [
+          { title: "Increase LinkedIn Ads budget by 20%", description: "LinkedIn is at 6.1× ROAS this week — the highest of any platform. The VP Engineering ICP segment is underserved. Increasing budget by 20% would capture an estimated 15 additional qualified leads this week.", priority: "high", cta: "Adjust budget" },
+          { title: "Activate ABM-triggered Meta retargeting", description: "22 Tier-1 accounts showed website intent signals this week but have not been served Meta retargeting ads. Sync the ABM list to create a high-value retargeting audience.", priority: "high", cta: "Activate" },
+          { title: "Connect Reddit Ads for developer audience", description: "Reddit's developer communities align with Apex's technical buyer persona. A $2k test this week would establish benchmarks before the quarterly budget planning cycle.", priority: "medium", cta: "Connect" },
+        ] : range === "30d" ? [
+          { title: "Expand LinkedIn Ads to CISO targeting", description: "LinkedIn Ads currently targets VP Engineering and VP Sales. Adding CISO as a segment would expand enterprise pipeline coverage. Estimated 2.8× ROAS based on similar B2B SaaS accounts in the segment.", priority: "high", cta: "Expand targeting" },
+          { title: "Implement cross-platform attribution modelling", description: "With 5 platforms active, cross-channel attribution is increasingly important. A data-driven attribution model would improve budget allocation by up to 22% efficiency gain.", priority: "high", cta: "Build model" },
+          { title: "Scale TikTok for practitioner brand awareness", description: "TikTok Ads delivered 58M impressions at a $4 CPM this month. Increasing to $8k/month would double brand impression share among the practitioner persona that influences enterprise buying decisions.", priority: "medium", cta: "Scale budget" },
+        ] : [
+          { title: "Build an enterprise paid media playbook", description: "Apex's paid media performance this quarter establishes clear channel benchmarks. Documenting a replicable playbook — audience targeting, creative strategy, budget allocation — would systematise the approach for sustained performance.", priority: "high", cta: "Build playbook" },
+          { title: "Invest in video creative production", description: "Video ads delivered 2.4× higher ROAS than static this quarter. Investing in a quarterly creative production cycle with 8-10 short-form video assets would maintain creative freshness and competitive advantage.", priority: "high", cta: "Plan production" },
+          { title: "Evaluate X Ads for executive audience", description: "X Ads delivers executive audience targeting at scale. A $5k quarterly test targeting CTO and CEO audiences would establish whether X can complement LinkedIn for Apex's top-of-funnel coverage.", priority: "medium", cta: "Plan test" },
+        ],
+      },
+      totalSpend: { value: Math.round(84000 * mult), change: 19, sparkline: spark(), prefix: "$" },
+      totalRevenue: { value: Math.round(487200 * mult), change: 28, sparkline: spark(), prefix: "$" },
+      roas: { value: 5.8, change: 12, sparkline: spark() },
+      cac: { value: 3200, change: -18, sparkline: spark(), prefix: "$" },
+      campaigns: [
+        { id: "c1", name: "Tier-1 ABM — LinkedIn", platform: "LinkedIn Ads", status: "active", spend: Math.round(18000 * mult), revenue: Math.round(109800 * mult), roas: 6.1, impressions: Math.round(180000 * mult), clicks: Math.round(7200 * mult), conversions: Math.round(124 * mult), cpa: 145, cpc: 2.50 },
+        { id: "c2", name: "Enterprise Pipeline — Google", platform: "Google Ads", status: "active", spend: Math.round(22000 * mult), revenue: Math.round(118800 * mult), roas: 5.4, impressions: Math.round(320000 * mult), clicks: Math.round(16000 * mult), conversions: Math.round(148 * mult), cpa: 149, cpc: 1.38 },
+        { id: "c3", name: "Demo Retargeting — Meta", platform: "Meta Ads", status: "active", spend: Math.round(12000 * mult), revenue: Math.round(62400 * mult), roas: 5.2, impressions: Math.round(840000 * mult), clicks: Math.round(12600 * mult), conversions: Math.round(96 * mult), cpa: 125, cpc: 0.95 },
+        { id: "c4", name: "VP Sales Sequence — LinkedIn", platform: "LinkedIn Ads", status: "active", spend: Math.round(8000 * mult), revenue: Math.round(43200 * mult), roas: 5.4, impressions: Math.round(92000 * mult), clicks: Math.round(3680 * mult), conversions: Math.round(58 * mult), cpa: 138, cpc: 2.17 },
+        { id: "c5", name: "Brand Awareness — TikTok", platform: "TikTok Ads", status: "active", spend: Math.round(6000 * mult), revenue: Math.round(20400 * mult), roas: 3.4, impressions: Math.round(5800000 * mult), clicks: Math.round(46400 * mult), conversions: Math.round(48 * mult), cpa: 125, cpc: 0.13 },
+        { id: "c6", name: "Competitor Keywords — Google", platform: "Google Ads", status: "active", spend: Math.round(9000 * mult), revenue: Math.round(43200 * mult), roas: 4.8, impressions: Math.round(128000 * mult), clicks: Math.round(9600 * mult), conversions: Math.round(72 * mult), cpa: 125, cpc: 0.94 },
+        { id: "c7", name: "X Ads — Executive Reach", platform: "X Ads", status: "active", spend: Math.round(4000 * mult), revenue: Math.round(12800 * mult), roas: 3.2, impressions: Math.round(2200000 * mult), clicks: Math.round(22000 * mult), conversions: Math.round(24 * mult), cpa: 167, cpc: 0.18 },
+        { id: "c8", name: "CXO Account Targeting", platform: "LinkedIn Ads", status: "paused", spend: Math.round(3200 * mult), revenue: Math.round(9600 * mult), roas: 3.0, impressions: Math.round(48000 * mult), clicks: Math.round(1920 * mult), conversions: Math.round(18 * mult), cpa: 178, cpc: 1.67 },
+      ],
+      platformBreakdown: [
+        { platform: "LinkedIn Ads", spend: Math.round(26000 * mult), revenue: Math.round(153400 * mult), roas: 5.9, color: "#0A66C2" },
+        { platform: "Google Ads", spend: Math.round(31000 * mult), revenue: Math.round(162000 * mult), roas: 5.2, color: "#4285F4" },
+        { platform: "Meta Ads", spend: Math.round(12000 * mult), revenue: Math.round(62400 * mult), roas: 5.2, color: "#1877F2" },
+        { platform: "TikTok Ads", spend: Math.round(6000 * mult), revenue: Math.round(20400 * mult), roas: 3.4, color: "#FF0050" },
+        { platform: "X Ads", spend: Math.round(4000 * mult), revenue: Math.round(12800 * mult), roas: 3.2, color: "#1DA1F2" },
+      ],
+      spendTrend: Array.from({ length: 14 }, (_, i) => ({
+        date: new Date(2026, 1, 1 + i * 2).toISOString().split("T")[0],
+        spend: Math.round((5200 + Math.sin(i * 0.5) * 1200 + i * 280) * mult),
+        revenue: Math.round((29000 + Math.cos(i * 0.4) * 5200 + i * 1600) * mult),
+      })),
+      bestCampaigns: [
+        { name: "Enterprise Pipeline — Google", platform: "Google Ads", revenue: Math.round(118800 * mult), conversions: Math.round(148 * mult), roas: 5.4 },
+        { name: "Tier-1 ABM — LinkedIn", platform: "LinkedIn Ads", revenue: Math.round(109800 * mult), conversions: Math.round(124 * mult), roas: 6.1 },
+        { name: "Demo Retargeting — Meta", platform: "Meta Ads", revenue: Math.round(62400 * mult), conversions: Math.round(96 * mult), roas: 5.2 },
+      ],
+      bestAds: [
+        { name: "Enterprise ROI Walkthrough — Video", platform: "LinkedIn Ads", revenue: Math.round(64200 * mult), conversions: Math.round(72 * mult), ctr: 5.8 },
+        { name: "Pipeline Intelligence Demo — 60s", platform: "Google Ads", revenue: Math.round(52000 * mult), conversions: Math.round(68 * mult), ctr: 7.2 },
+        { name: "CXO Social Proof — Carousel", platform: "Meta Ads", revenue: Math.round(38800 * mult), conversions: Math.round(52 * mult), ctr: 4.4 },
+      ],
+    },
+    narrativeIntel: {
+      nri: { current: 2, target: 2, tier: "DIY", trend: "up" },
+      phaseMetrics: {
+        phase1: {
+          growthMetric: { name: "Market perception", value: "+6%", change: 6 },
+          emotionalIndicator: { name: "Sentiment score", value: "48/100", change: 3 },
+        },
+        phase2: {
+          growthMetric: { name: "Lead conversion", value: "+9%", change: 9 },
+          emotionalIndicator: { name: "Engagement time", value: "2m 18s", change: 4 },
+        },
+        phase3: {
+          growthMetric: { name: "Pipeline velocity", value: "52 days", change: -4 },
+          emotionalIndicator: { name: "NPS", value: "+11", change: 2 },
+        },
+        phase4: {
+          growthMetric: { name: "Deal size", value: "+7%", change: 7 },
+          emotionalIndicator: { name: "Affinity index", value: "39/100", change: 2 },
+        },
+        phase5: {
+          growthMetric: { name: "LTV:CAC", value: "2.1:1", change: 3 },
+          emotionalIndicator: { name: "Advocacy rate", value: "12%", change: 1 },
+        },
+      },
+    },
     pipelineBridge: {
       section: "Narrative Intel",
       attributed: Math.round(2100000 * mult),

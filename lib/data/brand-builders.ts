@@ -1,14 +1,19 @@
 import type { BrandData } from "./types";
+import { createSparklineFactory } from "./sparkline";
 
-function spark() {
-  return Array.from({ length: 7 }, (_, i) =>
-    Math.round(70 + Math.sin(i * 0.8) * 20 + Math.random() * 15)
-  );
-}
+const spark = createSparklineFactory(70, (i) => Math.sin(i * 0.8) * 20);
 
 // ─── Nexus Labs ───────────────────────────────────────────────────
 export function makeNexusBrand(mult: number): BrandData {
   return {
+    tldr: {
+      summary: "Brand intelligence is trending strongly positive for Nexus Labs. Awareness and Trust scores are up 9 and 6 points respectively, expanding your share of voice in the Series B SaaS category. A stronger brand narrative means buyers arrive warmer — reducing sales cycle friction and improving conversion rates at the bottom of the funnel.",
+      actions: [
+        { title: "Amplify Trust Content", description: "Repurpose positive customer outcomes and analyst mentions into evergreen social assets to compound trust gains.", priority: "high", cta: "Create assets" },
+        { title: "Align Messaging Across Channels", description: "Audit LinkedIn, blog, and email for consistent positioning language — inconsistency is diluting Awareness lift.", priority: "high", cta: "Run audit" },
+        { title: "Schedule Peak-Hour Posts", description: "Improve cross-platform timing to maximize reach when your target audience is most active (Tue–Thu, 10am–2pm).", priority: "medium", cta: "Review schedule" },
+      ],
+    },
     brandScore: 81,
     brandScoreChange: 7,
     aiInsight:
@@ -132,6 +137,14 @@ export function makeNexusBrand(mult: number): BrandData {
 // ─── Meridian Brands ─────────────────────────────────────────────
 export function makeMeridianBrand(mult: number): BrandData {
   return {
+    tldr: {
+      summary: "Meridian Brands is building steady brand equity across Instagram and Facebook, with Awareness momentum growing among D2C-adjacent buyers. Brand strength compounds into pipeline indirectly — buyers who recognize and trust the brand convert at higher rates, respond faster to email sequences, and require fewer touchpoints to close.",
+      actions: [
+        { title: "Strengthen Campaign Narrative", description: "Align Instagram, Facebook, and email around a single brand story this quarter to close the Trust-to-Impact gap.", priority: "high", cta: "Plan campaign" },
+        { title: "Activate Newsletter Audience", description: "Your newsletter has the highest content-to-pipeline conversion — use it to nurture brand-aware leads into demos.", priority: "high", cta: "Build sequence" },
+        { title: "Repurpose Top Social Posts", description: "Turn your top-performing Instagram posts into email and LinkedIn content to extend reach at zero additional cost.", priority: "medium", cta: "Repurpose content" },
+      ],
+    },
     brandScore: 74,
     brandScoreChange: 4,
     aiInsight:
@@ -243,6 +256,14 @@ export function makeMeridianBrand(mult: number): BrandData {
 // ─── Apex Systems ─────────────────────────────────────────────────
 export function makeApexBrand(mult: number): BrandData {
   return {
+    tldr: {
+      summary: "Apex Systems has established strong brand Trust within enterprise IT, with Awareness scoring high among CIOs and CISOs. The brand narrative is contributing to pipeline by shortening objection cycles — buyers already recognize Apex's authority before the first sales touch, which is driving the above-benchmark reply rates on email sequences.",
+      actions: [
+        { title: "Scale Executive Thought Leadership", description: "Increase LinkedIn post frequency for senior leadership — executive content is generating 78% of deal-influencing brand touches.", priority: "high", cta: "Build calendar" },
+        { title: "Leverage Analyst Citations", description: "Gartner and Forrester mentions are your top trust multipliers. Promote these citations in every outreach sequence.", priority: "high", cta: "Create assets" },
+        { title: "Improve Impact Score", description: "Brand recognition isn't translating to pipeline association fast enough. Add explicit ROI case studies to content mix.", priority: "medium", cta: "Commission studies" },
+      ],
+    },
     brandScore: 68,
     brandScoreChange: 3,
     aiInsight:

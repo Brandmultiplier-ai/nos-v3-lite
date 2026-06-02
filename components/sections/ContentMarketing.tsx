@@ -2,11 +2,13 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useClientData } from "@/lib/data";
-import { PipelineBridge } from "@/components/cards/PipelineBridge";
 import { KPICard } from "@/components/cards/KPICard";
 import { DashboardCard } from "@/components/shared/DashboardCard";
 import { SectionSubTabs } from "@/components/shared/SectionSubTabs";
+import { SectionTLDR } from "@/components/shared/SectionTLDR";
+import { PhaseSecondaryKPI } from "@/components/cards/PhaseSecondaryKPI";
 import { TrendLine } from "@/components/charts/TrendLine";
+import { ChartAxisLabels } from "@/components/charts/ChartAxisLabels";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, TrendingUp, TrendingDown, ExternalLink, Zap, CheckCircle, Clock } from "lucide-react";
 import {
@@ -26,16 +28,21 @@ const containerVariants = { hidden: { opacity: 0 }, visible: { opacity: 1, trans
 const itemVariants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.2 } } };
 
 const CHANNEL_COLORS: Record<string, string> = {
-  LinkedIn: "#0A66C2", Instagram: "#E1306C", Facebook: "#1877F2",
-  Email: "#F59E0B", Newsletter: "#22C55E", "X / Twitter": "#94A3B8", YouTube: "#FF0000",
+  LinkedIn: "var(--nos-ch-linkedin)",
+  Instagram: "var(--nos-ch-instagram)",
+  Facebook: "var(--nos-ch-facebook)",
+  Email: "var(--nos-ch-email)",
+  Newsletter: "var(--nos-ch-newsletter)",
+  "X / Twitter": "var(--nos-ch-x)",
+  YouTube: "#FF0000",
 };
 
 
 const GROWTH_SERIES = [
-  { key: "linkedin" as const, label: "LinkedIn", color: "#0A66C2" },
-  { key: "instagram" as const, label: "Instagram", color: "#E1306C" },
-  { key: "facebook" as const, label: "Facebook", color: "#1877F2" },
-  { key: "x" as const, label: "X", color: "#94A3B8" },
+  { key: "linkedin" as const, label: "LinkedIn", color: "var(--nos-ch-linkedin)" },
+  { key: "instagram" as const, label: "Instagram", color: "var(--nos-ch-instagram)" },
+  { key: "facebook" as const, label: "Facebook", color: "var(--nos-ch-facebook)" },
+  { key: "x" as const, label: "X", color: "var(--nos-ch-x)" },
 ];
 
 function fmtNum(n: number) {
@@ -78,34 +85,34 @@ function SocialTab() {
         {platformStats.map((p) => (
           <DashboardCard key={p.platform} info={`${p.platform} stats: followers, reach, engagement rate, and published posts.`}>
             <div className="flex items-center gap-2 mb-3">
-              <div className="w-2 h-2 rounded-full" style={{ background: CHANNEL_COLORS[p.platform] ?? "#6366F1" }} />
+              <div className="w-2 h-2 rounded-full" style={{ background: CHANNEL_COLORS[p.platform] ?? "var(--nos-accent)" }} />
               <span className="text-xs font-semibold" style={{ color: "var(--nos-text-primary)" }}>{p.platform}</span>
             </div>
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 pr-6">
               <div>
-                <p className="text-[9px] text-label-caps mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Followers</p>
+                <p className="text-label-caps mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Followers</p>
                 <p className="text-sm font-bold" style={{ fontFamily: "var(--font-geist-mono)", color: "var(--nos-text-primary)" }}>{fmtNum(p.followers)}</p>
                 <p className="text-[9px] font-semibold" style={{ color: p.followersChange >= 0 ? "var(--nos-positive)" : "var(--nos-negative)" }}>
                   {p.followersChange >= 0 ? "+" : ""}{p.followersChange}%
                 </p>
               </div>
               <div>
-                <p className="text-[9px] text-label-caps mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Eng. Rate</p>
+                <p className="text-label-caps mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Eng. Rate</p>
                 <p className="text-sm font-bold" style={{ fontFamily: "var(--font-geist-mono)", color: "var(--nos-positive)" }}>{p.engagementRate.toFixed(1)}%</p>
               </div>
               <div>
-                <p className="text-[9px] text-label-caps mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Reach</p>
+                <p className="text-label-caps mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Reach</p>
                 <p className="text-xs font-semibold" style={{ color: "var(--nos-text-secondary)" }}>{fmtNum(p.reach)}</p>
               </div>
               {p.reelsWatchTime && (
                 <div>
-                  <p className="text-[9px] text-label-caps mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Watch Time</p>
+                  <p className="text-label-caps mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Watch Time</p>
                   <p className="text-xs font-semibold" style={{ color: "var(--nos-accent)" }}>{p.reelsWatchTime}s</p>
                 </div>
               )}
               {p.hookRate && (
                 <div>
-                  <p className="text-[9px] text-label-caps mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Hook Rate</p>
+                  <p className="text-label-caps mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Hook Rate</p>
                   <p className="text-xs font-semibold" style={{ color: "var(--nos-accent)" }}>{p.hookRate}%</p>
                 </div>
               )}
@@ -134,6 +141,7 @@ function SocialTab() {
               </AreaChart>
             </ResponsiveContainer>
           </div>
+          <ChartAxisLabels xLabel="Date" yLabel="Followers by platform" />
         </DashboardCard>
 
         {/* Sentiment gauge */}
@@ -190,7 +198,7 @@ function SocialTab() {
                   <tr key={row.channel} className="border-b last:border-0 hover:bg-[var(--nos-bg-elevated)] transition-colors" style={{ borderColor: "var(--border)" }}>
                     <td className="py-2.5 pr-6">
                       <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full" style={{ background: CHANNEL_COLORS[row.channel] ?? "#6366F1" }} />
+                        <div className="w-2 h-2 rounded-full" style={{ background: CHANNEL_COLORS[row.channel] ?? "var(--nos-accent)" }} />
                         <span className="font-medium" style={{ color: "var(--nos-text-primary)" }}>{row.channel}</span>
                       </div>
                     </td>
@@ -239,7 +247,7 @@ function LinkedInTab() {
       {/* Follower growth trend + post feed */}
       <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-1 nos-card">
-          <TrendLine data={linkedinFollowerGrowth} title="Follower Growth" subtitle="Organic LinkedIn audience" color="#0A66C2" height={200} />
+          <TrendLine data={linkedinFollowerGrowth} title="Follower Growth" subtitle="Organic LinkedIn audience" color="var(--nos-ch-linkedin)" height={200} xAxisLabel="Month" yAxisLabel="LinkedIn followers" />
         </div>
 
         <DashboardCard title="Post Performance Feed" subtitle="Sorted by impressions — click to expand" info="All LinkedIn posts this period ranked by impressions, with engagement rate, pipeline attribution, and viral flag." className="lg:col-span-2">
@@ -254,7 +262,7 @@ function LinkedInTab() {
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-[10px]" style={{ color: "var(--nos-text-muted)" }}>{post.date}</span>
                       {post.isViral && (
-                        <span className="flex items-center gap-1 text-[9px] px-1.5 py-0.5 rounded-full font-bold" style={{ background: "rgba(251,191,36,0.15)", color: "#FBBF24", border: "1px solid rgba(251,191,36,0.3)" }}>
+                        <span className="flex items-center gap-1 text-[9px] px-1.5 py-0.5 rounded-full font-bold" style={{ background: "rgba(251,191,36,0.15)", color: "var(--nos-signal-warm)", border: "1px solid rgba(251,191,36,0.3)" }}>
                           <Zap size={8} />VIRAL
                         </span>
                       )}
@@ -292,11 +300,12 @@ function SignificanceCurve({ significanceCurve, significance, status }: ContentE
       <ResponsiveContainer width="100%" height={120}>
         <LineChart data={significanceCurve} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
           <CartesianGrid stroke="var(--border)" strokeDasharray="4 4" vertical={false} />
-          <XAxis dataKey="day" tick={{ fill: "var(--nos-text-muted)", fontSize: 9 }} tickLine={false} axisLine={false} label={{ value: "Days", position: "insideBottom", offset: -2, style: { fontSize: 9, fill: "var(--nos-text-muted)" } }} />
+          <XAxis dataKey="day" tick={{ fill: "var(--nos-text-muted)", fontSize: 9 }} tickLine={false} axisLine={false} />
           <YAxis domain={[0, 100]} tick={{ fill: "var(--nos-text-muted)", fontSize: 9 }} tickLine={false} axisLine={false} tickFormatter={(v) => `${v}%`} />
           <Line type="monotone" dataKey="value" stroke={color} strokeWidth={2} dot={false} strokeDasharray={status === "running" ? "5 3" : undefined} isAnimationActive={false} />
         </LineChart>
       </ResponsiveContainer>
+      <ChartAxisLabels xLabel="Days since experiment start" yLabel="Statistical significance (%)" />
     </div>
   );
 }
@@ -310,7 +319,7 @@ function BlogTab() {
       {/* Pageviews trend + top pages */}
       <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2 nos-card">
-          <TrendLine data={blogPageviewsTrend} title="Blog Pageviews" subtitle="Monthly sessions across all blog content" color="var(--nos-accent)" height={200} />
+          <TrendLine data={blogPageviewsTrend} title="Blog Pageviews" subtitle="Monthly sessions across all blog content" color="var(--nos-accent)" height={200} xAxisLabel="Month" yAxisLabel="Blog pageviews" />
         </div>
 
         <DashboardCard title="Top Blog Posts" subtitle="Pageviews · Attention time · Pipeline" info="Blog posts ranked by pageviews. Attention time measures average engaged reading time. Pipeline shows CRM attribution.">
@@ -346,7 +355,7 @@ function BlogTab() {
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-0.5">
                       {isWon ? <CheckCircle size={12} style={{ color: statusColor }} /> : <Clock size={12} style={{ color: statusColor }} />}
-                      <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: statusColor }}>
+                      <span className="text-label-caps" style={{ color: statusColor }}>
                         {isWon ? "Winner Found" : "Running"}
                       </span>
                     </div>
@@ -414,7 +423,7 @@ function NewsletterTab() {
       {/* Subscriber growth curve (Beehiiv pink) + campaign table */}
       <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-1 nos-card">
-          <TrendLine data={subscriberGrowth} title="Subscriber Growth" subtitle="Active list size over time" color="#FF6B9D" height={200} />
+          <TrendLine data={subscriberGrowth} title="Subscriber Growth" subtitle="Active list size over time" color="var(--nos-ch-newsletter)" height={200} xAxisLabel="Month" yAxisLabel="Active subscribers" />
         </div>
 
         <DashboardCard title="Campaign Results" subtitle="Open rate · Click rate · Pipeline per send" info="Newsletter campaign performance — delivery, engagement, and pipeline per edition." className="lg:col-span-2">
@@ -455,23 +464,23 @@ function NewsletterTab() {
                   <p className="text-[11px] font-medium mb-1.5" style={{ color: "var(--nos-text-primary)" }}>{s.source}</p>
                   <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "var(--nos-bg-elevated)" }}>
                     <motion.div initial={{ width: 0 }} animate={{ width: `${(s.subscribers / maxSubs) * 100}%` }} transition={{ duration: 0.8, delay: i * 0.05 }}
-                      className="h-full rounded-full" style={{ background: "linear-gradient(90deg, var(--nos-accent), #FF6B9D)" }} />
+                      className="h-full rounded-full" style={{ background: "linear-gradient(90deg, var(--nos-accent), var(--nos-ch-newsletter))" }} />
                   </div>
                 </div>
                 {/* Subscribers */}
                 <div className="text-right">
-                  <p className="text-[9px] text-label-caps mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Subscribers</p>
+                  <p className="text-label-caps mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Subscribers</p>
                   <p className="text-sm font-bold" style={{ fontFamily: "var(--font-geist-mono)", color: "var(--nos-text-primary)" }}>{fmtNum(s.subscribers)}</p>
                   <p className="text-[9px] font-semibold" style={{ color: "var(--nos-accent)" }}>{s.pct}%</p>
                 </div>
                 {/* Open rate */}
                 <div className="text-right">
-                  <p className="text-[9px] text-label-caps mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Open Rate</p>
+                  <p className="text-label-caps mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Open Rate</p>
                   <p className="text-sm font-bold" style={{ fontFamily: "var(--font-geist-mono)", color: s.openRate >= 60 ? "var(--nos-positive)" : "var(--nos-text-primary)" }}>{s.openRate}%</p>
                 </div>
                 {/* Unsub rate */}
                 <div className="text-right">
-                  <p className="text-[9px] text-label-caps mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Unsub Rate</p>
+                  <p className="text-label-caps mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Unsub Rate</p>
                   <p className="text-sm font-bold" style={{ fontFamily: "var(--font-geist-mono)", color: s.unsubscribeRate > 3 ? "var(--nos-negative)" : "var(--nos-positive)" }}>{s.unsubscribeRate}%</p>
                 </div>
               </motion.div>
@@ -488,11 +497,15 @@ type ContentTab = "social" | "linkedin" | "blog" | "newsletter";
 interface ContentMarketingProps { tab?: ContentTab; }
 
 export function ContentMarketing({ tab = "social" }: ContentMarketingProps) {
-  const { pipelineBridge } = useClientData();
+  const data = useClientData();
 
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
-      <PipelineBridge attributed={pipelineBridge.attributed} deals={pipelineBridge.deals} velocity={pipelineBridge.velocity} section="Content Marketing" info="Pipeline attributed to content marketing across social, LinkedIn, blog, and newsletter channels." />
+
+      <SectionTLDR tldr={data.content.tldr} />
+
+      {/* Phase 4 — Unification: Deal size + Affinity index */}
+      <PhaseSecondaryKPI phase={4} pair={data.narrativeIntel.phaseMetrics.phase4} />
 
       <SectionSubTabs tabs={CONTENT_TABS} />
 

@@ -59,7 +59,7 @@ export function InsightCard({ text, className = "" }: InsightCardProps) {
         </div>
         <div>
           <p
-            className="text-[10px] font-bold tracking-widest uppercase mb-1.5"
+            className="text-label-caps mb-1.5"
             style={{
               background: "linear-gradient(90deg, var(--nos-accent), var(--nos-accent-2))",
               WebkitBackgroundClip: "text",

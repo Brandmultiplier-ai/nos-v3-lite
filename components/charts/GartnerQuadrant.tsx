@@ -1,258 +1,182 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
+import { ChartAxisLabels } from "./ChartAxisLabels";
 import type { PositionPoint } from "@/lib/data/types";
 
 interface GartnerQuadrantProps {
   data: PositionPoint[];
 }
 
-const QUADRANTS = [
-  { label: "Visionaries", x: 0, y: 50, w: 50, h: 50, color: "rgba(99,102,241,0.06)" },
-  { label: "Leaders", x: 50, y: 50, w: 50, h: 50, color: "rgba(34,197,94,0.07)" },
-  { label: "Niche", x: 0, y: 0, w: 50, h: 50, color: "rgba(113,113,122,0.05)" },
-  { label: "Challengers", x: 50, y: 0, w: 50, h: 50, color: "rgba(245,158,11,0.06)" },
-];
-
-const PAD = 48;
-const W = 520;
-const H = 380;
-const PLOT_W = W - PAD * 2;
-const PLOT_H = H - PAD * 2 - 20;
-
-function toSvgX(v: number) {
-  return PAD + (v / 100) * PLOT_W;
+function getQuadrantLabel(x: number, y: number): string {
+  if (x >= 50 && y >= 50) return "Leaders";
+  if (x < 50 && y >= 50) return "Visionaries";
+  if (x >= 50 && y < 50) return "Challengers";
+  return "Niche";
 }
 
-function toSvgY(v: number) {
-  return PAD + PLOT_H - (v / 100) * PLOT_H;
+function getQuadrantColor(label: string): string {
+  switch (label) {
+    case "Leaders": return "var(--nos-positive)";
+    case "Visionaries": return "var(--nos-accent)";
+    case "Challengers": return "var(--nos-signal-warm)";
+    default: return "var(--nos-text-muted)";
+  }
 }
 
 export function GartnerQuadrant({ data }: GartnerQuadrantProps) {
-  const [hovered, setHovered] = useState<string | null>(null);
   const clientPoint = data.find((d) => d.isClient);
-  const competitors = data.filter((d) => !d.isClient);
+  const sorted = [...data].sort((a, b) => (b.x + b.y) / 2 - (a.x + a.y) / 2);
 
   return (
     <div>
-      <div className="flex items-start justify-between mb-4">
+      {/* Header */}
+      <div className="flex items-start justify-between mb-5">
         <div>
-          <p className="text-sm font-semibold text-[var(--nos-text-primary)]">
+          <p className="text-sm font-semibold" style={{ color: "var(--nos-text-primary)" }}>
             Positioning Quadrant
           </p>
-          <p className="text-xs text-[var(--nos-text-muted)] mt-0.5">
+          <p className="text-xs mt-0.5" style={{ color: "var(--nos-text-muted)" }}>
             Market Presence vs. Narrative Strength
           </p>
         </div>
         {clientPoint && (
-          <div className="text-right">
-            <p className="text-[10px] text-label-caps text-[var(--nos-text-muted)]">Your position</p>
-            <p className="text-xs font-semibold text-[var(--nos-accent)]">{clientPoint.name}</p>
-            <p className="text-[10px] text-[var(--nos-text-muted)]">
-              Presence {clientPoint.x} · Strength {clientPoint.y}
-            </p>
+          <div
+            className="flex items-center gap-2 px-3 py-1.5 rounded-lg"
+            style={{ background: "var(--nos-accent-muted)", border: "1px solid var(--nos-accent-border)" }}
+          >
+            <div className="w-2 h-2 rounded-full" style={{ background: "var(--nos-accent)" }} />
+            <div>
+              <p className="text-xs font-semibold" style={{ color: "var(--nos-accent)" }}>
+                {clientPoint.name}
+              </p>
+              <p className="text-[10px]" style={{ color: "var(--nos-text-muted)" }}>
+                {getQuadrantLabel(clientPoint.x, clientPoint.y)}
+              </p>
+            </div>
           </div>
         )}
       </div>
 
-      <div className="rounded-xl border border-[var(--border)] bg-[var(--nos-bg-elevated)] overflow-hidden">
-        <svg
-          viewBox={`0 0 ${W} ${H}`}
-          className="w-full"
-          role="img"
-          aria-label="Positioning quadrant chart"
-        >
-          {/* Quadrant backgrounds */}
-          {QUADRANTS.map((q) => (
-            <g key={q.label}>
-              <rect
-                x={toSvgX(q.x)}
-                y={toSvgY(q.y + q.h)}
-                width={(q.w / 100) * PLOT_W}
-                height={(q.h / 100) * PLOT_H}
-                fill={q.color}
-              />
-              <text
-                x={toSvgX(q.x + q.w / 2)}
-                y={toSvgY(q.y + q.h / 2)}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                className="fill-[var(--nos-text-muted)] opacity-40"
-                style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em" }}
-              >
-                {q.label.toUpperCase()}
-              </text>
-            </g>
-          ))}
+      {/* Score legend */}
+      <div className="flex items-center gap-4 mb-4">
+        <div className="flex items-center gap-1.5">
+          <span className="w-3 h-2 rounded-sm" style={{ background: "var(--nos-accent)" }} />
+          <span className="text-[10px]" style={{ color: "var(--nos-text-muted)" }}>Narrative Strength</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span className="w-3 h-2 rounded-sm" style={{ background: "var(--nos-ch-search)" }} />
+          <span className="text-[10px]" style={{ color: "var(--nos-text-muted)" }}>Market Presence</span>
+        </div>
+      </div>
 
-          {/* Grid lines */}
-          {[25, 50, 75].map((v) => (
-            <g key={v}>
-              <line
-                x1={toSvgX(v)}
-                y1={PAD}
-                x2={toSvgX(v)}
-                y2={PAD + PLOT_H}
-                stroke="var(--border)"
-                strokeDasharray="3 3"
-                strokeWidth={1}
-              />
-              <line
-                x1={PAD}
-                y1={toSvgY(v)}
-                x2={PAD + PLOT_W}
-                y2={toSvgY(v)}
-                stroke="var(--border)"
-                strokeDasharray="3 3"
-                strokeWidth={1}
-              />
-            </g>
-          ))}
+      {/* Ranked rows */}
+      <div className="space-y-3">
+        {sorted.map((point, i) => {
+          const isClient = point.isClient;
+          const quadrant = getQuadrantLabel(point.x, point.y);
+          const quadColor = getQuadrantColor(quadrant);
 
-          {/* Axis midlines */}
-          <line
-            x1={toSvgX(50)}
-            y1={PAD}
-            x2={toSvgX(50)}
-            y2={PAD + PLOT_H}
-            stroke="var(--nos-text-muted)"
-            strokeOpacity={0.3}
-            strokeWidth={1}
-          />
-          <line
-            x1={PAD}
-            y1={toSvgY(50)}
-            x2={PAD + PLOT_W}
-            y2={toSvgY(50)}
-            stroke="var(--nos-text-muted)"
-            strokeOpacity={0.3}
-            strokeWidth={1}
-          />
-
-          {/* Axis labels */}
-          {[0, 25, 50, 75, 100].map((v) => (
-            <text
-              key={`x-${v}`}
-              x={toSvgX(v)}
-              y={H - 6}
-              textAnchor="middle"
-              className="fill-[var(--nos-text-muted)]"
-              style={{ fontSize: 9 }}
+          return (
+            <div
+              key={point.name}
+              className="rounded-xl p-3"
+              style={{
+                background: isClient
+                  ? "linear-gradient(135deg, rgba(124,127,255,0.08) 0%, rgba(167,139,250,0.04) 100%)"
+                  : "var(--nos-bg-elevated)",
+                border: isClient
+                  ? "1px solid var(--nos-accent-border)"
+                  : "1px solid var(--border)",
+              }}
             >
-              {v}
-            </text>
-          ))}
-          {[0, 25, 50, 75, 100].map((v) => (
-            <text
-              key={`y-${v}`}
-              x={PAD - 8}
-              y={toSvgY(v) + 3}
-              textAnchor="end"
-              className="fill-[var(--nos-text-muted)]"
-              style={{ fontSize: 9 }}
-            >
-              {v}
-            </text>
-          ))}
-
-          <text
-            x={PAD + PLOT_W / 2}
-            y={H - 18}
-            textAnchor="middle"
-            className="fill-[var(--nos-text-secondary)]"
-            style={{ fontSize: 10 }}
-          >
-            Market Presence →
-          </text>
-          <text
-            x={14}
-            y={PAD + PLOT_H / 2}
-            textAnchor="middle"
-            transform={`rotate(-90, 14, ${PAD + PLOT_H / 2})`}
-            className="fill-[var(--nos-text-secondary)]"
-            style={{ fontSize: 10 }}
-          >
-            Narrative Strength →
-          </text>
-
-          {/* Competitor dots */}
-          {competitors.map((comp) => {
-            const cx = toSvgX(comp.x);
-            const cy = toSvgY(comp.y);
-            const isHovered = hovered === comp.name;
-            return (
-              <g
-                key={comp.name}
-                onMouseEnter={() => setHovered(comp.name)}
-                onMouseLeave={() => setHovered(null)}
-                className="cursor-default"
-              >
-                <circle
-                  cx={cx}
-                  cy={cy}
-                  r={isHovered ? 6 : 4.5}
-                  fill="var(--nos-bg-overlay)"
-                  stroke="var(--nos-text-muted)"
-                  strokeWidth={1.5}
-                  opacity={isHovered ? 1 : 0.7}
-                />
-                <text
-                  x={cx + 8}
-                  y={cy - 6}
-                  className="fill-[var(--nos-text-muted)]"
-                  style={{ fontSize: 9 }}
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <span
+                    className="text-[10px] font-bold w-5 text-right shrink-0"
+                    style={{ color: "var(--nos-text-muted)" }}
+                  >
+                    {i + 1}
+                  </span>
+                  <p
+                    className="text-xs font-semibold"
+                    style={{ color: isClient ? "var(--nos-text-primary)" : "var(--nos-text-secondary)" }}
+                  >
+                    {point.name}
+                    {isClient && (
+                      <span className="ml-1.5 text-[9px] font-normal" style={{ color: "var(--nos-accent)" }}>
+                        You
+                      </span>
+                    )}
+                  </p>
+                </div>
+                <span
+                  className="text-[9px] font-semibold px-1.5 py-0.5 rounded"
+                  style={{
+                    background: `color-mix(in srgb, ${quadColor} 12%, transparent)`,
+                    color: quadColor,
+                  }}
                 >
-                  {comp.name}
-                </text>
-              </g>
-            );
-          })}
+                  {quadrant}
+                </span>
+              </div>
 
-          {/* Client dot */}
-          {clientPoint && (
-            <g>
-              <motion.circle
-                cx={toSvgX(clientPoint.x)}
-                cy={toSvgY(clientPoint.y)}
-                r={14}
-                fill="var(--nos-accent)"
-                fillOpacity={0.12}
-                animate={{ r: [14, 18, 14] }}
-                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-              />
-              <circle
-                cx={toSvgX(clientPoint.x)}
-                cy={toSvgY(clientPoint.y)}
-                r={7}
-                fill="var(--nos-accent)"
-                stroke="var(--nos-bg-surface)"
-                strokeWidth={2}
-              />
-              <text
-                x={toSvgX(clientPoint.x) + 12}
-                y={toSvgY(clientPoint.y) - 10}
-                className="fill-[var(--nos-text-primary)]"
-                style={{ fontSize: 11, fontWeight: 600 }}
-              >
-                {clientPoint.name}
-              </text>
-            </g>
-          )}
-        </svg>
-      </div>
+              <div className="space-y-1.5">
+                {/* Narrative Strength */}
+                <div className="flex items-center gap-2">
+                  <span className="text-[9px] w-24 shrink-0" style={{ color: "var(--nos-text-muted)" }}>
+                    Narrative
+                  </span>
+                  <div
+                    className="flex-1 h-2 rounded-full overflow-hidden"
+                    style={{ background: "var(--nos-bg-surface)" }}
+                  >
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${point.y}%` }}
+                      transition={{ duration: 0.7, ease: "easeOut", delay: i * 0.04 }}
+                      className="h-full rounded-full"
+                      style={{ background: "var(--nos-accent)" }}
+                    />
+                  </div>
+                  <span
+                    className="text-[10px] font-bold w-7 text-right shrink-0 font-mono"
+                    style={{ color: isClient ? "var(--nos-accent)" : "var(--nos-text-secondary)" }}
+                  >
+                    {point.y}
+                  </span>
+                </div>
 
-      {/* Legend */}
-      <div className="flex flex-wrap gap-4 mt-3">
-        <div className="flex items-center gap-1.5 text-[10px] text-[var(--nos-text-muted)]">
-          <span className="w-2.5 h-2.5 rounded-full bg-[var(--nos-accent)]" />
-          Your brand
-        </div>
-        <div className="flex items-center gap-1.5 text-[10px] text-[var(--nos-text-muted)]">
-          <span className="w-2.5 h-2.5 rounded-full border border-[var(--nos-text-muted)] bg-[var(--nos-bg-overlay)]" />
-          Competitors
-        </div>
+                {/* Market Presence */}
+                <div className="flex items-center gap-2">
+                  <span className="text-[9px] w-24 shrink-0" style={{ color: "var(--nos-text-muted)" }}>
+                    Market Presence
+                  </span>
+                  <div
+                    className="flex-1 h-2 rounded-full overflow-hidden"
+                    style={{ background: "var(--nos-bg-surface)" }}
+                  >
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${point.x}%` }}
+                      transition={{ duration: 0.7, ease: "easeOut", delay: i * 0.04 + 0.05 }}
+                      className="h-full rounded-full"
+                      style={{ background: "var(--nos-ch-search)" }}
+                    />
+                  </div>
+                  <span
+                    className="text-[10px] font-bold w-7 text-right shrink-0 font-mono"
+                    style={{ color: isClient ? "var(--nos-ch-search)" : "var(--nos-text-secondary)" }}
+                  >
+                    {point.x}
+                  </span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
+      <ChartAxisLabels xLabel="Score (0–100)" yLabel="Brand / competitor" />
     </div>
   );
 }

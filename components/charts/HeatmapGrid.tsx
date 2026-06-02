@@ -2,6 +2,7 @@
 
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { ChartSkeleton } from "@/components/shared/ChartSkeleton";
+import { ChartAxisLabels } from "./ChartAxisLabels";
 import { useState, useEffect } from "react";
 
 interface HeatmapCell {
@@ -78,6 +79,7 @@ export function HeatmapGrid({ data, title = "Intent Signal Heatmap", subtitle = 
           </div>
         </div>
       </div>
+      <ChartAxisLabels xLabel="Hour of day" yLabel="Day of week (intent score intensity)" />
     </div>
   );
 }

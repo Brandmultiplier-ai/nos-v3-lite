@@ -6,8 +6,8 @@ import { ChartSkeleton } from "@/components/shared/ChartSkeleton";
 import { useState, useEffect } from "react";
 
 const CHART_COLORS = [
-  "#6366F1", "#22C55E", "#F59E0B", "#EF4444", "#0A66C2",
-  "#8B5CF6", "#E1306C", "#1877F2", "#0EA5E9",
+  "#6366F1", "#34D399", "#FBBF24", "#FF4455", "#0A66C2",
+  "#A78BFA", "#E1306C", "#1877F2", "#0EA5E9",
 ];
 
 interface DonutChartProps {

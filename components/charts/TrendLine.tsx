@@ -10,6 +10,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { CustomTooltip } from "./CustomTooltip";
+import { ChartAxisLabels } from "./ChartAxisLabels";
 import { memo } from "react";
 
 interface TrendLineProps {
@@ -19,6 +20,8 @@ interface TrendLineProps {
   color?: string;
   prefix?: string;
   height?: number;
+  xAxisLabel?: string;
+  yAxisLabel?: string;
 }
 
 export const TrendLine = memo(function TrendLine({
@@ -28,6 +31,8 @@ export const TrendLine = memo(function TrendLine({
   color = "#6366F1",
   prefix = "",
   height = 200,
+  xAxisLabel = "Date",
+  yAxisLabel = "Value",
 }: TrendLineProps) {
   return (
     <div>
@@ -58,6 +63,7 @@ export const TrendLine = memo(function TrendLine({
           </LineChart>
         </ResponsiveContainer>
       </div>
+      <ChartAxisLabels xLabel={xAxisLabel} yLabel={yAxisLabel} />
     </div>
   );
 });

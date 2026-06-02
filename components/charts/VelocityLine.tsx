@@ -12,11 +12,12 @@ import {
 } from "recharts";
 import type { GEOEngine } from "@/lib/data/types";
 import { CustomTooltip } from "./CustomTooltip";
+import { ChartAxisLabels } from "./ChartAxisLabels";
 import { ChartSkeleton } from "@/components/shared/ChartSkeleton";
 import { useState, useEffect } from "react";
 
 const ENGINE_COLORS: Record<string, string> = {
-  ChatGPT: "#22C55E",
+  ChatGPT: "#34D399",
   Perplexity: "#0EA5E9",
   Gemini: "#F59E0B",
   Copilot: "#8B5CF6",
@@ -26,9 +27,17 @@ interface VelocityLineProps {
   engines: GEOEngine[];
   title?: string;
   subtitle?: string;
+  xAxisLabel?: string;
+  yAxisLabel?: string;
 }
 
-export function VelocityLine({ engines, title = "GEO Citation Trend", subtitle = "Brand mentions per AI engine" }: VelocityLineProps) {
+export function VelocityLine({
+  engines,
+  title = "GEO Citation Trend",
+  subtitle = "Brand mentions per AI engine",
+  xAxisLabel = "Week",
+  yAxisLabel = "Brand mentions",
+}: VelocityLineProps) {
   const [ready, setReady] = useState(false);
   useEffect(() => { const t = setTimeout(() => setReady(true), 300); return () => clearTimeout(t); }, []);
 
@@ -67,6 +76,7 @@ export function VelocityLine({ engines, title = "GEO Citation Trend", subtitle =
           ))}
         </LineChart>
       </ResponsiveContainer>
+      <ChartAxisLabels xLabel={xAxisLabel} yLabel={yAxisLabel} />
     </div>
   );
 }

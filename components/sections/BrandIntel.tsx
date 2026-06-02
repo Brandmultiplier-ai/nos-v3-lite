@@ -2,7 +2,8 @@
 
 import { motion } from "framer-motion";
 import { useClientData } from "@/lib/data";
-import { PipelineBridge } from "@/components/cards/PipelineBridge";
+import { SectionTLDR } from "@/components/shared/SectionTLDR";
+import { PhaseSecondaryKPI } from "@/components/cards/PhaseSecondaryKPI";
 import { DashboardCard } from "@/components/shared/DashboardCard";
 import { KPICard } from "@/components/cards/KPICard";
 import {
@@ -15,6 +16,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+import { ChartAxisLabels } from "@/components/charts/ChartAxisLabels";
 import { Sparkles, TrendingUp, TrendingDown, Minus, Users } from "lucide-react";
 
 const containerVariants = {
@@ -143,7 +145,7 @@ const CustomChartTooltip = ({ active, payload, label }: { active?: boolean; payl
 
 export function BrandIntel() {
   const data = useClientData();
-  const { brand, pipelineBridge } = data;
+  const { brand } = data;
   const clientRow = brand.scoreboard.find((r) => r.isClient);
   const scoreColor = getScoreColor(brand.brandScore);
   const scoreLabel = getScoreLabel(brand.brandScore);
@@ -164,13 +166,13 @@ export function BrandIntel() {
 
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
-      <PipelineBridge
-        attributed={pipelineBridge.attributed}
-        deals={pipelineBridge.deals}
-        velocity={pipelineBridge.velocity}
-        section="Brand Intelligence"
-        info="Pipeline attributed to brand-building activities — content, social, and narrative presence."
-      />
+
+      <SectionTLDR tldr={brand.tldr} />
+
+      {/* Phase 1 — Anchor: Market perception + Sentiment score */}
+      <motion.div variants={itemVariants}>
+        <PhaseSecondaryKPI phase={1} pair={data.narrativeIntel.phaseMetrics.phase1} />
+      </motion.div>
 
       {/* Top row: Brand Score + AI Narrative + Actions */}
       <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-5 gap-4">
@@ -274,7 +276,7 @@ export function BrandIntel() {
                   className="rounded-lg py-2 px-1 text-center"
                   style={{ background: "var(--nos-bg-elevated)" }}
                 >
-                  <p className="text-[9px] text-label-caps mb-1" style={{ color: "var(--nos-text-muted)" }}>
+                  <p className="text-label-caps mb-1" style={{ color: "var(--nos-text-muted)" }}>
                     {dim}
                   </p>
                   <p className="text-sm font-bold" style={{ color: "var(--nos-text-primary)" }}>
@@ -321,7 +323,7 @@ export function BrandIntel() {
               </div>
               <div>
                 <p
-                  className="text-[10px] font-bold tracking-widest uppercase mb-1.5"
+                  className="text-label-caps mb-1.5"
                   style={{
                     background: "linear-gradient(90deg, var(--nos-accent), var(--nos-accent-2))",
                     WebkitBackgroundClip: "text",
@@ -389,7 +391,7 @@ export function BrandIntel() {
                   {["Company", "Brand Score", "Awareness", "Impact", "Trust"].map((h) => (
                     <th
                       key={h}
-                      className="text-left pb-3 text-[10px] text-label-caps pr-6"
+                      className="text-left pb-3 text-label-caps pr-6"
                       style={{ color: "var(--nos-text-muted)" }}
                     >
                       {h}
@@ -508,7 +510,7 @@ export function BrandIntel() {
                 <p className="text-label-caps mb-2">Awareness Score</p>
                 <p
                   className="font-mono-metric"
-                  style={{ color: "var(--nos-text-primary)", fontSize: "2rem" }}
+                  style={{ color: "var(--nos-text-primary)" }}
                 >
                   {clientRow.awareness.score}
                 </p>
@@ -526,7 +528,7 @@ export function BrandIntel() {
                 <p className="text-label-caps mb-2">Trust Score</p>
                 <p
                   className="font-mono-metric"
-                  style={{ color: "var(--nos-text-primary)", fontSize: "2rem" }}
+                  style={{ color: "var(--nos-text-primary)" }}
                 >
                   {clientRow.trust.score}
                 </p>
@@ -560,12 +562,12 @@ export function BrandIntel() {
                       <stop offset="95%" stopColor="#34D399" stopOpacity={0} />
                     </linearGradient>
                     <linearGradient id="grad-decrease" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#FBBF24" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="#FBBF24" stopOpacity={0} />
+                      <stop offset="5%" stopColor="var(--nos-signal-warm)" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="var(--nos-signal-warm)" stopOpacity={0} />
                     </linearGradient>
                     <linearGradient id="grad-paid" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#FF4455" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="#FF4455" stopOpacity={0} />
+                      <stop offset="5%" stopColor="var(--nos-negative)" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="var(--nos-negative)" stopOpacity={0} />
                     </linearGradient>
                     <linearGradient id="grad-organic" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="#7C7FFF" stopOpacity={0.3} />
@@ -591,12 +593,13 @@ export function BrandIntel() {
                     wrapperStyle={{ fontSize: 11, color: "var(--nos-text-muted)" }}
                   />
                   <Area type="monotone" dataKey="increase" name="Fan increase" stroke="#34D399" strokeWidth={2} fill="url(#grad-increase)" dot={false} />
-                  <Area type="monotone" dataKey="decrease" name="Fan decrease" stroke="#FBBF24" strokeWidth={2} fill="url(#grad-decrease)" dot={false} />
-                  <Area type="monotone" dataKey="paid" name="Paid growth" stroke="#FF4455" strokeWidth={2} fill="url(#grad-paid)" dot={false} />
+                  <Area type="monotone" dataKey="decrease" name="Fan decrease" stroke="var(--nos-signal-warm)" strokeWidth={2} fill="url(#grad-decrease)" dot={false} />
+                  <Area type="monotone" dataKey="paid" name="Paid growth" stroke="var(--nos-negative)" strokeWidth={2} fill="url(#grad-paid)" dot={false} />
                   <Area type="monotone" dataKey="organic" name="Organic growth" stroke="#7C7FFF" strokeWidth={2} fill="url(#grad-organic)" dot={false} />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
+            <ChartAxisLabels xLabel="Month" yLabel="Audience change (fans)" />
           </DashboardCard>
         </motion.div>
 

@@ -16,6 +16,8 @@ export interface KPIs {
   dealsCreated: KPIMetric;
   closedWon: KPIMetric;
   attributedRevenue: KPIMetric;
+  ltv: KPIMetric;
+  avgDealSize: KPIMetric;
 }
 
 /* ─────────────── Signal Timeline ─────────────── */
@@ -62,6 +64,7 @@ export interface AudienceDevelopmentPoint {
 }
 
 export interface BrandData {
+  tldr: SectionTldr;
   brandScore: number;
   brandScoreChange: number;
   scoreboard: BrandScoreboardRow[];
@@ -85,6 +88,7 @@ export interface PositionPoint {
 }
 
 export interface PositioningData {
+  tldr: SectionTldr;
   quadrant: PositionPoint[];
   movementTimeline: { date: string; x: number; y: number }[];
   competitors: { name: string; narrativeScore: number; marketPresence: number; lastSeen: string; trend: "up" | "down" | "flat" }[];
@@ -162,6 +166,7 @@ export interface KeywordBucket {
 }
 
 export interface SearchData {
+  tldr: SectionTldr;
   geo: GEOData;
   healthScore: number;
   domainRating: number;
@@ -219,6 +224,7 @@ export interface SessionRecording {
 }
 
 export interface WebsiteData {
+  tldr: SectionTldr;
   // Core traffic KPIs
   visitors: KPIMetric;
   sessions: KPIMetric;
@@ -367,6 +373,7 @@ export interface NewsletterAcquisitionSource {
 }
 
 export interface ContentData {
+  tldr: SectionTldr;
   // Social (Sprout style)
   socialOverview: SocialChannelRow[];
   topPosts: CalendarPost[];
@@ -508,6 +515,7 @@ export interface SalesloftData {
 }
 
 export interface OutreachData {
+  tldr: SectionTldr;
   emailPipeline: KPIMetric;
   // Instantly.ai master KPIs
   totalSent: KPIMetric;
@@ -534,9 +542,73 @@ export interface OutreachData {
 export interface Integration {
   id: string;
   name: string;
-  category: "crm" | "social" | "seo" | "outreach" | "website-intel" | "analytics";
+  category: "crm" | "social" | "seo" | "outreach" | "website-intel" | "analytics" | "paid-media";
   connected: boolean;
   lastSync?: string;
+}
+
+/* ─────────────── Paid Media ─────────────── */
+export interface PaidMediaCampaign {
+  id: string;
+  name: string;
+  platform: string;
+  status: "active" | "paused" | "completed";
+  spend: number;
+  revenue: number;
+  roas: number;
+  impressions: number;
+  clicks: number;
+  conversions: number;
+  cpa: number;
+  cpc: number;
+}
+
+export interface PaidMediaData {
+  tldr: SectionTldr;
+  totalSpend: KPIMetric;
+  totalRevenue: KPIMetric;
+  roas: KPIMetric;
+  cac: KPIMetric;
+  campaigns: PaidMediaCampaign[];
+  platformBreakdown: { platform: string; spend: number; revenue: number; roas: number; color: string }[];
+  spendTrend: { date: string; spend: number; revenue: number }[];
+  bestCampaigns: { name: string; platform: string; revenue: number; conversions: number; roas: number }[];
+  bestAds: { name: string; platform: string; revenue: number; conversions: number; ctr: number }[];
+}
+
+/* ─────────────── Narrative Resonance Index + Phase Metrics ─────────────── */
+export interface PhaseMetricPair {
+  growthMetric: { name: string; value: string; change: number };
+  emotionalIndicator: { name: string; value: string; change: number };
+}
+
+export interface NarrativeIntelData {
+  nri: {
+    current: number;
+    target: number;
+    tier: "DIY" | "DWY" | "DFY";
+    trend: "up" | "stable" | "down";
+  };
+  phaseMetrics: {
+    phase1: PhaseMetricPair;
+    phase2: PhaseMetricPair;
+    phase3: PhaseMetricPair;
+    phase4: PhaseMetricPair;
+    phase5: PhaseMetricPair;
+  };
+}
+
+/* ─────────────── Section TLDR ─────────────── */
+export interface TldrAction {
+  title: string;
+  description: string;
+  priority: "high" | "medium";
+  cta: string;
+}
+
+export interface SectionTldr {
+  summary: string;
+  actions: TldrAction[];
 }
 
 /* ─────────────── Root Client Data ─────────────── */
@@ -559,6 +631,8 @@ export interface ClientData {
   content: ContentData;
   outreach: OutreachData;
   integrations: Integration[];
+  paidMedia: PaidMediaData;
+  narrativeIntel: NarrativeIntelData;
   pipelineBridge: {
     section: string;
     attributed: number;

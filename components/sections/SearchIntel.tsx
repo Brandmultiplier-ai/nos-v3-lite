@@ -3,10 +3,11 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useClientData } from "@/lib/data";
-import { PipelineBridge } from "@/components/cards/PipelineBridge";
 import { KPICard } from "@/components/cards/KPICard";
 import { DashboardCard } from "@/components/shared/DashboardCard";
 import { SectionSubTabs } from "@/components/shared/SectionSubTabs";
+import { SectionTLDR } from "@/components/shared/SectionTLDR";
+import { PhaseSecondaryKPI } from "@/components/cards/PhaseSecondaryKPI";
 import { TrendLine } from "@/components/charts/TrendLine";
 import { VelocityLine } from "@/components/charts/VelocityLine";
 import { NarrativeRadar } from "@/components/charts/NarrativeRadar";
@@ -23,6 +24,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+import { ChartAxisLabels } from "@/components/charts/ChartAxisLabels";
 
 const SEARCH_TABS = [
   { id: "seo", label: "SEO", path: "/search/seo" },
@@ -138,7 +140,7 @@ const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?:
 // ── SEO Tab ───────────────────────────────────────────────────────────────────
 function SEOTab() {
   const data = useClientData();
-  const { search, pipelineBridge } = data;
+  const { search } = data;
   const [activeCountry, setActiveCountry] = useState<string | null>(null);
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
   const highlightedCountry = hoveredCountry ?? activeCountry;
@@ -169,10 +171,10 @@ function SEOTab() {
       {/* Charts */}
       <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2 nos-card">
-          <TrendLine data={search.organicSessions} title="Organic Traffic" subtitle="Monthly sessions from organic search" color="var(--nos-accent)" height={200} />
+          <TrendLine data={search.organicSessions} title="Organic Traffic" subtitle="Monthly sessions from organic search" color="var(--nos-accent)" height={200} xAxisLabel="Month" yAxisLabel="Organic sessions" />
         </div>
         <div className="nos-card">
-          <TrendLine data={search.referringDomainsTrend} title="Referring Domains" subtitle="Unique domains linking to you" color="var(--nos-positive)" height={200} />
+          <TrendLine data={search.referringDomainsTrend} title="Referring Domains" subtitle="Unique domains linking to you" color="var(--nos-positive)" height={200} xAxisLabel="Month" yAxisLabel="Referring domains" />
         </div>
       </motion.div>
 
@@ -369,6 +371,7 @@ function GEOTab() {
               </LineChart>
             </ResponsiveContainer>
           </div>
+          <ChartAxisLabels xLabel="Date" yLabel="GEO visibility score (%)" />
         </DashboardCard>
 
         {/* Competitor scoreboard — Profound style */}
@@ -473,7 +476,7 @@ function GEOTab() {
               <Sparkles size={14} style={{ color: "var(--nos-accent)" }} />
             </div>
             <div>
-              <p className="text-[10px] font-bold tracking-widest uppercase mb-1.5" style={{ background: "linear-gradient(90deg, var(--nos-accent), var(--nos-accent-2))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+              <p className="text-label-caps mb-1.5" style={{ background: "linear-gradient(90deg, var(--nos-accent), var(--nos-accent-2))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
                 AI GEO Intelligence
               </p>
               <p className="text-sm leading-relaxed" style={{ color: "var(--nos-text-secondary)" }}>{geo.aiInsight}</p>
@@ -491,11 +494,14 @@ interface SearchIntelProps { tab?: SearchTab; }
 
 export function SearchIntel({ tab = "seo" }: SearchIntelProps) {
   const data = useClientData();
-  const { pipelineBridge } = data;
 
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
-      <PipelineBridge attributed={pipelineBridge.attributed} deals={pipelineBridge.deals} velocity={pipelineBridge.velocity} section="Search Intelligence" info="Pipeline attributed to organic search (SEO) and AI-engine discovery (GEO) in the selected period." />
+
+      <SectionTLDR tldr={data.search.tldr} />
+
+      {/* Phase 2 — Insight: Lead conversion + Engagement time */}
+      <PhaseSecondaryKPI phase={2} pair={data.narrativeIntel.phaseMetrics.phase2} />
 
       <SectionSubTabs tabs={SEARCH_TABS} />
 

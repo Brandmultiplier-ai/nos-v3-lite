@@ -3,10 +3,11 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useClientData } from "@/lib/data";
-import { PipelineBridge } from "@/components/cards/PipelineBridge";
 import { KPICard } from "@/components/cards/KPICard";
 import { DashboardCard } from "@/components/shared/DashboardCard";
 import { SectionSubTabs } from "@/components/shared/SectionSubTabs";
+import { SectionTLDR } from "@/components/shared/SectionTLDR";
+import { PhaseSecondaryKPI } from "@/components/cards/PhaseSecondaryKPI";
 import { Badge } from "@/components/ui/badge";
 import { MiniSparkline } from "@/components/charts/MiniSparkline";
 import {
@@ -14,6 +15,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
 } from "recharts";
 import { CustomTooltip } from "@/components/charts/CustomTooltip";
+import { ChartAxisLabels } from "@/components/charts/ChartAxisLabels";
 import { Flame, Shield, AlertTriangle, ChevronDown, ChevronUp } from "lucide-react";
 import type { EmailCampaign, InboxHealth, SalesloftData } from "@/lib/data/types";
 
@@ -51,9 +53,9 @@ const ChartTip = ({ active, payload, label }: { active?: boolean; payload?: { na
 
 const statusBadge = (status: string) => {
   const map: Record<string, { color: string; label: string }> = {
-    active:    { color: "#22C55E", label: "Active" },
-    paused:    { color: "#F59E0B", label: "Paused" },
-    completed: { color: "#71717A", label: "Done" },
+    active:    { color: "var(--nos-positive)", label: "Active" },
+    paused:    { color: "var(--nos-signal-warm)", label: "Paused" },
+    completed: { color: "var(--nos-text-muted)", label: "Done" },
   };
   const cfg = map[status] ?? { color: "#71717A", label: status };
   return <Badge className="text-[9px]" style={{ background: `${cfg.color}20`, color: cfg.color, border: `1px solid ${cfg.color}40` }}>{cfg.label}</Badge>;
@@ -93,11 +95,11 @@ function CampaignRow({ campaign }: { campaign: EmailCampaign }) {
           <p className="text-[9px]" style={{ color: "var(--nos-text-muted)" }}>contacted</p>
         </td>
         <td className="py-3 pr-4 text-center">
-          <p className="text-sm font-bold" style={{ fontFamily: "var(--font-geist-mono)", color: "#0EA5E9" }}>{campaign.openRate.toFixed(1)}%</p>
+          <p className="text-sm font-bold" style={{ fontFamily: "var(--font-geist-mono)", color: "#FBBF24" }}>{campaign.openRate.toFixed(1)}%</p>
           <p className="text-[9px]" style={{ color: "var(--nos-text-muted)" }}>open</p>
         </td>
         <td className="py-3 pr-4 text-center">
-          <p className="text-sm font-bold" style={{ fontFamily: "var(--font-geist-mono)", color: "#22C55E" }}>{campaign.replyRate.toFixed(1)}%</p>
+          <p className="text-sm font-bold" style={{ fontFamily: "var(--font-geist-mono)", color: "var(--nos-positive)" }}>{campaign.replyRate.toFixed(1)}%</p>
           <p className="text-[9px]" style={{ color: "var(--nos-text-muted)" }}>reply</p>
         </td>
         <td className="py-3 pr-4 text-center">
@@ -127,19 +129,19 @@ function CampaignRow({ campaign }: { campaign: EmailCampaign }) {
                   <div className="flex items-center gap-6 mb-4 text-xs">
                     {[
                       { label: "Leads", value: fmtNum(campaign.leads), color: "var(--nos-text-secondary)" },
-                      { label: "Completed", value: fmtNum(campaign.completed), color: "#22C55E" },
-                      { label: "Bounced", value: fmtNum(campaign.bounced), color: "#FBBF24" },
+                      { label: "Completed", value: fmtNum(campaign.completed), color: "var(--nos-positive)" },
+                      { label: "Bounced", value: fmtNum(campaign.bounced), color: "var(--nos-signal-warm)" },
                       { label: "Unsubscribed", value: fmtNum(campaign.unsubscribed), color: "var(--nos-negative)" },
                     ].map((s) => (
                       <div key={s.label}>
-                        <p className="text-[9px] text-label-caps mb-0.5" style={{ color: "var(--nos-text-muted)" }}>{s.label}</p>
+                        <p className="text-label-caps mb-0.5" style={{ color: "var(--nos-text-muted)" }}>{s.label}</p>
                         <p className="font-bold" style={{ color: s.color }}>{s.value}</p>
                       </div>
                     ))}
                   </div>
 
                   {/* Sequence steps */}
-                  <p className="text-[9px] text-label-caps mb-2" style={{ color: "var(--nos-text-muted)" }}>Sequence performance by step</p>
+                  <p className="text-label-caps mb-2" style={{ color: "var(--nos-text-muted)" }}>Sequence performance by step</p>
                   <div className="space-y-2">
                     {campaign.sequenceSteps.map((step, i) => (
                       <div key={step.step} className="grid gap-2" style={{ gridTemplateColumns: "60px 1fr 1fr 60px 60px" }}>
@@ -148,20 +150,20 @@ function CampaignRow({ campaign }: { campaign: EmailCampaign }) {
                         <div>
                           <div className="flex items-center justify-between mb-0.5">
                             <span className="text-[9px]" style={{ color: "var(--nos-text-muted)" }}>Opened</span>
-                            <span className="text-[9px] font-semibold" style={{ color: "#0EA5E9" }}>{step.openRate.toFixed(1)}%</span>
+                            <span className="text-[9px] font-semibold" style={{ color: "#FBBF24" }}>{step.openRate.toFixed(1)}%</span>
                           </div>
                           <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "var(--nos-bg-surface)" }}>
-                            <div className="h-full rounded-full" style={{ width: `${step.openRate}%`, background: "#0EA5E9", opacity: 0.8 }} />
+                            <div className="h-full rounded-full" style={{ width: `${step.openRate}%`, background: "#FBBF24", opacity: 0.8 }} />
                           </div>
                         </div>
                         {/* Reply bar */}
                         <div>
                           <div className="flex items-center justify-between mb-0.5">
                             <span className="text-[9px]" style={{ color: "var(--nos-text-muted)" }}>Replied</span>
-                            <span className="text-[9px] font-semibold" style={{ color: "#22C55E" }}>{step.replyRate.toFixed(1)}%</span>
+                            <span className="text-[9px] font-semibold" style={{ color: "var(--nos-positive)" }}>{step.replyRate.toFixed(1)}%</span>
                           </div>
                           <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "var(--nos-bg-surface)" }}>
-                            <div className="h-full rounded-full" style={{ width: `${Math.min(step.replyRate * 6, 100)}%`, background: "#22C55E", opacity: 0.8 }} />
+                            <div className="h-full rounded-full" style={{ width: `${Math.min(step.replyRate * 6, 100)}%`, background: "var(--nos-positive)", opacity: 0.8 }} />
                           </div>
                         </div>
                         <span className="text-[10px] font-mono text-right pt-1" style={{ color: "var(--nos-text-secondary)" }}>{fmtNum(step.sent)}</span>
@@ -172,7 +174,7 @@ function CampaignRow({ campaign }: { campaign: EmailCampaign }) {
 
                   {/* Mini trend chart */}
                   <div className="mt-4">
-                    <p className="text-[9px] text-label-caps mb-2" style={{ color: "var(--nos-text-muted)" }}>Last 7 days activity</p>
+                    <p className="text-label-caps mb-2" style={{ color: "var(--nos-text-muted)" }}>Last 7 days activity</p>
                     <div style={{ height: 80 }}>
                       <ResponsiveContainer width="100%" height={80}>
                         <AreaChart data={campaign.trend} margin={{ top: 2, right: 4, left: -20, bottom: 0 }}>
@@ -180,11 +182,12 @@ function CampaignRow({ campaign }: { campaign: EmailCampaign }) {
                           <YAxis hide />
                           <Tooltip content={<ChartTip />} />
                           <Area type="monotone" dataKey="sent" name="Sent" stroke="#0EA5E9" fill="rgba(14,165,233,0.1)" strokeWidth={1.5} dot={false} isAnimationActive={false} />
-                          <Area type="monotone" dataKey="opens" name="Opens" stroke="#22C55E" fill="rgba(34,197,94,0.08)" strokeWidth={1.5} dot={false} isAnimationActive={false} />
-                          <Area type="monotone" dataKey="replies" name="Replies" stroke="#A78BFA" fill="rgba(167,139,250,0.08)" strokeWidth={1.5} dot={false} isAnimationActive={false} />
+                          <Area type="monotone" dataKey="opens" name="Opens" stroke="#FBBF24" fill="rgba(251,191,36,0.08)" strokeWidth={1.5} dot={false} isAnimationActive={false} />
+                          <Area type="monotone" dataKey="replies" name="Replies" stroke="var(--nos-positive)" fill="rgba(52,211,153,0.08)" strokeWidth={1.5} dot={false} isAnimationActive={false} />
                         </AreaChart>
                       </ResponsiveContainer>
                     </div>
+                    <ChartAxisLabels xLabel="Date" yLabel="Emails sent / opened / replied" className="mt-1" />
                   </div>
                 </div>
               </motion.div>
@@ -199,9 +202,9 @@ function CampaignRow({ campaign }: { campaign: EmailCampaign }) {
 // ── Inbox health card ──────────────────────────────────────────────────────
 function InboxHealthCard({ inbox }: { inbox: InboxHealth }) {
   const statusCfg = {
-    healthy:  { color: "#22C55E", label: "Healthy",  icon: <Shield size={11} /> },
-    warming:  { color: "#FBBF24", label: "Warming",  icon: <Flame size={11} /> },
-    "at-risk":{ color: "#FF4455", label: "At Risk",  icon: <AlertTriangle size={11} /> },
+    healthy:  { color: "var(--nos-positive)", label: "Healthy",  icon: <Shield size={11} /> },
+    warming:  { color: "var(--nos-signal-warm)", label: "Warming",  icon: <Flame size={11} /> },
+    "at-risk":{ color: "var(--nos-negative)", label: "At Risk",  icon: <AlertTriangle size={11} /> },
   }[inbox.status];
 
   return (
@@ -217,7 +220,7 @@ function InboxHealthCard({ inbox }: { inbox: InboxHealth }) {
       {/* Score gauges */}
       <div className="space-y-2">
         {[
-          { label: "Deliverability", value: inbox.deliverabilityScore, color: "#22C55E" },
+          { label: "Deliverability", value: inbox.deliverabilityScore, color: "var(--nos-positive)" },
           { label: "Warmup Score",   value: inbox.warmupScore,        color: "#0EA5E9" },
         ].map((g) => (
           <div key={g.label}>
@@ -235,7 +238,7 @@ function InboxHealthCard({ inbox }: { inbox: InboxHealth }) {
       {/* Meta row */}
       <div className="flex items-center justify-between mt-2.5 text-[9px]" style={{ color: "var(--nos-text-muted)" }}>
         <span>Spam score: <strong style={{ color: inbox.spamScore > 3 ? "var(--nos-negative)" : "var(--nos-positive)" }}>{inbox.spamScore.toFixed(1)}</strong></span>
-        <span><Flame size={9} className="inline mr-0.5" style={{ color: "#FBBF24" }} />{inbox.daysWarmedUp}d warmed</span>
+        <span><Flame size={9} className="inline mr-0.5" style={{ color: "var(--nos-signal-warm)" }} />{inbox.daysWarmedUp}d warmed</span>
       </div>
     </div>
   );
@@ -266,13 +269,14 @@ function EmailTab() {
               <YAxis tick={{ fill: "var(--nos-text-muted)", fontSize: 10 }} tickLine={false} axisLine={false} tickFormatter={(v) => fmtNum(v)} />
               <Tooltip content={<ChartTip />} />
               <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11, color: "var(--nos-text-muted)" }} />
-              <Area type="monotone" dataKey="sent"        name="Sent"         stroke="#0EA5E9" fill="rgba(14,165,233,0.12)"  strokeWidth={2}   dot={false} isAnimationActive={false} />
-              <Area type="monotone" dataKey="opens"       name="Total Opens"  stroke="#FBBF24" fill="rgba(251,191,36,0.08)"  strokeWidth={1.5} dot={false} isAnimationActive={false} />
-              <Area type="monotone" dataKey="uniqueOpens" name="Unique Opens" stroke="#22C55E" fill="rgba(34,197,94,0.07)"   strokeWidth={1.5} dot={false} isAnimationActive={false} />
-              <Area type="monotone" dataKey="replies"     name="Replies"      stroke="#A78BFA" fill="rgba(167,139,250,0.07)" strokeWidth={1.5} dot={false} isAnimationActive={false} />
+              <Area type="monotone" dataKey="sent"        name="Sent"         stroke="#0EA5E9"                  fill="rgba(14,165,233,0.12)"   strokeWidth={2}   dot={false} isAnimationActive={false} />
+              <Area type="monotone" dataKey="opens"       name="Total Opens"  stroke="#FBBF24"                  fill="rgba(251,191,36,0.08)"   strokeWidth={1.5} dot={false} isAnimationActive={false} />
+              <Area type="monotone" dataKey="uniqueOpens" name="Unique Opens" stroke="#F97316"                  fill="rgba(249,115,22,0.07)"   strokeWidth={1.5} dot={false} isAnimationActive={false} />
+              <Area type="monotone" dataKey="replies"     name="Replies"      stroke="var(--nos-positive)"      fill="rgba(52,211,153,0.07)"   strokeWidth={1.5} dot={false} isAnimationActive={false} />
             </AreaChart>
           </ResponsiveContainer>
         </div>
+        <ChartAxisLabels xLabel="Date" yLabel="Campaign volume (sent, opens, replies)" />
       </DashboardCard>
 
       {/* Two funnels side by side */}
@@ -283,7 +287,16 @@ function EmailTab() {
           subtitle="Contacted → Opened → Clicked → Replied → Meetings → Opps"
           info="Step-by-step email funnel showing how prospects convert through each engagement stage. Each row shows absolute count and conversion rate vs. the previous step."
         >
-          <div className="mt-4 space-y-1.5">
+          {/* Color legend */}
+          <div className="flex flex-wrap items-center gap-3 mt-3 mb-2">
+            {outreach.emailFunnel.map((step) => (
+              <div key={step.stage} className="flex items-center gap-1">
+                <span className="w-2 h-2 rounded-full shrink-0" style={{ background: step.color }} />
+                <span className="text-[9px] font-medium" style={{ color: "var(--nos-text-muted)" }}>{step.stage}</span>
+              </div>
+            ))}
+          </div>
+          <div className="mt-1 space-y-1.5">
             {outreach.emailFunnel.map((step, i) => {
               const maxW = outreach.emailFunnel[0].count;
               const barPct = (step.count / maxW) * 100;
@@ -323,7 +336,16 @@ function EmailTab() {
           subtitle="Deal stages · Pipeline value · Deal count"
           info="CRM pipeline funnel showing deal value at each stage. The funnel shape visualises how opportunities narrow from top-of-funnel to close."
         >
-          <div className="mt-3 flex gap-4">
+          {/* Color legend */}
+          <div className="flex flex-wrap items-center gap-3 mt-3 mb-1">
+            {outreach.crmPipelineFunnel.map((stage) => (
+              <div key={stage.stage} className="flex items-center gap-1">
+                <span className="w-2 h-2 rounded-sm shrink-0" style={{ background: stage.color }} />
+                <span className="text-[9px] font-medium" style={{ color: "var(--nos-text-muted)" }}>{stage.stage}</span>
+              </div>
+            ))}
+          </div>
+          <div className="flex gap-4">
             {/* Funnel shape */}
             <div className="flex-1 flex flex-col items-center gap-0.5">
               {outreach.crmPipelineFunnel.map((stage, i) => {
@@ -578,21 +600,21 @@ function LinkedInTab() {
           <div className="mt-3 space-y-4">
             <div className="flex items-center gap-4">
               <div className="text-center">
-                <p className="text-[34px] font-black leading-none" style={{ fontFamily: "var(--font-geist-mono)", color: "var(--nos-accent)" }}>
+                <p className="font-mono-metric leading-none" style={{ fontFamily: "var(--font-geist-mono)", color: "var(--nos-accent)" }}>
                   {sl.rhythm.prioritizedActions}
                 </p>
                 <p className="text-[10px] mt-0.5" style={{ color: "var(--nos-text-muted)" }}>Prioritized actions</p>
               </div>
               <div className="h-10 w-px" style={{ background: "var(--border)" }} />
               <div className="text-center">
-                <p className="text-[28px] font-bold leading-none" style={{ fontFamily: "var(--font-geist-mono)", color: "var(--nos-positive)" }}>
+                <p className="font-mono-metric leading-none" style={{ fontFamily: "var(--font-geist-mono)", color: "var(--nos-positive)" }}>
                   {sl.rhythm.completed}
                 </p>
                 <p className="text-[10px] mt-0.5" style={{ color: "var(--nos-text-muted)" }}>Completed</p>
               </div>
             </div>
             <div className="rounded-lg p-3 space-y-2" style={{ background: "var(--nos-bg-elevated)" }}>
-              <p className="text-[10px] font-semibold text-label-caps" style={{ color: "var(--nos-text-muted)" }}>Today & Overdue — prioritized by Conductor AI</p>
+              <p className="text-label-caps" style={{ color: "var(--nos-text-muted)" }}>Today & Overdue — prioritized by Conductor AI</p>
               {[
                 { icon: "📄", title: "DocuSign: Contract Viewed by Kylie Watson", sub: "Spectrocall · $300K · Negotiation", score: 82, time: "Today" },
                 { icon: "📊", title: "Cross-Sell: Health Score from Yellow to Green", sub: "Newsaro · $55K · Qualification", score: 80, time: "Today" },
@@ -633,6 +655,7 @@ function LinkedInTab() {
               </BarChart>
             </ResponsiveContainer>
           </div>
+          <ChartAxisLabels xLabel="Date" yLabel="Sales activities logged" />
         </DashboardCard>
       </div>
 
@@ -654,7 +677,7 @@ function LinkedInTab() {
         <DashboardCard title="Call Results" subtitle="Total calls logged this period" info="Cadence call analytics — total calls logged, voicemails, live conversations, and positive outcomes.">
           <div className="mt-2 flex gap-4">
             <div className="shrink-0">
-              <p className="text-[28px] font-black leading-none" style={{ fontFamily: "var(--font-geist-mono)", color: "var(--nos-text-primary)" }}>{fmtNum(cm.callsLogged)}</p>
+              <p className="font-mono-metric leading-none" style={{ fontFamily: "var(--font-geist-mono)", color: "var(--nos-text-primary)" }}>{fmtNum(cm.callsLogged)}</p>
               <div className="mt-1" style={{ height: 48 }}>
                 <ResponsiveContainer width={100} height={48}>
                   <AreaChart data={cm.callTrend.map((v, i) => ({ i, v }))} margin={{ top: 2, right: 0, left: 0, bottom: 0 }}>
@@ -689,7 +712,7 @@ function LinkedInTab() {
         <DashboardCard title="Email Results — Cadence & One-off" subtitle="Total emails sent this period" info="Email cadence analytics — personalization rate, open rate, click rate, and reply rate across all cadences and one-off sends.">
           <div className="mt-2 flex gap-4">
             <div className="shrink-0">
-              <p className="text-[28px] font-black leading-none" style={{ fontFamily: "var(--font-geist-mono)", color: "var(--nos-text-primary)" }}>{fmtNum(cm.emailsSent)}</p>
+              <p className="font-mono-metric leading-none" style={{ fontFamily: "var(--font-geist-mono)", color: "var(--nos-text-primary)" }}>{fmtNum(cm.emailsSent)}</p>
               <div className="mt-1" style={{ height: 48 }}>
                 <ResponsiveContainer width={100} height={48}>
                   <AreaChart data={cm.emailTrend.map((v, i) => ({ i, v }))} margin={{ top: 2, right: 0, left: 0, bottom: 0 }}>
@@ -731,15 +754,15 @@ function LinkedInTab() {
           <div className="mt-2 space-y-3">
             <div className="flex items-end gap-3">
               <div>
-                <p className="text-[28px] font-black leading-none" style={{ fontFamily: "var(--font-geist-mono)", color: "var(--nos-text-primary)" }}>{fmtNum(cm.totalTouches)}</p>
+                <p className="font-mono-metric leading-none" style={{ fontFamily: "var(--font-geist-mono)", color: "var(--nos-text-primary)" }}>{fmtNum(cm.totalTouches)}</p>
                 <p className="text-[10px]" style={{ color: "var(--nos-text-muted)" }}>Total Touches</p>
               </div>
               <div className="ml-auto text-right">
-                <p className="text-[20px] font-bold leading-none" style={{ fontFamily: "var(--font-geist-mono)", color: "var(--nos-positive)" }}>{fmtNum(cm.totalMeetings)}</p>
+                <p className="text-2xl font-bold leading-none" style={{ fontFamily: "var(--font-geist-mono)", color: "var(--nos-positive)" }}>{fmtNum(cm.totalMeetings)}</p>
                 <p className="text-[9px]" style={{ color: "var(--nos-text-muted)" }}>Meetings <span style={{ color: "var(--nos-positive)" }}>+{cm.meetingChangePct}%</span></p>
               </div>
               <div className="text-right">
-                <p className="text-[20px] font-bold leading-none" style={{ fontFamily: "var(--font-geist-mono)", color: "var(--nos-accent)" }}>{cm.effectivenessScore}</p>
+                <p className="text-2xl font-bold leading-none" style={{ fontFamily: "var(--font-geist-mono)", color: "var(--nos-accent)" }}>{cm.effectivenessScore}</p>
                 <p className="text-[9px]" style={{ color: "var(--nos-text-muted)" }}>Eff. Score <span style={{ color: "var(--nos-accent)" }}>+{cm.effectivenessChangePct}%</span></p>
               </div>
             </div>
@@ -779,7 +802,7 @@ function LinkedInTab() {
         {/* LinkedIn Results */}
         <DashboardCard title="LinkedIn Results" subtitle="LinkedIn completed steps" info="LinkedIn-specific cadence step analytics — research, introductions, connection requests, and InMail activity.">
           <div className="mt-2">
-            <p className="text-[28px] font-black leading-none mb-3" style={{ fontFamily: "var(--font-geist-mono)", color: "#0A66C2" }}>{fmtNum(cm.linkedinSteps)}</p>
+            <p className="font-mono-metric leading-none mb-3" style={{ fontFamily: "var(--font-geist-mono)", color: "#0A66C2" }}>{fmtNum(cm.linkedinSteps)}</p>
             <div style={{ height: 120 }}>
               <ResponsiveContainer width="100%" height={120}>
                 <BarChart
@@ -803,6 +826,7 @@ function LinkedInTab() {
                 </BarChart>
               </ResponsiveContainer>
             </div>
+            <ChartAxisLabels xLabel="LinkedIn step type" yLabel="Completed steps" />
             <div className="space-y-1.5 mt-2">
               {[
                 { label: "LinkedIn Research", value: cm.linkedinResearch, chg: -28 },
@@ -953,11 +977,15 @@ type OutreachTab = "email" | "linkedin";
 interface ColdOutreachProps { tab?: OutreachTab; }
 
 export function ColdOutreach({ tab = "email" }: ColdOutreachProps) {
-  const { pipelineBridge } = useClientData();
+  const data = useClientData();
 
   return (
     <div className="space-y-6">
-      <PipelineBridge attributed={pipelineBridge.attributed} deals={pipelineBridge.deals} velocity={pipelineBridge.velocity} section="Cold Outreach" info="Pipeline influenced by cold outreach sequences — email and LinkedIn — in the selected period." />
+      <SectionTLDR tldr={data.outreach.tldr} />
+
+      {/* Phase 3 — Shift: Pipeline velocity + NPS */}
+      <PhaseSecondaryKPI phase={3} pair={data.narrativeIntel.phaseMetrics.phase3} />
+
       <SectionSubTabs tabs={OUTREACH_TABS} />
       <AnimatePresence mode="wait">
         <motion.div key={tab} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.12 }}>
