@@ -4,6 +4,17 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 type Theme = "dark" | "light";
 
+function applyTheme(t: Theme) {
+  const html = document.documentElement;
+  if (t === "light") {
+    html.classList.remove("dark");
+    html.classList.add("light");
+  } else {
+    html.classList.remove("light");
+    html.classList.add("dark");
+  }
+}
+
 interface ThemeContextValue {
   theme: Theme | undefined;
   setTheme: (theme: Theme) => void;
@@ -18,13 +29,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const stored = localStorage.getItem("theme");
     const initial: Theme = stored === "light" ? "light" : "dark";
     setThemeState(initial);
-    document.documentElement.classList.toggle("dark", initial === "dark");
+    applyTheme(initial);
   }, []);
 
   const setTheme = (next: Theme) => {
     setThemeState(next);
     localStorage.setItem("theme", next);
-    document.documentElement.classList.toggle("dark", next === "dark");
+    applyTheme(next);
   };
 
   return (

@@ -1,9 +1,11 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useClientData } from "@/lib/data";
 import { SectionTLDR } from "@/components/shared/SectionTLDR";
 import { GartnerQuadrant } from "@/components/charts/GartnerQuadrant";
+import { PositioningQuadrantDots } from "@/components/charts/PositioningQuadrantDots";
 import { TrendLine } from "@/components/charts/TrendLine";
 import { DashboardCard } from "@/components/shared/DashboardCard";
 import { TrendingUp, TrendingDown, Minus } from "lucide-react";
@@ -22,9 +24,12 @@ const trendIcon = (t: string) =>
   t === "down" ? <TrendingDown size={12} className="text-[var(--nos-negative)]" /> :
   <Minus size={12} className="text-[var(--nos-text-muted)]" />;
 
+type QuadrantView = "bars" | "dots";
+
 export function Positioning() {
   const data = useClientData();
   const { positioning } = data;
+  const [quadrantView, setQuadrantView] = useState<QuadrantView>("bars");
 
   const movementData = positioning.movementTimeline.map((p) => ({
     date: p.date,
@@ -39,9 +44,40 @@ export function Positioning() {
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
         <motion.div variants={itemVariants} className="lg:col-span-3">
           <DashboardCard
-            info="Maps your brand vs. competitors on market presence (x-axis) and narrative strength (y-axis). Your position in the Leaders quadrant indicates strong market narrative."
+            info="Maps your brand vs. competitors on market presence (x-axis) and narrative strength (y-axis). 'Bars' shows ranked bar comparison; 'Dots' shows the Gartner-style scatter plot."
           >
-            <GartnerQuadrant data={positioning.quadrant} />
+            {/* Bar / Dot toggle — same pattern as SEO/GEO tabs */}
+            <div className="flex items-center gap-1 mb-4 p-0.5 rounded-lg w-fit" style={{ background: "var(--nos-bg-elevated)" }}>
+              {(["bars", "dots"] as QuadrantView[]).map((v) => (
+                <button
+                  key={v}
+                  onClick={() => setQuadrantView(v)}
+                  className="relative px-3 py-1 rounded-md text-[11px] font-semibold capitalize transition-colors"
+                  style={{
+                    background: quadrantView === v ? "var(--nos-bg-card)" : "transparent",
+                    color: quadrantView === v ? "var(--nos-text-primary)" : "var(--nos-text-muted)",
+                    boxShadow: quadrantView === v ? "0 1px 3px rgba(0,0,0,0.2)" : "none",
+                  }}
+                >
+                  {v === "bars" ? "Bars" : "Dots"}
+                </button>
+              ))}
+            </div>
+
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={quadrantView}
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -4 }}
+                transition={{ duration: 0.15 }}
+              >
+                {quadrantView === "bars"
+                  ? <GartnerQuadrant data={positioning.quadrant} />
+                  : <PositioningQuadrantDots data={positioning.quadrant} />
+                }
+              </motion.div>
+            </AnimatePresence>
           </DashboardCard>
         </motion.div>
 
@@ -118,7 +154,7 @@ export function Positioning() {
                     <td className="py-2.5 pr-4">
                       <div className="flex items-center gap-2">
                         <div className="w-16 h-1 bg-[var(--nos-bg-elevated)] rounded-full overflow-hidden">
-                          <div className="h-full rounded-full" style={{ width: `${comp.marketPresence}%`, background: "var(--nos-ch-search)" }} />
+                          <div className="h-full rounded-full" style={{ width: `${comp.marketPresence}%`, background: "#F59E0B" }} />
                         </div>
                         <span className="text-xs text-[var(--nos-text-secondary)]">{comp.marketPresence}</span>
                       </div>

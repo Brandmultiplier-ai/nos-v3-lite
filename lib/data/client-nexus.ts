@@ -1,6 +1,6 @@
 import type { ClientDataByRange, ClientData } from "./types";
 import { makeNexusBrand } from "./brand-builders";
-import { createSparklineFactory } from "./sparkline";
+import { createSparklineFactory, buildTrendSeries } from "./sparkline";
 
 function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
   const mult = range === "7d" ? 0.23 : range === "30d" ? 1 : 3.1;
@@ -15,7 +15,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
   };
 
   const dates = generateDates(days > 30 ? 24 : days > 7 ? 12 : 7);
-  const spark = createSparklineFactory(80, (i) => Math.sin(i * 0.9) * 20);
+  const spark = createSparklineFactory(80, 20);
 
   return {
     meta: {
@@ -26,14 +26,14 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
       channels: ["linkedin", "website", "email", "search"],
     },
     kpis: {
-      cac: { value: 1240, change: -12, sparkline: spark(), prefix: "$" },
-      pipeline: { value: Math.round(840000 * mult), change: 18, sparkline: spark(), prefix: "$" },
-      dealVelocity: { value: 34, change: -8, sparkline: spark(), suffix: "d" },
-      dealsCreated: { value: Math.round(14 * mult), change: 22, sparkline: spark() },
-      closedWon: { value: Math.round(4 * mult), change: 15, sparkline: spark() },
-      attributedRevenue: { value: Math.round(210000 * mult), change: 31, sparkline: spark(), prefix: "$" },
-      ltv: { value: 28400, change: 9, sparkline: spark(), prefix: "$" },
-      avgDealSize: { value: Math.round(52000 * (mult > 1 ? 1 : mult + 0.8)), change: 6, sparkline: spark(), prefix: "$" },
+      cac: { value: range === "7d" ? 1380 : range === "30d" ? 1240 : 1090, change: range === "7d" ? -4 : range === "30d" ? -12 : -19, sparkline: spark(), prefix: "$" },
+      pipeline: { value: Math.round(840000 * mult), change: range === "7d" ? 9 : range === "30d" ? 18 : 31, sparkline: spark(), prefix: "$" },
+      dealVelocity: { value: range === "7d" ? 40 : range === "30d" ? 34 : 27, change: range === "7d" ? -2 : range === "30d" ? -8 : -16, sparkline: spark(), suffix: "d" },
+      dealsCreated: { value: Math.round(14 * mult), change: range === "7d" ? 8 : range === "30d" ? 22 : 38, sparkline: spark() },
+      closedWon: { value: Math.round(4 * mult), change: range === "7d" ? 4 : range === "30d" ? 15 : 28, sparkline: spark() },
+      attributedRevenue: { value: Math.round(210000 * mult), change: range === "7d" ? 12 : range === "30d" ? 31 : 48, sparkline: spark(), prefix: "$" },
+      ltv: { value: range === "7d" ? 26800 : range === "30d" ? 28400 : 31600, change: range === "7d" ? 3 : range === "30d" ? 9 : 17, sparkline: spark(), prefix: "$" },
+      avgDealSize: { value: range === "7d" ? 46400 : range === "30d" ? 52000 : 58600, change: range === "7d" ? 2 : range === "30d" ? 6 : 13, sparkline: spark(), prefix: "$" },
     },
     signalTimeline: dates.map((date, i) => ({
       date,
@@ -234,14 +234,8 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
       backlinks: { value: Math.round(1340 * mult), change: 21, sparkline: spark() },
       referringDomains: { value: Math.round(317 * mult), change: 99, sparkline: spark() },
       trafficValue: { value: Math.round(218000 * mult), change: 18, sparkline: spark(), prefix: "$" },
-      organicSessions: dates.map((date, i) => ({
-        date,
-        value: Math.round(3200 + i * 45 + Math.sin(i * 0.8) * 200),
-      })),
-      referringDomainsTrend: dates.map((date, i) => ({
-        date,
-        value: Math.round(220 + i * 4 + Math.sin(i * 0.6) * 18),
-      })),
+      organicSessions: buildTrendSeries(dates, 3200, 1, range),
+      referringDomainsTrend: buildTrendSeries(dates, 220, 2, range),
       keywordBuckets: [
         { bucket: "1-3", label: "#1–3", count: Math.round(17 * mult), change: 8 },
         { bucket: "4-10", label: "#4–10", count: Math.round(27 * mult), change: 5 },
@@ -274,7 +268,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
         { name: "Commercial", value: 44 },
         { name: "Transactional", value: 18 },
       ],
-      pipelineFromOrganic: { value: 128000, change: 24, sparkline: spark(), prefix: "$" },
+      pipelineFromOrganic: { value: Math.round(128000 * mult), change: range === "7d" ? 10 : range === "30d" ? 24 : 41, sparkline: spark(), prefix: "$" },
       geoEngines: [
         { engine: "ChatGPT", citations: 124, trend: [40, 55, 68, 82, 98, 110, 124] },
         { engine: "Perplexity", citations: 87, trend: [20, 32, 45, 58, 68, 78, 87] },
@@ -289,7 +283,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
         { topic: "Market", score: 69 },
         { topic: "Social Proof", score: 74 },
       ],
-      geoPipelineKPI: { value: 94000, change: 340, sparkline: spark(), prefix: "$" },
+      geoPipelineKPI: { value: Math.round(94000 * mult), change: range === "7d" ? 120 : range === "30d" ? 340 : 580, sparkline: spark(), prefix: "$" },
     },
     website: {
       tldr: {
@@ -487,29 +481,26 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
           id: "exp1",
           name: "CTA copy: 'Get Started' vs 'See Your Pipeline'",
           status: "won",
-          daysRunning: 54,
-          visitors: 25308,
-          baseline: { label: "Original", conversions: 397, visitors: 12586, conversionRate: 3.15 },
-          variation: { label: "Variation #1", conversions: 525, visitors: 12722, conversionRate: 4.13, improvement: 30.83 },
-          significance: 97,
+          daysRunning: range === "7d" ? 12 : range === "30d" ? 54 : 148,
+          visitors: Math.round(25308 * mult),
+          baseline: { label: "Original", conversions: Math.round(397 * mult), visitors: Math.round(12586 * mult), conversionRate: 3.15 },
+          variation: { label: "Variation #1", conversions: Math.round(525 * mult), visitors: Math.round(12722 * mult), conversionRate: 4.13, improvement: 30.83 },
+          significance: range === "7d" ? 72 : range === "30d" ? 97 : 99,
           significanceCurve: [0,2,4,7,11,16,22,28,34,40,46,52,58,64,70,74,78,82,86,89,92,94,95,96,97].map((v, i) => ({ day: i * 2, value: v })),
         },
         {
           id: "exp2",
           name: "Hero headline: Product-led vs Narrative-led",
           status: "running",
-          daysRunning: 22,
-          visitors: 8412,
-          baseline: { label: "Original", conversions: 134, visitors: 4188, conversionRate: 3.2 },
-          variation: { label: "Narrative headline", conversions: 148, visitors: 4224, conversionRate: 3.5, improvement: 9.4 },
-          significance: 62,
+          daysRunning: range === "7d" ? 8 : range === "30d" ? 22 : 68,
+          visitors: Math.round(8412 * mult),
+          baseline: { label: "Original", conversions: Math.round(134 * mult), visitors: Math.round(4188 * mult), conversionRate: 3.2 },
+          variation: { label: "Narrative headline", conversions: Math.round(148 * mult), visitors: Math.round(4224 * mult), conversionRate: 3.5, improvement: 9.4 },
+          significance: range === "7d" ? 38 : range === "30d" ? 62 : 81,
           significanceCurve: [0,1,3,6,9,12,16,20,24,28,34,40,48,54,60,66,70,73,74,75,76,77,78].map((v, i) => ({ day: i, value: v })),
         },
       ],
-      blogPageviewsTrend: dates.map((date, i) => ({
-        date,
-        value: Math.round(3200 + i * 80 + Math.sin(i * 0.6) * 400),
-      })),
+      blogPageviewsTrend: buildTrendSeries(dates, 3200, 3, range),
       // ── Newsletter (Beehiiv) ──
       activeSubscribers: { value: Math.round(4200 * mult), change: 18, sparkline: spark() },
       openRate: { value: 41, change: 3, sparkline: spark() },
@@ -557,12 +548,12 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
           { title: "Plan Q3 outreach capacity", description: "At current reply-to-opportunity conversion rates, adding 20% more contact volume would generate an estimated $56k additional pipeline next quarter.", priority: "medium", cta: "Plan capacity" },
         ],
       },
-      emailPipeline: { value: Math.round(280000 * mult), change: 26, sparkline: spark(), prefix: "$" },
-      totalSent: { value: Math.round(46200 * mult), change: 18, sparkline: spark() },
-      openRate: { value: 59.2, change: 4, sparkline: spark() },
+      emailPipeline: { value: Math.round(280000 * mult), change: range === "7d" ? 10 : range === "30d" ? 26 : 44, sparkline: spark(), prefix: "$" },
+      totalSent: { value: Math.round(46200 * mult), change: range === "7d" ? 7 : range === "30d" ? 18 : 32, sparkline: spark() },
+      openRate: { value: range === "7d" ? 56.8 : range === "30d" ? 59.2 : 62.1, change: range === "7d" ? 1 : range === "30d" ? 4 : 8, sparkline: spark() },
       clickRate: { value: 0, change: 0, sparkline: spark() },
-      replyRate: { value: 4.1, change: 1, sparkline: spark() },
-      opportunitiesCount: { value: Math.round(43 * mult), change: 22, sparkline: spark() },
+      replyRate: { value: range === "7d" ? 3.6 : range === "30d" ? 4.1 : 4.9, change: range === "7d" ? 0 : range === "30d" ? 1 : 3, sparkline: spark() },
+      opportunitiesCount: { value: Math.round(43 * mult), change: range === "7d" ? 9 : range === "30d" ? 22 : 38, sparkline: spark() },
       masterTrend: Array.from({ length: 14 }, (_, i) => {
         const base = Math.round(800 + Math.sin(i * 0.5) * 300 + i * 40);
         return {
@@ -807,7 +798,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
       ],
     },
     narrativeIntel: {
-      nri: { current: 4, target: 4, tier: "DFY", trend: "up" },
+      nri: { current: 4.2, target: 4, tier: "DFY", trend: "up" },
       phaseMetrics: {
         phase1: {
           growthMetric: { name: "Market perception", value: "+18%", change: 18 },
@@ -835,7 +826,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
       section: "Narrative Intel",
       attributed: Math.round(840000 * mult),
       deals: Math.round(4 * mult),
-      velocity: 34,
+      velocity: range === "7d" ? 40 : range === "30d" ? 34 : 27,
     },
   };
 }

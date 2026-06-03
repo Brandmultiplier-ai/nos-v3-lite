@@ -1,5 +1,5 @@
 import type { ClientDataByRange, ClientData } from "./types";
-import { createSparklineFactory } from "./sparkline";
+import { createSparklineFactory, buildTrendSeries } from "./sparkline";
 import { makeMeridianBrand } from "./brand-builders";
 
 function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
@@ -15,7 +15,7 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
   };
 
   const dates = generateDates(days > 30 ? 24 : days > 7 ? 12 : 7);
-  const spark = createSparklineFactory(60, (i) => Math.cos(i * 0.8) * 20, 12);
+  const spark = createSparklineFactory(60, 20, 12);
 
   return {
     meta: {
@@ -26,14 +26,14 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
       channels: ["linkedin", "instagram", "facebook", "newsletter", "email"],
     },
     kpis: {
-      cac: { value: 680, change: -6, sparkline: spark(), prefix: "$" },
-      pipeline: { value: Math.round(310000 * mult), change: 12, sparkline: spark(), prefix: "$" },
-      dealVelocity: { value: 21, change: -14, sparkline: spark(), suffix: "d" },
-      dealsCreated: { value: Math.round(22 * mult), change: 18, sparkline: spark() },
-      closedWon: { value: Math.round(7 * mult), change: 34, sparkline: spark() },
-      attributedRevenue: { value: Math.round(78000 * mult), change: 28, sparkline: spark(), prefix: "$" },
-      ltv: { value: 14200, change: 14, sparkline: spark(), prefix: "$" },
-      avgDealSize: { value: 11000, change: 8, sparkline: spark(), prefix: "$" },
+      cac: { value: range === "7d" ? 760 : range === "30d" ? 680 : 590, change: range === "7d" ? -2 : range === "30d" ? -6 : -14, sparkline: spark(), prefix: "$" },
+      pipeline: { value: Math.round(310000 * mult), change: range === "7d" ? 5 : range === "30d" ? 12 : 22, sparkline: spark(), prefix: "$" },
+      dealVelocity: { value: range === "7d" ? 24 : range === "30d" ? 21 : 17, change: range === "7d" ? -5 : range === "30d" ? -14 : -24, sparkline: spark(), suffix: "d" },
+      dealsCreated: { value: Math.round(22 * mult), change: range === "7d" ? 6 : range === "30d" ? 18 : 34, sparkline: spark() },
+      closedWon: { value: Math.round(7 * mult), change: range === "7d" ? 12 : range === "30d" ? 34 : 52, sparkline: spark() },
+      attributedRevenue: { value: Math.round(78000 * mult), change: range === "7d" ? 10 : range === "30d" ? 28 : 44, sparkline: spark(), prefix: "$" },
+      ltv: { value: range === "7d" ? 13400 : range === "30d" ? 14200 : 15900, change: range === "7d" ? 5 : range === "30d" ? 14 : 23, sparkline: spark(), prefix: "$" },
+      avgDealSize: { value: range === "7d" ? 9800 : range === "30d" ? 11000 : 12600, change: range === "7d" ? 3 : range === "30d" ? 8 : 16, sparkline: spark(), prefix: "$" },
     },
     signalTimeline: dates.map((date, i) => ({
       date,
@@ -230,14 +230,8 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
       backlinks: { value: Math.round(620 * mult), change: 14, sparkline: spark() },
       referringDomains: { value: Math.round(188 * mult), change: 42, sparkline: spark() },
       trafficValue: { value: Math.round(94000 * mult), change: 12, sparkline: spark(), prefix: "$" },
-      organicSessions: dates.map((date, i) => ({
-        date,
-        value: Math.round(1800 + i * 22 + Math.sin(i * 0.7) * 120),
-      })),
-      referringDomainsTrend: dates.map((date, i) => ({
-        date,
-        value: Math.round(140 + i * 3 + Math.cos(i * 0.5) * 12),
-      })),
+      organicSessions: buildTrendSeries(dates, 1800, 4, range),
+      referringDomainsTrend: buildTrendSeries(dates, 140, 5, range),
       keywordBuckets: [
         { bucket: "1-3", label: "#1–3", count: Math.round(8 * mult), change: 3 },
         { bucket: "4-10", label: "#4–10", count: Math.round(14 * mult), change: 2 },
@@ -269,7 +263,7 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
         { name: "Commercial", value: 38 },
         { name: "Transactional", value: 20 },
       ],
-      pipelineFromOrganic: { value: 48000, change: 16, sparkline: spark(), prefix: "$" },
+      pipelineFromOrganic: { value: Math.round(48000 * mult), change: range === "7d" ? 7 : range === "30d" ? 16 : 30, sparkline: spark(), prefix: "$" },
       geoEngines: [
         { engine: "ChatGPT", citations: 68, trend: [18, 28, 38, 48, 56, 62, 68] },
         { engine: "Perplexity", citations: 42, trend: [10, 18, 24, 30, 36, 39, 42] },
@@ -284,7 +278,7 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
         { topic: "Market", score: 58 },
         { topic: "Social Proof", score: 82 },
       ],
-      geoPipelineKPI: { value: 38000, change: 220, sparkline: spark(), prefix: "$" },
+      geoPipelineKPI: { value: Math.round(38000 * mult), change: range === "7d" ? 80 : range === "30d" ? 220 : 420, sparkline: spark(), prefix: "$" },
     },
     website: {
       tldr: {
@@ -470,22 +464,24 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
       blogExperiments: [
         {
           id: "exp1", name: "Instagram link-in-bio: Blog post vs. Email capture",
-          status: "won", daysRunning: 42, visitors: 18400,
-          baseline: { label: "Blog Post Link", conversions: 264, visitors: 9180, conversionRate: 2.88 },
-          variation: { label: "Email Capture Page", conversions: 388, visitors: 9220, conversionRate: 4.21, improvement: 46.2 },
-          significance: 99,
+          status: "won", daysRunning: range === "7d" ? 10 : range === "30d" ? 42 : 118,
+          visitors: Math.round(18400 * mult),
+          baseline: { label: "Blog Post Link", conversions: Math.round(264 * mult), visitors: Math.round(9180 * mult), conversionRate: 2.88 },
+          variation: { label: "Email Capture Page", conversions: Math.round(388 * mult), visitors: Math.round(9220 * mult), conversionRate: 4.21, improvement: 46.2 },
+          significance: range === "7d" ? 68 : range === "30d" ? 99 : 99,
           significanceCurve: [0,3,7,12,18,25,33,41,50,58,66,73,79,84,88,91,94,96,97,98,99,99,99].map((v, i) => ({ day: i * 2, value: v })),
         },
         {
           id: "exp2", name: "Facebook ad copy: Emotional vs. Stats-led",
-          status: "running", daysRunning: 18, visitors: 6200,
-          baseline: { label: "Stats-Led", conversions: 96, visitors: 3100, conversionRate: 3.1 },
-          variation: { label: "Emotional Story", conversions: 106, visitors: 3100, conversionRate: 3.42, improvement: 10.3 },
-          significance: 58,
+          status: "running", daysRunning: range === "7d" ? 6 : range === "30d" ? 18 : 52,
+          visitors: Math.round(6200 * mult),
+          baseline: { label: "Stats-Led", conversions: Math.round(96 * mult), visitors: Math.round(3100 * mult), conversionRate: 3.1 },
+          variation: { label: "Emotional Story", conversions: Math.round(106 * mult), visitors: Math.round(3100 * mult), conversionRate: 3.42, improvement: 10.3 },
+          significance: range === "7d" ? 34 : range === "30d" ? 58 : 76,
           significanceCurve: [0,2,4,8,12,16,21,26,31,37,43,48,53,58,60,62,64,66,68].map((v, i) => ({ day: i, value: v })),
         },
       ],
-      blogPageviewsTrend: dates.map((date, i) => ({ date, value: Math.round(2400 + i * 60 + Math.sin(i * 0.5) * 280) })),
+      blogPageviewsTrend: buildTrendSeries(dates, 2400, 6, range),
       activeSubscribers: { value: Math.round(6800 * mult), change: 24, sparkline: spark() },
       openRate: { value: 44, change: 4, sparkline: spark() },
       clickRate: { value: 9.8, change: 1.2, sparkline: spark() },
@@ -526,11 +522,11 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
           { title: "Plan next quarter's outreach capacity", description: "At current conversion rates, a 25% increase in contact volume would generate an estimated $24k in additional quarterly pipeline.", priority: "medium", cta: "Plan capacity" },
         ],
       },
-      emailPipeline: { value: Math.round(95000 * mult), change: 18, sparkline: spark(), prefix: "$" },
+      emailPipeline: { value: Math.round(95000 * mult), change: range === "7d" ? 7 : range === "30d" ? 18 : 34, sparkline: spark(), prefix: "$" },
       totalSent: { value: Math.round(28400 * mult), change: 12, sparkline: spark() },
-      openRate: { value: 52.8, change: 3, sparkline: spark() },
+      openRate: { value: range === "7d" ? 50.2 : range === "30d" ? 52.8 : 55.4, change: range === "7d" ? 1 : range === "30d" ? 3 : 6, sparkline: spark() },
       clickRate: { value: 0, change: 0, sparkline: spark() },
-      replyRate: { value: 5.2, change: 1.4, sparkline: spark() },
+      replyRate: { value: range === "7d" ? 4.7 : range === "30d" ? 5.2 : 6.1, change: range === "7d" ? 0 : range === "30d" ? 1.4 : 3.2, sparkline: spark() },
       opportunitiesCount: { value: Math.round(28 * mult), change: 16, sparkline: spark() },
       masterTrend: Array.from({ length: 14 }, (_, i) => {
         const base = Math.round(500 + Math.sin(i * 0.5) * 180 + i * 25);
@@ -762,7 +758,7 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
       ],
     },
     narrativeIntel: {
-      nri: { current: 3, target: 3, tier: "DWY", trend: "stable" },
+      nri: { current: 3.4, target: 3, tier: "DWY", trend: "stable" },
       phaseMetrics: {
         phase1: {
           growthMetric: { name: "Market perception", value: "+12%", change: 12 },
@@ -790,7 +786,7 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
       section: "Narrative Intel",
       attributed: Math.round(310000 * mult),
       deals: Math.round(7 * mult),
-      velocity: 21,
+      velocity: range === "7d" ? 24 : range === "30d" ? 21 : 17,
     },
   };
 }

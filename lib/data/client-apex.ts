@@ -1,6 +1,6 @@
 import type { ClientDataByRange, ClientData } from "./types";
 import { makeApexBrand } from "./brand-builders";
-import { createSparklineFactory } from "./sparkline";
+import { createSparklineFactory, buildTrendSeries } from "./sparkline";
 
 function makeApex(range: "7d" | "30d" | "90d"): ClientData {
   const mult = range === "7d" ? 0.23 : range === "30d" ? 1 : 3.1;
@@ -15,7 +15,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
   };
 
   const dates = generateDates(days > 30 ? 24 : days > 7 ? 12 : 7);
-  const spark = createSparklineFactory(70, (i) => Math.sin(i * 1.1) * 15, 10);
+  const spark = createSparklineFactory(70, 15, 10);
 
   return {
     meta: {
@@ -26,14 +26,14 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
       channels: ["linkedin", "email", "search"],
     },
     kpis: {
-      cac: { value: 3100, change: -4, sparkline: spark(), prefix: "$" },
-      pipeline: { value: Math.round(2100000 * mult), change: 9, sparkline: spark(), prefix: "$" },
-      dealVelocity: { value: 58, change: -3, sparkline: spark(), suffix: "d" },
-      dealsCreated: { value: Math.round(8 * mult), change: 14, sparkline: spark() },
-      closedWon: { value: Math.round(1.5 * mult), change: 19, sparkline: spark() },
-      attributedRevenue: { value: Math.round(540000 * mult), change: 22, sparkline: spark(), prefix: "$" },
-      ltv: { value: 148000, change: 7, sparkline: spark(), prefix: "$" },
-      avgDealSize: { value: 186000, change: 11, sparkline: spark(), prefix: "$" },
+      cac: { value: range === "7d" ? 3420 : range === "30d" ? 3100 : 2760, change: range === "7d" ? -1 : range === "30d" ? -4 : -10, sparkline: spark(), prefix: "$" },
+      pipeline: { value: Math.round(2100000 * mult), change: range === "7d" ? 4 : range === "30d" ? 9 : 17, sparkline: spark(), prefix: "$" },
+      dealVelocity: { value: range === "7d" ? 64 : range === "30d" ? 58 : 49, change: range === "7d" ? -1 : range === "30d" ? -3 : -8, sparkline: spark(), suffix: "d" },
+      dealsCreated: { value: Math.round(8 * mult), change: range === "7d" ? 5 : range === "30d" ? 14 : 26, sparkline: spark() },
+      closedWon: { value: Math.round(1.5 * mult), change: range === "7d" ? 8 : range === "30d" ? 19 : 34, sparkline: spark() },
+      attributedRevenue: { value: Math.round(540000 * mult), change: range === "7d" ? 8 : range === "30d" ? 22 : 38, sparkline: spark(), prefix: "$" },
+      ltv: { value: range === "7d" ? 143000 : range === "30d" ? 148000 : 158000, change: range === "7d" ? 2 : range === "30d" ? 7 : 14, sparkline: spark(), prefix: "$" },
+      avgDealSize: { value: range === "7d" ? 178000 : range === "30d" ? 186000 : 198000, change: range === "7d" ? 4 : range === "30d" ? 11 : 19, sparkline: spark(), prefix: "$" },
     },
     signalTimeline: dates.map((date, i) => ({
       date,
@@ -233,14 +233,8 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
       backlinks: { value: Math.round(4800 * mult), change: 35, sparkline: spark() },
       referringDomains: { value: Math.round(892 * mult), change: 128, sparkline: spark() },
       trafficValue: { value: Math.round(683000 * mult), change: 28, sparkline: spark(), prefix: "$" },
-      organicSessions: dates.map((date, i) => ({
-        date,
-        value: Math.round(5400 + i * 62 + Math.sin(i * 0.6) * 280),
-      })),
-      referringDomainsTrend: dates.map((date, i) => ({
-        date,
-        value: Math.round(680 + i * 8 + Math.sin(i * 0.7) * 30),
-      })),
+      organicSessions: buildTrendSeries(dates, 5400, 7, range),
+      referringDomainsTrend: buildTrendSeries(dates, 680, 8, range),
       keywordBuckets: [
         { bucket: "1-3", label: "#1–3", count: Math.round(118 * mult), change: 10 },
         { bucket: "4-10", label: "#4–10", count: Math.round(205 * mult), change: -10 },
@@ -273,7 +267,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         { name: "Commercial", value: 52 },
         { name: "Transactional", value: 16 },
       ],
-      pipelineFromOrganic: { value: 290000, change: 38, sparkline: spark(), prefix: "$" },
+      pipelineFromOrganic: { value: Math.round(290000 * mult), change: range === "7d" ? 14 : range === "30d" ? 38 : 62, sparkline: spark(), prefix: "$" },
       geoEngines: [
         { engine: "ChatGPT", citations: 88, trend: [22, 36, 52, 62, 72, 80, 88] },
         { engine: "Perplexity", citations: 54, trend: [12, 22, 32, 40, 46, 50, 54] },
@@ -288,7 +282,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         { topic: "Market", score: 76 },
         { topic: "Social Proof", score: 68 },
       ],
-      geoPipelineKPI: { value: 158000, change: 420, sparkline: spark(), prefix: "$" },
+      geoPipelineKPI: { value: Math.round(158000 * mult), change: range === "7d" ? 150 : range === "30d" ? 420 : 720, sparkline: spark(), prefix: "$" },
     },
     website: {
       tldr: {
@@ -476,22 +470,24 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
       blogExperiments: [
         {
           id: "exp1", name: "Enterprise landing page: Feature-list vs. CIO narrative",
-          status: "won", daysRunning: 68, visitors: 42800,
-          baseline: { label: "Feature List", conversions: 482, visitors: 21200, conversionRate: 2.27 },
-          variation: { label: "CIO Narrative", conversions: 728, visitors: 21600, conversionRate: 3.37, improvement: 48.4 },
-          significance: 99,
+          status: "won", daysRunning: range === "7d" ? 14 : range === "30d" ? 68 : 192,
+          visitors: Math.round(42800 * mult),
+          baseline: { label: "Feature List", conversions: Math.round(482 * mult), visitors: Math.round(21200 * mult), conversionRate: 2.27 },
+          variation: { label: "CIO Narrative", conversions: Math.round(728 * mult), visitors: Math.round(21600 * mult), conversionRate: 3.37, improvement: 48.4 },
+          significance: range === "7d" ? 78 : range === "30d" ? 99 : 99,
           significanceCurve: [0,4,9,15,22,30,38,47,56,64,72,79,84,88,92,94,96,97,98,99,99,99,99,99,99].map((v, i) => ({ day: i * 3, value: v })),
         },
         {
           id: "exp2", name: "Whitepaper CTA: 'Download Report' vs. 'Get the Benchmark'",
-          status: "running", daysRunning: 31, visitors: 14200,
-          baseline: { label: "Download Report", conversions: 224, visitors: 7080, conversionRate: 3.16 },
-          variation: { label: "Get the Benchmark", conversions: 256, visitors: 7120, conversionRate: 3.60, improvement: 13.8 },
-          significance: 74,
+          status: "running", daysRunning: range === "7d" ? 7 : range === "30d" ? 31 : 88,
+          visitors: Math.round(14200 * mult),
+          baseline: { label: "Download Report", conversions: Math.round(224 * mult), visitors: Math.round(7080 * mult), conversionRate: 3.16 },
+          variation: { label: "Get the Benchmark", conversions: Math.round(256 * mult), visitors: Math.round(7120 * mult), conversionRate: 3.60, improvement: 13.8 },
+          significance: range === "7d" ? 41 : range === "30d" ? 74 : 89,
           significanceCurve: [0,2,5,9,13,18,23,28,34,40,46,52,58,63,68,72,76,79,81,83,84,85,86].map((v, i) => ({ day: i * 1.5, value: v })),
         },
       ],
-      blogPageviewsTrend: dates.map((date, i) => ({ date, value: Math.round(5200 + i * 120 + Math.sin(i * 0.6) * 600) })),
+      blogPageviewsTrend: buildTrendSeries(dates, 5200, 9, range),
       activeSubscribers: { value: Math.round(4800 * mult), change: 14, sparkline: spark() },
       openRate: { value: 42, change: 2, sparkline: spark() },
       clickRate: { value: 10.4, change: 0.8, sparkline: spark() },
@@ -532,11 +528,11 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
           { title: "Plan next quarter outreach capacity expansion", description: "At current reply-to-opportunity rates, increasing contact volume by 30% would generate an estimated $252k in additional quarterly pipeline.", priority: "medium", cta: "Plan expansion" },
         ],
       },
-      emailPipeline: { value: Math.round(840000 * mult), change: 34, sparkline: spark(), prefix: "$" },
+      emailPipeline: { value: Math.round(840000 * mult), change: range === "7d" ? 12 : range === "30d" ? 34 : 58, sparkline: spark(), prefix: "$" },
       totalSent: { value: Math.round(62400 * mult), change: 28, sparkline: spark() },
-      openRate: { value: 63.4, change: 6, sparkline: spark() },
+      openRate: { value: range === "7d" ? 60.8 : range === "30d" ? 63.4 : 66.9, change: range === "7d" ? 2 : range === "30d" ? 6 : 11, sparkline: spark() },
       clickRate: { value: 0, change: 0, sparkline: spark() },
-      replyRate: { value: 6.8, change: 2.2, sparkline: spark() },
+      replyRate: { value: range === "7d" ? 6.1 : range === "30d" ? 6.8 : 7.8, change: range === "7d" ? 0 : range === "30d" ? 2.2 : 4.8, sparkline: spark() },
       opportunitiesCount: { value: Math.round(68 * mult), change: 38, sparkline: spark() },
       masterTrend: Array.from({ length: 14 }, (_, i) => {
         const base = Math.round(1200 + Math.sin(i * 0.5) * 400 + i * 60);
@@ -774,7 +770,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
       ],
     },
     narrativeIntel: {
-      nri: { current: 2, target: 2, tier: "DIY", trend: "up" },
+      nri: { current: 2.7, target: 2, tier: "DIY", trend: "up" },
       phaseMetrics: {
         phase1: {
           growthMetric: { name: "Market perception", value: "+6%", change: 6 },
@@ -802,7 +798,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
       section: "Narrative Intel",
       attributed: Math.round(2100000 * mult),
       deals: Math.round(1.5 * mult),
-      velocity: 58,
+      velocity: range === "7d" ? 64 : range === "30d" ? 58 : 49,
     },
   };
 }

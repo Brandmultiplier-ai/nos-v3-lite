@@ -1,7 +1,7 @@
 import type { BrandData } from "./types";
 import { createSparklineFactory } from "./sparkline";
 
-const spark = createSparklineFactory(70, (i) => Math.sin(i * 0.8) * 20);
+const spark = createSparklineFactory(70, 20);
 
 // ─── Nexus Labs ───────────────────────────────────────────────────
 export function makeNexusBrand(mult: number): BrandData {

@@ -34,12 +34,16 @@ export const TrendLine = memo(function TrendLine({
   xAxisLabel = "Date",
   yAxisLabel = "Value",
 }: TrendLineProps) {
+  const chartKey = data.length
+    ? `${data[0].date}-${data[data.length - 1].date}-${data[data.length - 1].value}-${data.length}`
+    : "empty";
+
   return (
     <div>
       <p className="text-sm font-semibold text-[var(--nos-text-primary)] mb-0.5">{title}</p>
       {subtitle && <p className="text-xs text-[var(--nos-text-muted)] mb-2">{subtitle}</p>}
       <div style={{ width: "100%", height }}>
-        <ResponsiveContainer width="100%" height={height}>
+        <ResponsiveContainer key={chartKey} width="100%" height={height}>
           <LineChart data={data} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
             <CartesianGrid strokeDasharray="4 4" stroke="var(--border)" vertical={false} />
             <XAxis

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useClientData } from "@/lib/data";
+import { useClientData, useDataKey } from "@/lib/data";
 import { KPICard } from "@/components/cards/KPICard";
 import { DashboardCard } from "@/components/shared/DashboardCard";
 import { SectionSubTabs } from "@/components/shared/SectionSubTabs";
@@ -292,12 +292,13 @@ function LinkedInTab() {
 }
 
 // ── Blog Tab (Optimizely) ─────────────────────────────────────────────────────
-function SignificanceCurve({ significanceCurve, significance, status }: ContentExperiment) {
+function SignificanceCurve({ id, significanceCurve, significance, status }: ContentExperiment) {
   const isWon = status === "won";
   const color = isWon ? "var(--nos-positive)" : significance >= 80 ? "var(--nos-signal-warm)" : "var(--nos-accent)";
+  const chartKey = `${id}-${significanceCurve.length}-${significanceCurve[significanceCurve.length - 1]?.value ?? 0}`;
   return (
     <div style={{ height: 120 }}>
-      <ResponsiveContainer width="100%" height={120}>
+      <ResponsiveContainer key={chartKey} width="100%" height={120}>
         <LineChart data={significanceCurve} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
           <CartesianGrid stroke="var(--border)" strokeDasharray="4 4" vertical={false} />
           <XAxis dataKey="day" tick={{ fill: "var(--nos-text-muted)", fontSize: 9 }} tickLine={false} axisLine={false} />
@@ -498,6 +499,7 @@ interface ContentMarketingProps { tab?: ContentTab; }
 
 export function ContentMarketing({ tab = "social" }: ContentMarketingProps) {
   const data = useClientData();
+  const dataKey = useDataKey();
 
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
@@ -510,7 +512,7 @@ export function ContentMarketing({ tab = "social" }: ContentMarketingProps) {
       <SectionSubTabs tabs={CONTENT_TABS} />
 
       <AnimatePresence mode="wait">
-        <motion.div key={tab} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.12 }}>
+        <motion.div key={`${tab}-${dataKey}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.12 }}>
           {tab === "social"     && <SocialTab />}
           {tab === "linkedin"   && <LinkedInTab />}
           {tab === "blog"       && <BlogTab />}

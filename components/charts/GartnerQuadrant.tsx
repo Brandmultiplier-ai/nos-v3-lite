@@ -65,7 +65,7 @@ export function GartnerQuadrant({ data }: GartnerQuadrantProps) {
           <span className="text-[10px]" style={{ color: "var(--nos-text-muted)" }}>Narrative Strength</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className="w-3 h-2 rounded-sm" style={{ background: "var(--nos-ch-search)" }} />
+          <span className="w-3 h-2 rounded-sm" style={{ background: "#F59E0B" }} />
           <span className="text-[10px]" style={{ color: "var(--nos-text-muted)" }}>Market Presence</span>
         </div>
       </div>
@@ -161,12 +161,12 @@ export function GartnerQuadrant({ data }: GartnerQuadrantProps) {
                       animate={{ width: `${point.x}%` }}
                       transition={{ duration: 0.7, ease: "easeOut", delay: i * 0.04 + 0.05 }}
                       className="h-full rounded-full"
-                      style={{ background: "var(--nos-ch-search)" }}
+                      style={{ background: "#F59E0B" }}
                     />
                   </div>
                   <span
                     className="text-[10px] font-bold w-7 text-right shrink-0 font-mono"
-                    style={{ color: isClient ? "var(--nos-ch-search)" : "var(--nos-text-secondary)" }}
+                    style={{ color: isClient ? "#F59E0B" : "var(--nos-text-secondary)" }}
                   >
                     {point.x}
                   </span>
