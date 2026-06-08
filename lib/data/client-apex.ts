@@ -26,14 +26,14 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
       channels: ["linkedin", "email", "search"],
     },
     kpis: {
-      cac: { value: range === "7d" ? 3420 : range === "30d" ? 3100 : 2760, change: range === "7d" ? -1 : range === "30d" ? -4 : -10, sparkline: spark(), prefix: "$" },
+      cac: { value: 165000, change: range === "7d" ? -1 : range === "30d" ? -4 : -10, sparkline: spark(), prefix: "$" },
       pipeline: { value: Math.round(2100000 * mult), change: range === "7d" ? 4 : range === "30d" ? 9 : 17, sparkline: spark(), prefix: "$" },
-      dealVelocity: { value: range === "7d" ? 64 : range === "30d" ? 58 : 49, change: range === "7d" ? -1 : range === "30d" ? -3 : -8, sparkline: spark(), suffix: "d" },
+      dealVelocity: { value: 58, change: range === "7d" ? -1 : range === "30d" ? -3 : -8, sparkline: spark(), suffix: "d" },
       dealsCreated: { value: Math.round(8 * mult), change: range === "7d" ? 5 : range === "30d" ? 14 : 26, sparkline: spark() },
-      closedWon: { value: Math.round(1.5 * mult), change: range === "7d" ? 8 : range === "30d" ? 19 : 34, sparkline: spark() },
+      closedWon: { value: Math.round(7 * mult), change: range === "7d" ? 8 : range === "30d" ? 19 : 34, sparkline: spark() },
       attributedRevenue: { value: Math.round(540000 * mult), change: range === "7d" ? 8 : range === "30d" ? 22 : 38, sparkline: spark(), prefix: "$" },
-      ltv: { value: range === "7d" ? 143000 : range === "30d" ? 148000 : 158000, change: range === "7d" ? 2 : range === "30d" ? 7 : 14, sparkline: spark(), prefix: "$" },
-      avgDealSize: { value: range === "7d" ? 178000 : range === "30d" ? 186000 : 198000, change: range === "7d" ? 4 : range === "30d" ? 11 : 19, sparkline: spark(), prefix: "$" },
+      ltv: { value: 446000, change: range === "7d" ? 2 : range === "30d" ? 7 : 14, sparkline: spark(), prefix: "$" },
+      avgDealSize: { value: 186000, change: range === "7d" ? 4 : range === "30d" ? 11 : 19, sparkline: spark(), prefix: "$" },
     },
     signalTimeline: dates.map((date, i) => ({
       date,
@@ -46,8 +46,8 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
     aiNarrative: range === "7d"
       ? "This week, two executive LinkedIn posts from Apex reached above-benchmark enterprise engagement. A CISO sequence launched Monday has already generated 5 positive replies in 4 days — above the expected 7-day rate. Enterprise search volume for 'IT infrastructure narrative' is spiking. Act on the intent surge this week."
       : range === "30d"
-      ? "Apex's LinkedIn thought leadership is generating the highest account engagement scores in the enterprise IT infrastructure category, with 78% of deal-influencing interactions traced to executive posts. Email sequences targeting CISOs have a 34% reply rate — 2.2× above industry benchmark. SEO is the fastest-growing pipeline channel with $290k attributed this quarter."
-      : "Over the quarter, narrative-driven pipeline for Apex grew 22% to $540k attributed revenue. LinkedIn executive posts have compounded into an authoritative brand signal in the CIO community. Email outreach is benefiting from this warm narrative foundation — CISO reply rates are consistently 2.2× benchmark. Search is emerging as a third significant pipeline source.",
+      ? "Apex's LinkedIn thought leadership is generating the highest account engagement scores in the enterprise IT infrastructure category, with 78% of deal-influencing interactions traced to executive posts. Email sequences targeting CISOs have a 21% reply rate — 2.2× above industry benchmark. SEO is the fastest-growing pipeline channel with $290k attributed this quarter."
+      : "Over the quarter, narrative-driven attributed revenue for Apex grew 22%, building on a ~$540k monthly baseline. LinkedIn executive posts have compounded into an authoritative brand signal in the CIO community. Email outreach is benefiting from this warm narrative foundation — CISO reply rates are consistently 2.2× benchmark. Search is emerging as a third significant pipeline source.",
     recommendedActions: range === "7d" ? [
       {
         priority: "high",
@@ -82,7 +82,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         priority: "high",
         icon: "Mail",
         title: "CISO sequence — cybersecurity narrative angle",
-        description: "CISO-targeted sequences with infrastructure security framing have 34% reply rates. Expanding this approach to a broader CISO list of 180 accounts has $1.2M pipeline potential.",
+        description: "CISO-targeted sequences with infrastructure security framing have 21% reply rates. Expanding this approach to a broader CISO list of 180 accounts has significant pipeline potential.",
         cta: "Expand campaign",
       },
       {
@@ -512,7 +512,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         summary: range === "7d"
           ? "This week, the CISO sequence launched Monday already has 5 positive replies in 4 days — the fastest-pacing enterprise sequence this quarter. Three AEs have follow-ups pending. Get all 5 onto the calendar before end of week while the buying-committee attention window is open."
           : range === "30d"
-          ? "Cold outreach for Apex is performing exceptionally well, with CISO-targeting email sequences generating a 34% reply rate — 2.2× above enterprise benchmark. Prospects who arrive at email outreach after seeing LinkedIn posts reply at 2.1× the cold rate, validating the LinkedIn-first warm-up strategy."
+          ? "Cold outreach for Apex is performing exceptionally well, with CISO-targeting email sequences generating a 21% reply rate — 2.2× above enterprise benchmark. Prospects who arrive at email outreach after seeing LinkedIn posts reply at 2.1× the cold rate, validating the LinkedIn-first warm-up strategy."
           : "Over the quarter, outreach generated $840k in email-attributed pipeline across 68 opportunities. The LinkedIn-first strategy has been fully validated — reps using it consistently outperform those who don't by 2.1× on reply rates. CISO sequences are the top-performing segment by both reply rate and average deal size.",
         actions: range === "7d" ? [
           { title: "Book all 5 CISO sequence replies this week", description: "5 positive replies from the Monday CISO sequence need meeting links sent today. Enterprise reply windows close quickly — all 5 should be on the calendar before Thursday.", priority: "high", cta: "Book meetings" },
@@ -531,8 +531,8 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
       emailPipeline: { value: Math.round(840000 * mult), change: range === "7d" ? 12 : range === "30d" ? 34 : 58, sparkline: spark(), prefix: "$" },
       totalSent: { value: Math.round(62400 * mult), change: 28, sparkline: spark() },
       openRate: { value: range === "7d" ? 60.8 : range === "30d" ? 63.4 : 66.9, change: range === "7d" ? 2 : range === "30d" ? 6 : 11, sparkline: spark() },
-      clickRate: { value: 0, change: 0, sparkline: spark() },
-      replyRate: { value: range === "7d" ? 6.1 : range === "30d" ? 6.8 : 7.8, change: range === "7d" ? 0 : range === "30d" ? 2.2 : 4.8, sparkline: spark() },
+      clickRate: { value: 7.8, change: 2, sparkline: spark() },
+      replyRate: { value: 3.0, change: range === "7d" ? 0 : range === "30d" ? 2.2 : 4.8, sparkline: spark() },
       opportunitiesCount: { value: Math.round(68 * mult), change: 38, sparkline: spark() },
       masterTrend: Array.from({ length: 14 }, (_, i) => {
         const base = Math.round(1200 + Math.sin(i * 0.5) * 400 + i * 60);
@@ -587,18 +587,18 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
       ],
       emailFunnel: [
         { stage: "Contacted", count: Math.round(62400 * mult), rate: 100,  color: "#0EA5E9" },
-        { stage: "Opened",    count: Math.round(39560 * mult), rate: 63.4, color: "#FBBF24" },
-        { stage: "Clicked",   count: Math.round(4742 * mult),  rate: 12.0, color: "#F97316" },
-        { stage: "Replied",   count: Math.round(4243 * mult),  rate: 10.7, color: "#A78BFA" },
-        { stage: "Meetings",  count: Math.round(680 * mult),   rate: 16.0, color: "#7C7FFF" },
-        { stage: "Opps",      count: Math.round(68 * mult),    rate: 10.0, color: "#34D399" },
+        { stage: "Opened",    count: Math.round(34944 * mult), rate: 56,   color: "#FBBF24" },
+        { stage: "Clicked",   count: Math.round(4892 * mult),  rate: 14,   color: "#F97316" },
+        { stage: "Replied",   count: Math.round(1859 * mult),  rate: 38,   color: "#A78BFA" },
+        { stage: "Meetings",  count: Math.round(409 * mult),   rate: 22,   color: "#7C7FFF" },
+        { stage: "Opps",      count: Math.round(266 * mult),   rate: 65,   color: "#34D399" },
       ],
       crmPipelineFunnel: [
         { stage: "Request For Info", value: Math.round(2400000 * mult), deals: Math.round(42 * mult), pct: 100,  color: "#0EA5E9" },
         { stage: "Presentation",     value: Math.round(1820000 * mult), deals: Math.round(30 * mult), pct: 75.8, color: "#6366F1" },
         { stage: "Qualified",        value: Math.round(1380000 * mult), deals: Math.round(22 * mult), pct: 57.5, color: "#A78BFA" },
         { stage: "Negotiation",      value: Math.round(980000 * mult),  deals: Math.round(14 * mult), pct: 40.8, color: "#FBBF24" },
-        { stage: "Won",              value: Math.round(580000 * mult),  deals: Math.round(7 * mult),  pct: 24.2, color: "#34D399" },
+        { stage: "Won",              value: Math.round(1302000 * mult), deals: Math.round(7 * mult),  pct: 24.2, color: "#34D399" },
         { stage: "Lost",             value: Math.round(240000 * mult),  deals: Math.round(10 * mult), pct: 10.0, color: "#FF4455" },
       ],
       replyWaterfall: [
@@ -716,8 +716,8 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         summary: range === "7d"
           ? "Apex's paid media engine is running at enterprise scale across 5 connected platforms. LinkedIn Ads delivered 6.1× ROAS this week targeting VP Engineering buyers. Meta Ads retargeting is fueling 38% of all demo bookings from paid. Reddit Ads is the only disconnected channel — worth testing for developer-adjacent personas."
           : range === "30d"
-          ? "Enterprise paid media delivered $1.2M in attributed revenue this month with a 5.8× blended ROAS — above benchmark for enterprise B2B SaaS. LinkedIn continues to be the highest-quality channel for enterprise buyers, contributing 41% of enterprise pipeline from paid sources. TikTok Ads drove strong brand awareness metrics among the next-generation practitioner persona."
-          : "Paid media contributed $4.8M in attributed revenue this quarter across 5 platforms. LinkedIn Ads ROAS of 6.4× is the top performer among all channels — directly attributable to precise Tier-1 enterprise account targeting. The quarter saw a significant improvement in creative quality as video ads across all platforms outperformed static by 2.4×. Recommend increasing LinkedIn budget by 35% in Q3.",
+          ? "Enterprise paid media delivered a 5.1× blended ROAS this month — above benchmark for enterprise B2B SaaS. LinkedIn continues to be the highest-quality channel for enterprise buyers, contributing 41% of enterprise pipeline from paid sources. TikTok Ads drove strong brand awareness metrics among the next-generation practitioner persona."
+          : "Paid media delivered a 5.1× blended ROAS this quarter across 5 platforms. LinkedIn Ads is the top performer among all channels — directly attributable to precise Tier-1 enterprise account targeting. The quarter saw a significant improvement in creative quality as video ads across all platforms outperformed static by 2.4×. Recommend increasing LinkedIn budget by 35% in Q3.",
         actions: range === "7d" ? [
           { title: "Increase LinkedIn Ads budget by 20%", description: "LinkedIn is at 6.1× ROAS this week — the highest of any platform. The VP Engineering ICP segment is underserved. Increasing budget by 20% would capture an estimated 15 additional qualified leads this week.", priority: "high", cta: "Adjust budget" },
           { title: "Activate ABM-triggered Meta retargeting", description: "22 Tier-1 accounts showed website intent signals this week but have not been served Meta retargeting ads. Sync the ABM list to create a high-value retargeting audience.", priority: "high", cta: "Activate" },
@@ -732,10 +732,10 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
           { title: "Evaluate X Ads for executive audience", description: "X Ads delivers executive audience targeting at scale. A $5k quarterly test targeting CTO and CEO audiences would establish whether X can complement LinkedIn for Apex's top-of-funnel coverage.", priority: "medium", cta: "Plan test" },
         ],
       },
-      totalSpend: { value: Math.round(84000 * mult), change: 19, sparkline: spark(), prefix: "$" },
-      totalRevenue: { value: Math.round(487200 * mult), change: 28, sparkline: spark(), prefix: "$" },
-      roas: { value: 5.8, change: 12, sparkline: spark() },
-      cac: { value: 3200, change: -18, sparkline: spark(), prefix: "$" },
+      totalSpend: { value: Math.round(82200 * mult), change: 19, sparkline: spark(), prefix: "$" },
+      totalRevenue: { value: Math.round(420200 * mult), change: 28, sparkline: spark(), prefix: "$" },
+      roas: { value: 5.1, change: 12, sparkline: spark() },
+      cac: { value: 165000, change: -18, sparkline: spark(), prefix: "$" },
       campaigns: [
         { id: "c1", name: "Tier-1 ABM — LinkedIn", platform: "LinkedIn Ads", status: "active", spend: Math.round(18000 * mult), revenue: Math.round(109800 * mult), roas: 6.1, impressions: Math.round(180000 * mult), clicks: Math.round(7200 * mult), conversions: Math.round(124 * mult), cpa: 145, cpc: 2.50 },
         { id: "c2", name: "Enterprise Pipeline — Google", platform: "Google Ads", status: "active", spend: Math.round(22000 * mult), revenue: Math.round(118800 * mult), roas: 5.4, impressions: Math.round(320000 * mult), clicks: Math.round(16000 * mult), conversions: Math.round(148 * mult), cpa: 149, cpc: 1.38 },
@@ -747,7 +747,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         { id: "c8", name: "CXO Account Targeting", platform: "LinkedIn Ads", status: "paused", spend: Math.round(3200 * mult), revenue: Math.round(9600 * mult), roas: 3.0, impressions: Math.round(48000 * mult), clicks: Math.round(1920 * mult), conversions: Math.round(18 * mult), cpa: 178, cpc: 1.67 },
       ],
       platformBreakdown: [
-        { platform: "LinkedIn Ads", spend: Math.round(26000 * mult), revenue: Math.round(153400 * mult), roas: 5.9, color: "#0A66C2" },
+        { platform: "LinkedIn Ads", spend: Math.round(29200 * mult), revenue: Math.round(162600 * mult), roas: 5.6, color: "#0A66C2" },
         { platform: "Google Ads", spend: Math.round(31000 * mult), revenue: Math.round(162000 * mult), roas: 5.2, color: "#4285F4" },
         { platform: "Meta Ads", spend: Math.round(12000 * mult), revenue: Math.round(62400 * mult), roas: 5.2, color: "#1877F2" },
         { platform: "TikTok Ads", spend: Math.round(6000 * mult), revenue: Math.round(20400 * mult), roas: 3.4, color: "#FF0050" },
@@ -755,8 +755,8 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
       ],
       spendTrend: Array.from({ length: 14 }, (_, i) => ({
         date: new Date(2026, 1, 1 + i * 2).toISOString().split("T")[0],
-        spend: Math.round((5200 + Math.sin(i * 0.5) * 1200 + i * 280) * mult),
-        revenue: Math.round((29000 + Math.cos(i * 0.4) * 5200 + i * 1600) * mult),
+        spend: Math.round((4342 + Math.sin(i * 0.5) * 1002 + i * 234) * mult),
+        revenue: Math.round((22388 + Math.cos(i * 0.4) * 4014 + i * 1235) * mult),
       })),
       bestCampaigns: [
         { name: "Enterprise Pipeline — Google", platform: "Google Ads", revenue: Math.round(118800 * mult), conversions: Math.round(148 * mult), roas: 5.4 },
@@ -789,7 +789,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
           emotionalIndicator: { name: "Affinity index", value: "39/100", change: 2 },
         },
         phase5: {
-          growthMetric: { name: "LTV:CAC", value: "2.1:1", change: 3 },
+          growthMetric: { name: "LTV:CAC", value: "2.7:1", change: 3 },
           emotionalIndicator: { name: "Advocacy rate", value: "12%", change: 1 },
         },
       },
@@ -797,8 +797,8 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
     pipelineBridge: {
       section: "Narrative Intel",
       attributed: Math.round(2100000 * mult),
-      deals: Math.round(1.5 * mult),
-      velocity: range === "7d" ? 64 : range === "30d" ? 58 : 49,
+      deals: Math.round(42 * mult),
+      velocity: 58,
     },
   };
 }

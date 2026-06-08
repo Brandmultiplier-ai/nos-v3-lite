@@ -37,6 +37,7 @@ import {
   ArrowDownRight,
 } from "lucide-react";
 import type { PaidMediaCampaign } from "@/lib/data/types";
+import { formatCompact } from "@/lib/utils";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -61,11 +62,7 @@ function fmt(n: number): string {
   if (n >= 1_000) return `$${(n / 1_000).toFixed(0)}k`;
   return `$${n}`;
 }
-function fmtNum(n: number): string {
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
-  if (n >= 1_000) return `${(n / 1_000).toFixed(0)}k`;
-  return `${n}`;
-}
+const fmtNum = formatCompact;
 
 type SortKey = keyof Pick<PaidMediaCampaign, "spend" | "revenue" | "roas" | "conversions" | "cpa" | "cpc">;
 
@@ -104,6 +101,7 @@ function MetricTile({
   icon: Icon,
   color,
   tooltip,
+  invertChange = false,
 }: {
   label: string;
   value: number;
@@ -113,9 +111,13 @@ function MetricTile({
   icon: React.ComponentType<{ size?: number; className?: string; style?: React.CSSProperties }>;
   color: string;
   tooltip: string;
+  /** When true, a negative change is "good" (green) — for lower-is-better metrics (CAC, CPC, CPA). */
+  invertChange?: boolean;
 }) {
   const isPos = change > 0;
   const isNeg = change < 0;
+  // Metric-aware: is this change a good thing?
+  const isGood = invertChange ? change < 0 : change > 0;
   const formatted = prefix === "$"
     ? fmt(value).replace("$", "")
     : suffix === "×"
@@ -137,8 +139,16 @@ function MetricTile({
         <div
           className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full"
           style={{
-            background: isPos ? "rgba(52,211,153,0.1)" : isNeg ? "rgba(248,113,113,0.1)" : "rgba(251,191,36,0.1)",
-            color: isPos ? "var(--nos-positive)" : isNeg ? "var(--nos-negative)" : "var(--nos-neutral)",
+            background: isPos || isNeg
+              ? isGood
+                ? "rgba(52,211,153,0.1)"
+                : "rgba(248,113,113,0.1)"
+              : "rgba(251,191,36,0.1)",
+            color: isPos || isNeg
+              ? isGood
+                ? "var(--nos-positive)"
+                : "var(--nos-negative)"
+              : "var(--nos-neutral)",
           }}
         >
           {isPos ? <ArrowUpRight size={10} /> : isNeg ? <ArrowDownRight size={10} /> : null}
@@ -289,6 +299,7 @@ export function PaidMedia({ variant = "a" }: SectionProps) {
           value={paidMedia.cac.value}
           change={paidMedia.cac.change}
           prefix="$"
+          invertChange
           icon={Users}
           color="#EC4899"
           tooltip="Customer Acquisition Cost from paid media — ad spend divided by new customers acquired from paid campaigns."

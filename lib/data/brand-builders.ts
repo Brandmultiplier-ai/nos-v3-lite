@@ -80,7 +80,8 @@ export function makeNexusBrand(mult: number): BrandData {
     ],
     audience: {
       total: {
-        value: Math.round(56440 * mult),
+        // Base = exact sum of byChannel fans bases (34700 + 18700 + 3100 = 56500)
+        value: Math.round(56500 * mult),
         change: 49,
         sparkline: spark(),
       },
@@ -102,9 +103,10 @@ export function makeNexusBrand(mult: number): BrandData {
           channelName: "Nexus Labs",
           fans: Math.round(34700 * mult),
           fansChange: 48,
-          netNew: -16,
-          increase: 65,
-          decrease: 78,
+          // netNew sign now consistent with fansChange (+) and increase − decrease
+          netNew: 13,
+          increase: 78,
+          decrease: 65,
         },
         {
           network: "email",

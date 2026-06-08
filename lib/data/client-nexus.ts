@@ -26,14 +26,14 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
       channels: ["linkedin", "website", "email", "search"],
     },
     kpis: {
-      cac: { value: range === "7d" ? 1380 : range === "30d" ? 1240 : 1090, change: range === "7d" ? -4 : range === "30d" ? -12 : -19, sparkline: spark(), prefix: "$" },
+      cac: { value: 34500, change: range === "7d" ? -4 : range === "30d" ? -12 : -19, sparkline: spark(), prefix: "$" },
       pipeline: { value: Math.round(840000 * mult), change: range === "7d" ? 9 : range === "30d" ? 18 : 31, sparkline: spark(), prefix: "$" },
-      dealVelocity: { value: range === "7d" ? 40 : range === "30d" ? 34 : 27, change: range === "7d" ? -2 : range === "30d" ? -8 : -16, sparkline: spark(), suffix: "d" },
+      dealVelocity: { value: 34, change: range === "7d" ? -2 : range === "30d" ? -8 : -16, sparkline: spark(), suffix: "d" },
       dealsCreated: { value: Math.round(14 * mult), change: range === "7d" ? 8 : range === "30d" ? 22 : 38, sparkline: spark() },
-      closedWon: { value: Math.round(4 * mult), change: range === "7d" ? 4 : range === "30d" ? 15 : 28, sparkline: spark() },
+      closedWon: { value: Math.round(5 * mult), change: range === "7d" ? 4 : range === "30d" ? 15 : 28, sparkline: spark() },
       attributedRevenue: { value: Math.round(210000 * mult), change: range === "7d" ? 12 : range === "30d" ? 31 : 48, sparkline: spark(), prefix: "$" },
-      ltv: { value: range === "7d" ? 26800 : range === "30d" ? 28400 : 31600, change: range === "7d" ? 3 : range === "30d" ? 9 : 17, sparkline: spark(), prefix: "$" },
-      avgDealSize: { value: range === "7d" ? 46400 : range === "30d" ? 52000 : 58600, change: range === "7d" ? 2 : range === "30d" ? 6 : 13, sparkline: spark(), prefix: "$" },
+      ltv: { value: 145000, change: range === "7d" ? 3 : range === "30d" ? 9 : 17, sparkline: spark(), prefix: "$" },
+      avgDealSize: { value: 52000, change: range === "7d" ? 2 : range === "30d" ? 6 : 13, sparkline: spark(), prefix: "$" },
     },
     signalTimeline: dates.map((date, i) => ({
       date,
@@ -194,7 +194,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
         shareOfVoiceChange: 4,
         aiInsight: "Your visibility score surged this week, driven by ChatGPT and Perplexity citations around 'signal-to-pipeline' and 'narrative marketing platform' queries. Anthropic is a new source — your thought leadership content is getting indexed. Focus on publishing structured FAQs to capture more AI Overview slots.",
         allBotVisits: { value: Math.round(32600 * mult), change: 58, sparkline: spark() },
-        aiCitations: { value: Math.round(72300 * mult), change: 20, sparkline: spark() },
+        aiCitations: { value: Math.round(24800 * mult), change: 20, sparkline: spark() },
         aiTraining: { value: Math.round(13200 * mult), change: 2, sparkline: spark() },
         aiIndexing: { value: Math.round(18200 * mult), change: 1, sparkline: spark() },
         visibilityTrend: Array.from({ length: 14 }, (_, i) => ({
@@ -551,8 +551,8 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
       emailPipeline: { value: Math.round(280000 * mult), change: range === "7d" ? 10 : range === "30d" ? 26 : 44, sparkline: spark(), prefix: "$" },
       totalSent: { value: Math.round(46200 * mult), change: range === "7d" ? 7 : range === "30d" ? 18 : 32, sparkline: spark() },
       openRate: { value: range === "7d" ? 56.8 : range === "30d" ? 59.2 : 62.1, change: range === "7d" ? 1 : range === "30d" ? 4 : 8, sparkline: spark() },
-      clickRate: { value: 0, change: 0, sparkline: spark() },
-      replyRate: { value: range === "7d" ? 3.6 : range === "30d" ? 4.1 : 4.9, change: range === "7d" ? 0 : range === "30d" ? 1 : 3, sparkline: spark() },
+      clickRate: { value: 7.8, change: 2, sparkline: spark() },
+      replyRate: { value: 3.0, change: range === "7d" ? 0 : range === "30d" ? 1 : 3, sparkline: spark() },
       opportunitiesCount: { value: Math.round(43 * mult), change: range === "7d" ? 9 : range === "30d" ? 22 : 38, sparkline: spark() },
       masterTrend: Array.from({ length: 14 }, (_, i) => {
         const base = Math.round(800 + Math.sin(i * 0.5) * 300 + i * 40);
@@ -609,19 +609,19 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
         { email: "outreach@nexuslabs.com", warmupScore: 48, deliverabilityScore: 52, spamScore: 4.8, blacklisted: false, daysWarmedUp: 9, status: "at-risk" },
       ],
       emailFunnel: [
-        { stage: "Contacted", count: Math.round(46200 * mult), rate: 100,  color: "#0EA5E9" },
-        { stage: "Opened",    count: Math.round(27340 * mult), rate: 59.2, color: "#FBBF24" },
-        { stage: "Clicked",   count: Math.round(4140 * mult),  rate: 15.1, color: "#F97316" },
-        { stage: "Replied",   count: Math.round(1894 * mult),  rate: 6.9,  color: "#A78BFA" },
-        { stage: "Meetings",  count: Math.round(372 * mult),   rate: 19.6, color: "#7C7FFF" },
-        { stage: "Opps",      count: Math.round(43 * mult),    rate: 11.6, color: "#34D399" },
+        { stage: "Contacted", count: Math.round(46200 * mult), rate: 100, color: "#0EA5E9" },
+        { stage: "Opened",    count: Math.round(25872 * mult), rate: 56,  color: "#FBBF24" },
+        { stage: "Clicked",   count: Math.round(3622 * mult),  rate: 14,  color: "#F97316" },
+        { stage: "Replied",   count: Math.round(1376 * mult),  rate: 38,  color: "#A78BFA" },
+        { stage: "Meetings",  count: Math.round(303 * mult),   rate: 22,  color: "#7C7FFF" },
+        { stage: "Opps",      count: Math.round(197 * mult),   rate: 65,  color: "#34D399" },
       ],
       crmPipelineFunnel: [
         { stage: "Request For Info", value: Math.round(840000 * mult), deals: Math.round(28 * mult), pct: 100,  color: "#0EA5E9" },
         { stage: "Presentation",     value: Math.round(620000 * mult), deals: Math.round(20 * mult), pct: 73.8, color: "#6366F1" },
         { stage: "Qualified",        value: Math.round(460000 * mult), deals: Math.round(14 * mult), pct: 54.8, color: "#A78BFA" },
         { stage: "Negotiation",      value: Math.round(310000 * mult), deals: Math.round(9 * mult),  pct: 36.9, color: "#FBBF24" },
-        { stage: "Won",              value: Math.round(180000 * mult), deals: Math.round(4 * mult),  pct: 21.4, color: "#34D399" },
+        { stage: "Won",              value: Math.round(260000 * mult), deals: Math.round(5 * mult),  pct: 17.9, color: "#34D399" },
         { stage: "Lost",             value: Math.round(92000 * mult),  deals: Math.round(6 * mult),  pct: 11.0, color: "#FF4455" },
       ],
       replyWaterfall: [
@@ -747,8 +747,8 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
         summary: range === "7d"
           ? "This week, Meta Ads and Google Ads are running above ROAS benchmarks. Your top-performing campaign delivered 4.8× ROAS in the last 7 days. LinkedIn Ads are not yet connected — adding them could provide visibility into $48k estimated pipeline from paid social."
           : range === "30d"
-          ? "Paid media is contributing 31% of total attributed revenue this month. Meta Ads leads on conversion volume, while Google Ads delivers the highest ROAS at 5.2×. LinkedIn Ads is disconnected — this is a high-opportunity channel for your ICP given the B2B SaaS profile."
-          : "Paid media generated $210k in attributed revenue this quarter across Meta and Google. ROAS improved month-over-month as creative optimisation took effect. Expanding to LinkedIn Ads and TikTok Ads could add an estimated $85k in incremental pipeline next quarter based on industry benchmarks for your category.",
+          ? "Paid media is contributing roughly 42% of total attributed revenue this month. Meta Ads leads on conversion volume, while Google Ads delivers the highest ROAS at 5.2×. LinkedIn Ads is disconnected — this is a high-opportunity channel for your ICP given the B2B SaaS profile."
+          : "Paid media generated a meaningful share of attributed revenue this quarter across Meta and Google. ROAS improved month-over-month as creative optimisation took effect. Expanding to LinkedIn Ads and TikTok Ads could add incremental pipeline next quarter based on industry benchmarks for your category.",
         actions: range === "7d" ? [
           { title: "Scale the top Meta campaign", description: "Your CFO-targeting campaign delivered 4.8× ROAS this week. Increase daily budget by 30% to capture the full audience window before week ends.", priority: "high", cta: "Scale budget" },
           { title: "Connect LinkedIn Ads", description: "LinkedIn Ads is disconnected. Your ICP is CISOs and VP Sales — LinkedIn is the highest-ROI paid channel for B2B SaaS in your category.", priority: "high", cta: "Connect" },
@@ -763,9 +763,9 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
           { title: "Audit creative performance", description: "Video ads delivered 1.8× higher click-through rate than static images this quarter. A creative refresh strategy for Q3 should prioritise short-form video across Meta and TikTok.", priority: "medium", cta: "Audit creatives" },
         ],
       },
-      totalSpend: { value: Math.round(28400 * mult), change: 14, sparkline: spark(), prefix: "$" },
-      totalRevenue: { value: Math.round(142000 * mult), change: 22, sparkline: spark(), prefix: "$" },
-      roas: { value: 5.0, change: 8, sparkline: spark() },
+      totalSpend: { value: Math.round(20300 * mult), change: 14, sparkline: spark(), prefix: "$" },
+      totalRevenue: { value: Math.round(88880 * mult), change: 22, sparkline: spark(), prefix: "$" },
+      roas: { value: 4.4, change: 8, sparkline: spark() },
       cac: { value: 1240, change: -12, sparkline: spark(), prefix: "$" },
       campaigns: [
         { id: "c1", name: "CFO Pipeline — Retargeting", platform: "Meta Ads", status: "active", spend: Math.round(4800 * mult), revenue: Math.round(23040 * mult), roas: 4.8, impressions: Math.round(142000 * mult), clicks: Math.round(3840 * mult), conversions: Math.round(58 * mult), cpa: 82, cpc: 1.25 },
@@ -783,8 +783,8 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
       ],
       spendTrend: Array.from({ length: 14 }, (_, i) => ({
         date: new Date(2026, 1, 1 + i * 2).toISOString().split("T")[0],
-        spend: Math.round((1800 + Math.sin(i * 0.6) * 400 + i * 80) * mult),
-        revenue: Math.round((8200 + Math.sin(i * 0.4) * 1800 + i * 380) * mult),
+        spend: Math.round((1098 + Math.sin(i * 0.6) * 244 + i * 49) * mult),
+        revenue: Math.round((4830 + Math.sin(i * 0.4) * 1060 + i * 224) * mult),
       })),
       bestCampaigns: [
         { name: "B2B SaaS Search — Brand", platform: "Google Ads", revenue: Math.round(32240 * mult), conversions: Math.round(72 * mult), roas: 5.2 },
@@ -817,7 +817,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
           emotionalIndicator: { name: "Affinity index", value: "68/100", change: 9 },
         },
         phase5: {
-          growthMetric: { name: "LTV:CAC", value: "3.8:1", change: 11 },
+          growthMetric: { name: "LTV:CAC", value: "4.2:1", change: 11 },
           emotionalIndicator: { name: "Advocacy rate", value: "34%", change: 6 },
         },
       },
@@ -825,8 +825,8 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
     pipelineBridge: {
       section: "Narrative Intel",
       attributed: Math.round(840000 * mult),
-      deals: Math.round(4 * mult),
-      velocity: range === "7d" ? 40 : range === "30d" ? 34 : 27,
+      deals: Math.round(28 * mult),
+      velocity: 34,
     },
   };
 }

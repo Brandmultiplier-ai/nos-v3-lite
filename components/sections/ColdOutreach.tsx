@@ -18,17 +18,14 @@ import { CustomTooltip } from "@/components/charts/CustomTooltip";
 import { ChartAxisLabels } from "@/components/charts/ChartAxisLabels";
 import { Flame, Shield, AlertTriangle, ChevronDown, ChevronUp } from "lucide-react";
 import type { EmailCampaign, InboxHealth, SalesloftData } from "@/lib/data/types";
+import { formatCompact } from "@/lib/utils";
 
 const OUTREACH_TABS = [
   { id: "email",    label: "Email",    path: "/outreach/email" },
   { id: "linkedin", label: "LinkedIn", path: "/outreach/linkedin" },
 ];
 
-function fmtNum(n: number) {
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
-  if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`;
-  return String(Math.round(n));
-}
+const fmtNum = formatCompact;
 function fmtMoney(n: number) {
   if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`;
   if (n >= 1_000) return `$${(n / 1_000).toFixed(0)}K`;

@@ -17,10 +17,20 @@ interface PhaseMetricCardProps {
   compact?: boolean;
 }
 
-function TrendIcon({ change }: { change: number }) {
-  if (change > 0) return <TrendingUp size={11} style={{ color: "var(--nos-positive)" }} />;
-  if (change < 0) return <TrendingDown size={11} style={{ color: "var(--nos-negative)" }} />;
-  return <Minus size={11} style={{ color: "var(--nos-neutral)" }} />;
+/** Lower-is-better detector: these metrics improve when the value drops. */
+const LOWER_IS_BETTER = /velocity|cac|churn|cycle|cost/i;
+function isLowerBetter(name: string): boolean {
+  return LOWER_IS_BETTER.test(name);
+}
+
+function TrendIcon({ change, invertPositive = false }: { change: number; invertPositive?: boolean }) {
+  if (change === 0) return <Minus size={11} style={{ color: "var(--nos-neutral)" }} />;
+  const isGood = invertPositive ? change < 0 : change > 0;
+  const color = isGood ? "var(--nos-positive)" : "var(--nos-negative)";
+  // Icon direction follows the raw change sign; color follows good/bad.
+  return change > 0
+    ? <TrendingUp size={11} style={{ color }} />
+    : <TrendingDown size={11} style={{ color }} />;
 }
 
 function changeColor(change: number, invertPositive = false): string {
@@ -33,8 +43,8 @@ export function PhaseMetricCard({ phase, pair, compact = false }: PhaseMetricCar
   const phaseName = PHASE_NAMES[phase];
   const { growthMetric, emotionalIndicator } = pair;
 
-  /* Pipeline velocity change: lower is better */
-  const growthInvert = growthMetric.name === "Pipeline velocity";
+  /* Lower-is-better metrics (velocity, CAC, churn, cycle, cost): a drop is good */
+  const growthInvert = isLowerBetter(growthMetric.name);
 
   return (
     <div className="nos-card flex flex-col gap-2 h-full">
@@ -68,7 +78,7 @@ export function PhaseMetricCard({ phase, pair, compact = false }: PhaseMetricCar
             {growthMetric.value}
           </span>
           <div className="flex items-center gap-0.5">
-            <TrendIcon change={growthMetric.change} />
+            <TrendIcon change={growthMetric.change} invertPositive={growthInvert} />
             <span
               className="text-[10px] font-semibold"
               style={{ color: changeColor(growthMetric.change, growthInvert) }}

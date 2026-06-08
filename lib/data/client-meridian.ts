@@ -26,14 +26,14 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
       channels: ["linkedin", "instagram", "facebook", "newsletter", "email"],
     },
     kpis: {
-      cac: { value: range === "7d" ? 760 : range === "30d" ? 680 : 590, change: range === "7d" ? -2 : range === "30d" ? -6 : -14, sparkline: spark(), prefix: "$" },
+      cac: { value: 10350, change: range === "7d" ? -2 : range === "30d" ? -6 : -14, sparkline: spark(), prefix: "$" },
       pipeline: { value: Math.round(310000 * mult), change: range === "7d" ? 5 : range === "30d" ? 12 : 22, sparkline: spark(), prefix: "$" },
-      dealVelocity: { value: range === "7d" ? 24 : range === "30d" ? 21 : 17, change: range === "7d" ? -5 : range === "30d" ? -14 : -24, sparkline: spark(), suffix: "d" },
+      dealVelocity: { value: 21, change: range === "7d" ? -5 : range === "30d" ? -14 : -24, sparkline: spark(), suffix: "d" },
       dealsCreated: { value: Math.round(22 * mult), change: range === "7d" ? 6 : range === "30d" ? 18 : 34, sparkline: spark() },
-      closedWon: { value: Math.round(7 * mult), change: range === "7d" ? 12 : range === "30d" ? 34 : 52, sparkline: spark() },
+      closedWon: { value: Math.round(3 * mult), change: range === "7d" ? 12 : range === "30d" ? 34 : 52, sparkline: spark() },
       attributedRevenue: { value: Math.round(78000 * mult), change: range === "7d" ? 10 : range === "30d" ? 28 : 44, sparkline: spark(), prefix: "$" },
-      ltv: { value: range === "7d" ? 13400 : range === "30d" ? 14200 : 15900, change: range === "7d" ? 5 : range === "30d" ? 14 : 23, sparkline: spark(), prefix: "$" },
-      avgDealSize: { value: range === "7d" ? 9800 : range === "30d" ? 11000 : 12600, change: range === "7d" ? 3 : range === "30d" ? 8 : 16, sparkline: spark(), prefix: "$" },
+      ltv: { value: 35200, change: range === "7d" ? 5 : range === "30d" ? 14 : 23, sparkline: spark(), prefix: "$" },
+      avgDealSize: { value: 11000, change: range === "7d" ? 3 : range === "30d" ? 8 : 16, sparkline: spark(), prefix: "$" },
     },
     signalTimeline: dates.map((date, i) => ({
       date,
@@ -47,7 +47,7 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
       ? "This week, Instagram engagement is 34% above last week's average with 4 posts reaching above-benchmark impressions. Newsletter open rate is 42% — above the monthly average. One Facebook post unexpectedly drove 12 qualified email sign-ups. Act on the newsletter momentum while engagement is high."
       : range === "30d"
       ? "Instagram engagement is driving 2.1× more top-of-funnel leads than LinkedIn for Meridian's audience. Your newsletter has the highest content-to-pipeline conversion rate at 38% — your owned audience is your biggest untapped pipeline lever. Recommend a newsletter-first content strategy with social amplification on Instagram and Facebook."
-      : "Over the quarter, the newsletter-first strategy has proven its value with $78k in attributed pipeline from owned channels. Instagram follower quality has improved — engagement-to-visit conversion is 12% above Q2. The multi-channel brand consistency improvements are showing in lower CAC and higher deal velocity.",
+      : "Over the quarter, the newsletter-first strategy has proven its value, with owned channels now driving the majority of attributed pipeline. Instagram follower quality has improved — engagement-to-visit conversion is 12% above Q2. The multi-channel brand consistency improvements are showing in lower CAC and higher deal velocity.",
     recommendedActions: range === "7d" ? [
       {
         priority: "high",
@@ -525,8 +525,8 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
       emailPipeline: { value: Math.round(95000 * mult), change: range === "7d" ? 7 : range === "30d" ? 18 : 34, sparkline: spark(), prefix: "$" },
       totalSent: { value: Math.round(28400 * mult), change: 12, sparkline: spark() },
       openRate: { value: range === "7d" ? 50.2 : range === "30d" ? 52.8 : 55.4, change: range === "7d" ? 1 : range === "30d" ? 3 : 6, sparkline: spark() },
-      clickRate: { value: 0, change: 0, sparkline: spark() },
-      replyRate: { value: range === "7d" ? 4.7 : range === "30d" ? 5.2 : 6.1, change: range === "7d" ? 0 : range === "30d" ? 1.4 : 3.2, sparkline: spark() },
+      clickRate: { value: 7.8, change: 2, sparkline: spark() },
+      replyRate: { value: 3.0, change: range === "7d" ? 0 : range === "30d" ? 1.4 : 3.2, sparkline: spark() },
       opportunitiesCount: { value: Math.round(28 * mult), change: 16, sparkline: spark() },
       masterTrend: Array.from({ length: 14 }, (_, i) => {
         const base = Math.round(500 + Math.sin(i * 0.5) * 180 + i * 25);
@@ -575,19 +575,19 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
         { email: "reach@meridianbrands.com", warmupScore: 61, deliverabilityScore: 65, spamScore: 3.1, blacklisted: false, daysWarmedUp: 14, status: "warming" },
       ],
       emailFunnel: [
-        { stage: "Contacted", count: Math.round(28400 * mult), rate: 100,  color: "#0EA5E9" },
-        { stage: "Opened",    count: Math.round(15000 * mult), rate: 52.8, color: "#FBBF24" },
-        { stage: "Clicked",   count: Math.round(1490 * mult),  rate: 9.9,  color: "#F97316" },
-        { stage: "Replied",   count: Math.round(1477 * mult),  rate: 9.8,  color: "#A78BFA" },
-        { stage: "Meetings",  count: Math.round(240 * mult),   rate: 16.3, color: "#7C7FFF" },
-        { stage: "Opps",      count: Math.round(28 * mult),    rate: 11.7, color: "#34D399" },
+        { stage: "Contacted", count: Math.round(28400 * mult), rate: 100, color: "#0EA5E9" },
+        { stage: "Opened",    count: Math.round(15904 * mult), rate: 56,  color: "#FBBF24" },
+        { stage: "Clicked",   count: Math.round(2227 * mult),  rate: 14,  color: "#F97316" },
+        { stage: "Replied",   count: Math.round(846 * mult),   rate: 38,  color: "#A78BFA" },
+        { stage: "Meetings",  count: Math.round(186 * mult),   rate: 22,  color: "#7C7FFF" },
+        { stage: "Opps",      count: Math.round(121 * mult),   rate: 65,  color: "#34D399" },
       ],
       crmPipelineFunnel: [
         { stage: "Request For Info", value: Math.round(380000 * mult), deals: Math.round(18 * mult), pct: 100,  color: "#0EA5E9" },
         { stage: "Presentation",     value: Math.round(268000 * mult), deals: Math.round(12 * mult), pct: 70.5, color: "#6366F1" },
         { stage: "Qualified",        value: Math.round(182000 * mult), deals: Math.round(8 * mult),  pct: 47.9, color: "#A78BFA" },
         { stage: "Negotiation",      value: Math.round(118000 * mult), deals: Math.round(5 * mult),  pct: 31.1, color: "#FBBF24" },
-        { stage: "Won",              value: Math.round(68000 * mult),  deals: Math.round(3 * mult),  pct: 17.9, color: "#34D399" },
+        { stage: "Won",              value: Math.round(33000 * mult),  deals: Math.round(3 * mult),  pct: 17.9, color: "#34D399" },
         { stage: "Lost",             value: Math.round(42000 * mult),  deals: Math.round(4 * mult),  pct: 11.1, color: "#FF4455" },
       ],
       replyWaterfall: [
@@ -707,8 +707,8 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
         summary: range === "7d"
           ? "Meta Ads and TikTok Ads drove strong top-of-funnel engagement this week, with Meta at 3.8× ROAS and TikTok at 2.9×. Google Ads is connected but underperforming at 1.4× ROAS — the search keyword strategy needs updating for the D2C audience."
           : range === "30d"
-          ? "Paid media is performing well across Meta and TikTok, which are the best-fit channels for Meridian's D2C-adjacent audience. Combined ROAS this month is 3.4×. Google Ads is underdelivering relative to spend — consider reallocating to Meta where CPAs are 28% lower."
-          : "Paid media contributed $78k in revenue this quarter with a 3.1× blended ROAS. Meta Ads consistently outperformed Google Ads for D2C brand acquisition. TikTok Ads drove 34% of total impression volume at a competitive CPA — a strong signal to increase budget in Q3.",
+          ? "Paid media is performing well across Meta and TikTok, which are the best-fit channels for Meridian's D2C-adjacent audience. Combined ROAS this month is 3.1×. Google Ads is underdelivering relative to spend — consider reallocating to Meta where CPAs are 28% lower."
+          : "Paid media delivered a 3.1× blended ROAS this quarter. Meta Ads consistently outperformed Google Ads for D2C brand acquisition. TikTok Ads drove 34% of total impression volume at a competitive CPA — a strong signal to increase budget in Q3.",
         actions: range === "7d" ? [
           { title: "Scale the top TikTok creative", description: "Your TikTok customer outcome video is at 3.4× ROAS this week — the platform's best performer. Boost budget by 25% to capture the momentum window.", priority: "high", cta: "Scale budget" },
           { title: "Review Google Ads keyword targeting", description: "Google Ads CPA is 2.1× higher than Meta this week. Your current keyword strategy targets generic D2C terms — switching to brand and competitor terms would improve efficiency.", priority: "high", cta: "Review keywords" },
@@ -723,9 +723,9 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
           { title: "Test Reddit Ads for community-led acquisition", description: "Reddit communities in your product category have high buyer intent. A $1k/quarter test on Reddit Ads would establish whether community-based paid acquisition is viable.", priority: "medium", cta: "Plan test" },
         ],
       },
-      totalSpend: { value: Math.round(18200 * mult), change: 11, sparkline: spark(), prefix: "$" },
-      totalRevenue: { value: Math.round(61880 * mult), change: 18, sparkline: spark(), prefix: "$" },
-      roas: { value: 3.4, change: 6, sparkline: spark() },
+      totalSpend: { value: Math.round(16200 * mult), change: 11, sparkline: spark(), prefix: "$" },
+      totalRevenue: { value: Math.round(50030 * mult), change: 18, sparkline: spark(), prefix: "$" },
+      roas: { value: 3.1, change: 6, sparkline: spark() },
       cac: { value: 680, change: -8, sparkline: spark(), prefix: "$" },
       campaigns: [
         { id: "c1", name: "D2C Brand — Meta Reels", platform: "Meta Ads", status: "active", spend: Math.round(5400 * mult), revenue: Math.round(20520 * mult), roas: 3.8, impressions: Math.round(380000 * mult), clicks: Math.round(7600 * mult), conversions: Math.round(92 * mult), cpa: 59, cpc: 0.71 },
@@ -736,15 +736,15 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
         { id: "c6", name: "Google Display — Retargeting", platform: "Google Ads", status: "active", spend: Math.round(900 * mult), revenue: Math.round(1260 * mult), roas: 1.4, impressions: Math.round(480000 * mult), clicks: Math.round(1920 * mult), conversions: Math.round(12 * mult), cpa: 75, cpc: 0.47 },
       ],
       platformBreakdown: [
-        { platform: "Meta Ads", spend: Math.round(8500 * mult), revenue: Math.round(30750 * mult), roas: 3.6, color: "#1877F2" },
-        { platform: "TikTok Ads", spend: Math.round(5200 * mult), revenue: Math.round(14380 * mult), roas: 2.8, color: "#FF0050" },
-        { platform: "Google Ads", spend: Math.round(3500 * mult), revenue: Math.round(4900 * mult), roas: 1.4, color: "#4285F4" },
+        { platform: "Meta Ads", spend: Math.round(8006 * mult), revenue: Math.round(30750 * mult), roas: 3.8, color: "#1877F2" },
+        { platform: "TikTok Ads", spend: Math.round(4898 * mult), revenue: Math.round(14380 * mult), roas: 2.9, color: "#FF0050" },
+        { platform: "Google Ads", spend: Math.round(3296 * mult), revenue: Math.round(4900 * mult), roas: 1.5, color: "#4285F4" },
         { platform: "LinkedIn Ads", spend: 0, revenue: 0, roas: 0, color: "#0A66C2" },
       ],
       spendTrend: Array.from({ length: 14 }, (_, i) => ({
         date: new Date(2026, 1, 1 + i * 2).toISOString().split("T")[0],
-        spend: Math.round((1200 + Math.sin(i * 0.5) * 280 + i * 50) * mult),
-        revenue: Math.round((4100 + Math.cos(i * 0.4) * 900 + i * 220) * mult),
+        spend: Math.round((1200 + Math.sin(i * 0.5) * 280 + i * 50) * 0.7588 * mult),
+        revenue: Math.round((4100 + Math.cos(i * 0.4) * 900 + i * 220) * 0.6462 * mult),
       })),
       bestCampaigns: [
         { name: "D2C Brand — Meta Reels", platform: "Meta Ads", revenue: Math.round(20520 * mult), conversions: Math.round(92 * mult), roas: 3.8 },
@@ -777,7 +777,7 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
           emotionalIndicator: { name: "Affinity index", value: "52/100", change: 4 },
         },
         phase5: {
-          growthMetric: { name: "LTV:CAC", value: "2.9:1", change: 6 },
+          growthMetric: { name: "LTV:CAC", value: "3.4:1", change: 6 },
           emotionalIndicator: { name: "Advocacy rate", value: "21%", change: 3 },
         },
       },
@@ -785,8 +785,8 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
     pipelineBridge: {
       section: "Narrative Intel",
       attributed: Math.round(310000 * mult),
-      deals: Math.round(7 * mult),
-      velocity: range === "7d" ? 24 : range === "30d" ? 21 : 17,
+      deals: Math.round(18 * mult),
+      velocity: 21,
     },
   };
 }

@@ -12,6 +12,7 @@ import { SeoTrafficGlobe } from "@/components/charts/SeoTrafficGlobe";
 import { Badge } from "@/components/ui/badge";
 import { ChevronDown, ExternalLink, Play, AlertTriangle, MousePointerClick, ArrowLeft, Bug, Monitor, Smartphone, Tablet } from "lucide-react";
 import type { CompanySignal, SessionRecording } from "@/lib/data/types";
+import { formatCompact } from "@/lib/utils";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -22,11 +23,7 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
 };
 
-function fmtNum(n: number) {
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
-  if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`;
-  return String(n);
-}
+const fmtNum = formatCompact;
 
 const intentBadge = (intent: CompanySignal["intent"]) => {
   const map = {
@@ -210,11 +207,11 @@ export function WebsiteSignals() {
       {/* ── Behavioral KPI strip ─────────────────────────────────────────────── */}
       <motion.div variants={itemVariants} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
         <KPICard label="Sessions" value={website.sessions.value} change={website.sessions.change} sparkline={website.sessions.sparkline} tooltip="Total sessions recorded in this period, including anonymous and identified visitors." />
-        <KPICard label="Rage Clicks" value={website.rageclickRate.value} change={website.rageclickRate.change} sparkline={website.rageclickRate.sparkline} suffix="%" tooltip="Sessions where a user clicked the same element 3+ times in rapid succession — indicates frustration or broken UI." />
-        <KPICard label="Dead Clicks" value={website.deadclickRate.value} change={website.deadclickRate.change} sparkline={website.deadclickRate.sparkline} suffix="%" tooltip="Clicks on elements that have no action — hidden elements, non-linked text, or disabled buttons." />
-        <KPICard label="Quick-Backs" value={website.quickBackRate.value} change={website.quickBackRate.change} sparkline={website.quickBackRate.sparkline} suffix="%" tooltip="Sessions where a user returned to the previous page within 3 seconds — a strong exit-intent signal." />
+        <KPICard label="Rage Clicks" value={website.rageclickRate.value} change={website.rageclickRate.change} sparkline={website.rageclickRate.sparkline} suffix="%" invertChange tooltip="Sessions where a user clicked the same element 3+ times in rapid succession — indicates frustration or broken UI." />
+        <KPICard label="Dead Clicks" value={website.deadclickRate.value} change={website.deadclickRate.change} sparkline={website.deadclickRate.sparkline} suffix="%" invertChange tooltip="Clicks on elements that have no action — hidden elements, non-linked text, or disabled buttons." />
+        <KPICard label="Quick-Backs" value={website.quickBackRate.value} change={website.quickBackRate.change} sparkline={website.quickBackRate.sparkline} suffix="%" invertChange tooltip="Sessions where a user returned to the previous page within 3 seconds — a strong exit-intent signal." />
         <KPICard label="Scroll Depth" value={website.scrollDepth.value} change={website.scrollDepth.change} sparkline={website.scrollDepth.sparkline} suffix="%" tooltip="Average percentage of page scrolled per session. Higher = more content engagement." />
-        <KPICard label="JS Errors" value={website.jsErrors.value} change={website.jsErrors.change} sparkline={website.jsErrors.sparkline} tooltip="JavaScript errors recorded per period. Decreasing errors = better code stability." />
+        <KPICard label="JS Errors" value={website.jsErrors.value} change={website.jsErrors.change} sparkline={website.jsErrors.sparkline} invertChange tooltip="JavaScript errors recorded per period. Decreasing errors = better code stability." />
       </motion.div>
 
       {/* ── Visitor trend + Traffic sources + Reading behavior ─────────────────── */}
