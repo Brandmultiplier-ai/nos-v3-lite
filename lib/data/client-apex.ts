@@ -714,12 +714,12 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
     paidMedia: {
       tldr: {
         summary: range === "7d"
-          ? "Apex's paid media engine is running at enterprise scale across 5 connected platforms. LinkedIn Ads delivered 6.1× ROAS this week targeting VP Engineering buyers. Meta Ads retargeting is fueling 38% of all demo bookings from paid. Reddit Ads is the only disconnected channel — worth testing for developer-adjacent personas."
+          ? "Apex's paid media engine is running at enterprise scale across 5 connected platforms. LinkedIn Ads delivered 4.7× ROAS this week targeting VP Engineering buyers. Meta Ads retargeting is fueling 38% of all demo bookings from paid. Reddit Ads is the only disconnected channel — worth testing for developer-adjacent personas."
           : range === "30d"
           ? "Enterprise paid media delivered a 3.9× blended ROAS this month — above benchmark for enterprise B2B SaaS. LinkedIn continues to be the highest-quality channel for enterprise buyers, contributing 41% of enterprise pipeline from paid sources. TikTok Ads drove strong brand awareness metrics among the next-generation practitioner persona."
           : "Paid media delivered a 3.9× blended ROAS this quarter across 5 platforms. LinkedIn Ads is the top performer among all channels — directly attributable to precise Tier-1 enterprise account targeting. The quarter saw a significant improvement in creative quality as video ads across all platforms outperformed static by 2.4×. Recommend increasing LinkedIn budget by 35% in Q3.",
         actions: range === "7d" ? [
-          { title: "Increase LinkedIn Ads budget by 20%", description: "LinkedIn is at 6.1× ROAS this week — the highest of any platform. The VP Engineering ICP segment is underserved. Increasing budget by 20% would capture an estimated 15 additional qualified leads this week.", priority: "high", cta: "Adjust budget" },
+          { title: "Increase LinkedIn Ads budget by 20%", description: "LinkedIn is at 4.7× ROAS this week — the highest of any platform. The VP Engineering ICP segment is underserved. Increasing budget by 20% would capture an estimated 15 additional qualified leads this week.", priority: "high", cta: "Adjust budget" },
           { title: "Activate ABM-triggered Meta retargeting", description: "22 Tier-1 accounts showed website intent signals this week but have not been served Meta retargeting ads. Sync the ABM list to create a high-value retargeting audience.", priority: "high", cta: "Activate" },
           { title: "Connect Reddit Ads for developer audience", description: "Reddit's developer communities align with Apex's technical buyer persona. A $2k test this week would establish benchmarks before the quarterly budget planning cycle.", priority: "medium", cta: "Connect" },
         ] : range === "30d" ? [
@@ -759,8 +759,8 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         revenue: Math.round((17127 + Math.cos(i * 0.4) * 3071 + i * 945) * mult),
       })),
       bestCampaigns: [
-        { name: "Enterprise Pipeline — Google", platform: "Google Ads", revenue: Math.round(90900 * mult), conversions: Math.round(148 * mult), roas: 4.1 },
         { name: "Tier-1 ABM — LinkedIn", platform: "LinkedIn Ads", revenue: Math.round(84000 * mult), conversions: Math.round(124 * mult), roas: 4.7 },
+        { name: "Enterprise Pipeline — Google", platform: "Google Ads", revenue: Math.round(90900 * mult), conversions: Math.round(148 * mult), roas: 4.1 },
         { name: "Demo Retargeting — Meta", platform: "Meta Ads", revenue: Math.round(47700 * mult), conversions: Math.round(96 * mult), roas: 4.0 },
       ],
       bestAds: [

@@ -705,12 +705,12 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
     paidMedia: {
       tldr: {
         summary: range === "7d"
-          ? "Meta Ads and TikTok Ads drove strong top-of-funnel engagement this week, with Meta at 3.8× ROAS and TikTok at 2.9×. Google Ads is connected but underperforming at 1.4× ROAS — the search keyword strategy needs updating for the D2C audience."
+          ? "Meta Ads and TikTok Ads drove strong top-of-funnel engagement this week, with Meta at 2.8× ROAS and TikTok at 2.1×. Google Ads is connected but underperforming at 1.1× ROAS — the search keyword strategy needs updating for the D2C audience."
           : range === "30d"
-          ? "Paid media is performing well across Meta and TikTok, which are the best-fit channels for Meridian's D2C-adjacent audience. Combined ROAS this month is 2.4×. Google Ads is underdelivering relative to spend — consider reallocating to Meta where CPAs are 28% lower."
-          : "Paid media delivered a 2.4× blended ROAS this quarter. Meta Ads consistently outperformed Google Ads for D2C brand acquisition. TikTok Ads drove 34% of total impression volume at a competitive CPA — a strong signal to increase budget in Q3.",
+          ? "Paid media is performing well across Meta and TikTok, which are the best-fit channels for Meridian's D2C-adjacent audience. Combined ROAS this month is 2.3×. Google Ads is underdelivering relative to spend — consider reallocating to Meta where CPAs are 28% lower."
+          : "Paid media delivered a 2.3× blended ROAS this quarter. Meta Ads consistently outperformed Google Ads for D2C brand acquisition. TikTok Ads drove 34% of total impression volume at a competitive CPA — a strong signal to increase budget in Q3.",
         actions: range === "7d" ? [
-          { title: "Scale the top TikTok creative", description: "Your TikTok customer outcome video is at 3.4× ROAS this week — the platform's best performer. Boost budget by 25% to capture the momentum window.", priority: "high", cta: "Scale budget" },
+          { title: "Scale the top TikTok creative", description: "Your TikTok customer outcome video is at 2.2× ROAS this week — the platform's best performer. Boost budget by 25% to capture the momentum window.", priority: "high", cta: "Scale budget" },
           { title: "Review Google Ads keyword targeting", description: "Google Ads CPA is 2.1× higher than Meta this week. Your current keyword strategy targets generic D2C terms — switching to brand and competitor terms would improve efficiency.", priority: "high", cta: "Review keywords" },
           { title: "Connect X Ads for brand awareness testing", description: "X Ads offers low CPMs for D2C brand awareness. A small $500 test budget this week would establish a baseline for the channel.", priority: "medium", cta: "Connect" },
         ] : range === "30d" ? [
@@ -723,9 +723,9 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
           { title: "Test Reddit Ads for community-led acquisition", description: "Reddit communities in your product category have high buyer intent. A $1k/quarter test on Reddit Ads would establish whether community-based paid acquisition is viable.", priority: "medium", cta: "Plan test" },
         ],
       },
-      totalSpend: { value: Math.round(16200 * mult), change: 11, sparkline: spark(), prefix: "$" },
+      totalSpend: { value: Math.round(17200 * mult), change: 11, sparkline: spark(), prefix: "$" },
       totalRevenue: { value: Math.round(38722 * mult), change: 18, sparkline: spark(), prefix: "$" },
-      roas: { value: 2.4, change: 6, sparkline: spark() },
+      roas: { value: 2.3, change: 6, sparkline: spark() },
       cac: { value: 680, change: -8, sparkline: spark(), prefix: "$" },
       campaigns: [
         { id: "c1", name: "D2C Brand — Meta Reels", platform: "Meta Ads", status: "active", spend: Math.round(5400 * mult), revenue: Math.round(15882 * mult), roas: 2.9, impressions: Math.round(380000 * mult), clicks: Math.round(7600 * mult), conversions: Math.round(92 * mult), cpa: 59, cpc: 0.71 },
@@ -736,9 +736,9 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
         { id: "c6", name: "Google Display — Retargeting", platform: "Google Ads", status: "active", spend: Math.round(900 * mult), revenue: Math.round(975 * mult), roas: 1.1, impressions: Math.round(480000 * mult), clicks: Math.round(1920 * mult), conversions: Math.round(12 * mult), cpa: 75, cpc: 0.47 },
       ],
       platformBreakdown: [
-        { platform: "Meta Ads", spend: Math.round(8006 * mult), revenue: Math.round(23800 * mult), roas: 3.0, color: "#1877F2" },
-        { platform: "TikTok Ads", spend: Math.round(4898 * mult), revenue: Math.round(11130 * mult), roas: 2.3, color: "#FF0050" },
-        { platform: "Google Ads", spend: Math.round(3296 * mult), revenue: Math.round(3792 * mult), roas: 1.2, color: "#4285F4" },
+        { platform: "Meta Ads", spend: Math.round(8500 * mult), revenue: Math.round(23800 * mult), roas: 2.8, color: "#1877F2" },
+        { platform: "TikTok Ads", spend: Math.round(5200 * mult), revenue: Math.round(11130 * mult), roas: 2.1, color: "#FF0050" },
+        { platform: "Google Ads", spend: Math.round(3500 * mult), revenue: Math.round(3792 * mult), roas: 1.1, color: "#4285F4" },
         { platform: "LinkedIn Ads", spend: 0, revenue: 0, roas: 0, color: "#0A66C2" },
       ],
       spendTrend: Array.from({ length: 14 }, (_, i) => ({
@@ -747,9 +747,9 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
         revenue: Math.round((4100 + Math.cos(i * 0.4) * 900 + i * 220) * 0.5002 * mult),
       })),
       bestCampaigns: [
-        { name: "D2C Brand — Meta Reels", platform: "Meta Ads", revenue: Math.round(20520 * mult), conversions: Math.round(92 * mult), roas: 3.8 },
-        { name: "Lookalike — High LTV", platform: "Meta Ads", revenue: Math.round(10230 * mult), conversions: Math.round(48 * mult), roas: 3.3 },
-        { name: "Outcome Stories — TikTok", platform: "TikTok Ads", revenue: Math.round(11020 * mult), conversions: Math.round(68 * mult), roas: 2.9 },
+        { name: "D2C Brand — Meta Reels", platform: "Meta Ads", revenue: Math.round(15882 * mult), conversions: Math.round(92 * mult), roas: 2.9 },
+        { name: "Lookalike — High LTV", platform: "Meta Ads", revenue: Math.round(7918 * mult), conversions: Math.round(48 * mult), roas: 2.6 },
+        { name: "Outcome Stories — TikTok", platform: "TikTok Ads", revenue: Math.round(8529 * mult), conversions: Math.round(68 * mult), roas: 2.2 },
       ],
       bestAds: [
         { name: "Customer Outcome — Reel 15s", platform: "Meta Ads", revenue: Math.round(12400 * mult), conversions: Math.round(56 * mult), ctr: 3.6 },

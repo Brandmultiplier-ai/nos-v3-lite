@@ -745,16 +745,16 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
     paidMedia: {
       tldr: {
         summary: range === "7d"
-          ? "This week, Meta Ads and Google Ads are running above ROAS benchmarks. Your top-performing campaign delivered 4.8× ROAS in the last 7 days. LinkedIn Ads are not yet connected — adding them could provide visibility into $48k estimated pipeline from paid social."
+          ? "This week, Meta Ads and Google Ads are running above ROAS benchmarks. Your top-performing campaign delivered 3.9× ROAS in the last 7 days. LinkedIn Ads are not yet connected — adding them could provide visibility into $48k estimated pipeline from paid social."
           : range === "30d"
-          ? "Paid media is contributing roughly 42% of total attributed revenue this month. Meta Ads leads on conversion volume, while Google Ads delivers the highest ROAS at 5.2×. LinkedIn Ads is disconnected — this is a high-opportunity channel for your ICP given the B2B SaaS profile."
+          ? "Paid media is contributing roughly 42% of total attributed revenue this month. Meta Ads leads on conversion volume, while Google Ads delivers the highest ROAS at 3.4×. LinkedIn Ads is disconnected — this is a high-opportunity channel for your ICP given the B2B SaaS profile."
           : "Paid media generated a meaningful share of attributed revenue this quarter across Meta and Google. ROAS improved month-over-month as creative optimisation took effect. Expanding to LinkedIn Ads and TikTok Ads could add incremental pipeline next quarter based on industry benchmarks for your category.",
         actions: range === "7d" ? [
-          { title: "Scale the top Meta campaign", description: "Your CFO-targeting campaign delivered 4.8× ROAS this week. Increase daily budget by 30% to capture the full audience window before week ends.", priority: "high", cta: "Scale budget" },
+          { title: "Scale the top Meta campaign", description: "Your CFO-targeting campaign delivered 3.6× ROAS this week. Increase daily budget by 30% to capture the full audience window before week ends.", priority: "high", cta: "Scale budget" },
           { title: "Connect LinkedIn Ads", description: "LinkedIn Ads is disconnected. Your ICP is CISOs and VP Sales — LinkedIn is the highest-ROI paid channel for B2B SaaS in your category.", priority: "high", cta: "Connect" },
-          { title: "Pause underperforming Google Display", description: "Display network campaigns are at 0.8× ROAS this week — below breakeven. Pause and reallocate budget to Search which is at 5.2×.", priority: "medium", cta: "Pause campaign" },
+          { title: "Pause underperforming Google Display", description: "Display network campaigns are at 0.6× ROAS this week — below breakeven. Pause and reallocate budget to Search which is at 3.9×.", priority: "medium", cta: "Pause campaign" },
         ] : range === "30d" ? [
-          { title: "Allocate more budget to Google Search", description: "Google Search campaigns are delivering 5.2× ROAS — the highest of any paid channel. Shifting 20% of Meta display budget to Search would improve overall blended ROAS.", priority: "high", cta: "Adjust budget" },
+          { title: "Allocate more budget to Google Search", description: "Google Search campaigns are delivering 3.9× ROAS — the highest of any paid channel. Shifting 20% of Meta display budget to Search would improve overall blended ROAS.", priority: "high", cta: "Adjust budget" },
           { title: "Connect LinkedIn Ads for ICP targeting", description: "LinkedIn Ads provides the most precise B2B targeting for your ICP. Estimated 2.4× ROAS based on industry benchmarks for Series B SaaS companies targeting VP-level buyers.", priority: "high", cta: "Connect" },
           { title: "Set up conversion tracking for all campaigns", description: "3 active campaigns are not tracking post-click conversions. Adding proper UTM tracking and goal completion events would improve attribution accuracy by an estimated 34%.", priority: "medium", cta: "Set up tracking" },
         ] : [
