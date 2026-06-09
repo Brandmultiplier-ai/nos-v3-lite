@@ -17,7 +17,7 @@ import {
   Legend,
 } from "recharts";
 import { ChartAxisLabels } from "@/components/charts/ChartAxisLabels";
-import { Sparkles, TrendingUp, TrendingDown, Minus, Users } from "lucide-react";
+import { Radar, TrendingUp, TrendingDown, Minus, Users } from "lucide-react";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -319,7 +319,7 @@ export function BrandIntel() {
                   border: "1px solid var(--nos-accent-border)",
                 }}
               >
-                <Sparkles size={14} style={{ color: "var(--nos-accent)" }} />
+                <Radar size={14} style={{ color: "var(--nos-accent)" }} />
               </div>
               <div>
                 <p

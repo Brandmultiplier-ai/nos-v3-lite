@@ -1,6 +1,6 @@
 "use client";
 
-import { Sparkles } from "lucide-react";
+import { Radar } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface InsightCardProps {
@@ -55,7 +55,7 @@ export function InsightCard({ text, className = "" }: InsightCardProps) {
             boxShadow: "0 0 12px var(--nos-accent-glow)",
           }}
         >
-          <Sparkles size={14} style={{ color: "var(--nos-accent)" }} />
+          <Radar size={14} style={{ color: "var(--nos-accent)" }} />
         </div>
         <div>
           <p

@@ -10,7 +10,7 @@ import { PhaseSecondaryKPI } from "@/components/cards/PhaseSecondaryKPI";
 import { TrendLine } from "@/components/charts/TrendLine";
 import { ChartAxisLabels } from "@/components/charts/ChartAxisLabels";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, TrendingUp, TrendingDown, ExternalLink, Zap, CheckCircle, Clock } from "lucide-react";
+import { TrendingUp, TrendingDown, ExternalLink, Zap, CheckCircle, Clock } from "lucide-react";
 import {
   AreaChart, Area, LineChart, Line, BarChart, Bar,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,

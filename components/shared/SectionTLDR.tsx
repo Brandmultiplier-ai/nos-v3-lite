@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
+import { Radar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type { SectionTldr } from "@/lib/data/types";
 
@@ -47,7 +47,7 @@ export function SectionTLDR({ tldr }: SectionTLDRProps) {
             className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
             style={{ background: "var(--nos-accent-muted)" }}
           >
-            <Sparkles size={13} style={{ color: "var(--nos-accent)" }} />
+            <Radar size={13} style={{ color: "var(--nos-accent)" }} />
           </div>
           <div>
             <p

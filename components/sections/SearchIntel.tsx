@@ -13,7 +13,7 @@ import { VelocityLine } from "@/components/charts/VelocityLine";
 import { NarrativeRadar } from "@/components/charts/NarrativeRadar";
 import { SeoTrafficGlobe } from "@/components/charts/SeoTrafficGlobe";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, TrendingDown, Sparkles } from "lucide-react";
+import { TrendingUp, TrendingDown, Radar } from "lucide-react";
 import {
   LineChart,
   Line,
@@ -473,7 +473,7 @@ function GEOTab() {
           <div className="absolute top-0 inset-x-0 h-px" style={{ background: "linear-gradient(90deg, transparent, var(--nos-accent), var(--nos-accent-2), transparent)", opacity: 0.6 }} />
           <div className="flex gap-3">
             <div className="w-8 h-8 rounded-lg shrink-0 flex items-center justify-center" style={{ background: "linear-gradient(135deg, rgba(124,127,255,0.15) 0%, rgba(167,139,250,0.1) 100%)", border: "1px solid var(--nos-accent-border)" }}>
-              <Sparkles size={14} style={{ color: "var(--nos-accent)" }} />
+              <Radar size={14} style={{ color: "var(--nos-accent)" }} />
             </div>
             <div>
               <p className="text-label-caps mb-1.5" style={{ background: "linear-gradient(90deg, var(--nos-accent), var(--nos-accent-2))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
