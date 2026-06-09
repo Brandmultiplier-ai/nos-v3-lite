@@ -33,7 +33,7 @@ export function ContextStrip() {
             NOS
           </span>
           <span className="text-label-caps">
-            Intelligence
+            Narrative OS
           </span>
         </div>
       </Link>
