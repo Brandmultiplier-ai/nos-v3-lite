@@ -716,8 +716,8 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         summary: range === "7d"
           ? "Apex's paid media engine is running at enterprise scale across 5 connected platforms. LinkedIn Ads delivered 6.1× ROAS this week targeting VP Engineering buyers. Meta Ads retargeting is fueling 38% of all demo bookings from paid. Reddit Ads is the only disconnected channel — worth testing for developer-adjacent personas."
           : range === "30d"
-          ? "Enterprise paid media delivered a 5.1× blended ROAS this month — above benchmark for enterprise B2B SaaS. LinkedIn continues to be the highest-quality channel for enterprise buyers, contributing 41% of enterprise pipeline from paid sources. TikTok Ads drove strong brand awareness metrics among the next-generation practitioner persona."
-          : "Paid media delivered a 5.1× blended ROAS this quarter across 5 platforms. LinkedIn Ads is the top performer among all channels — directly attributable to precise Tier-1 enterprise account targeting. The quarter saw a significant improvement in creative quality as video ads across all platforms outperformed static by 2.4×. Recommend increasing LinkedIn budget by 35% in Q3.",
+          ? "Enterprise paid media delivered a 3.9× blended ROAS this month — above benchmark for enterprise B2B SaaS. LinkedIn continues to be the highest-quality channel for enterprise buyers, contributing 41% of enterprise pipeline from paid sources. TikTok Ads drove strong brand awareness metrics among the next-generation practitioner persona."
+          : "Paid media delivered a 3.9× blended ROAS this quarter across 5 platforms. LinkedIn Ads is the top performer among all channels — directly attributable to precise Tier-1 enterprise account targeting. The quarter saw a significant improvement in creative quality as video ads across all platforms outperformed static by 2.4×. Recommend increasing LinkedIn budget by 35% in Q3.",
         actions: range === "7d" ? [
           { title: "Increase LinkedIn Ads budget by 20%", description: "LinkedIn is at 6.1× ROAS this week — the highest of any platform. The VP Engineering ICP segment is underserved. Increasing budget by 20% would capture an estimated 15 additional qualified leads this week.", priority: "high", cta: "Adjust budget" },
           { title: "Activate ABM-triggered Meta retargeting", description: "22 Tier-1 accounts showed website intent signals this week but have not been served Meta retargeting ads. Sync the ABM list to create a high-value retargeting audience.", priority: "high", cta: "Activate" },
@@ -733,40 +733,40 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         ],
       },
       totalSpend: { value: Math.round(82200 * mult), change: 19, sparkline: spark(), prefix: "$" },
-      totalRevenue: { value: Math.round(420200 * mult), change: 28, sparkline: spark(), prefix: "$" },
-      roas: { value: 5.1, change: 12, sparkline: spark() },
+      totalRevenue: { value: Math.round(321300 * mult), change: 28, sparkline: spark(), prefix: "$" },
+      roas: { value: 3.9, change: 12, sparkline: spark() },
       cac: { value: 165000, change: -18, sparkline: spark(), prefix: "$" },
       campaigns: [
-        { id: "c1", name: "Tier-1 ABM — LinkedIn", platform: "LinkedIn Ads", status: "active", spend: Math.round(18000 * mult), revenue: Math.round(109800 * mult), roas: 6.1, impressions: Math.round(180000 * mult), clicks: Math.round(7200 * mult), conversions: Math.round(124 * mult), cpa: 145, cpc: 2.50 },
-        { id: "c2", name: "Enterprise Pipeline — Google", platform: "Google Ads", status: "active", spend: Math.round(22000 * mult), revenue: Math.round(118800 * mult), roas: 5.4, impressions: Math.round(320000 * mult), clicks: Math.round(16000 * mult), conversions: Math.round(148 * mult), cpa: 149, cpc: 1.38 },
-        { id: "c3", name: "Demo Retargeting — Meta", platform: "Meta Ads", status: "active", spend: Math.round(12000 * mult), revenue: Math.round(62400 * mult), roas: 5.2, impressions: Math.round(840000 * mult), clicks: Math.round(12600 * mult), conversions: Math.round(96 * mult), cpa: 125, cpc: 0.95 },
-        { id: "c4", name: "VP Sales Sequence — LinkedIn", platform: "LinkedIn Ads", status: "active", spend: Math.round(8000 * mult), revenue: Math.round(43200 * mult), roas: 5.4, impressions: Math.round(92000 * mult), clicks: Math.round(3680 * mult), conversions: Math.round(58 * mult), cpa: 138, cpc: 2.17 },
-        { id: "c5", name: "Brand Awareness — TikTok", platform: "TikTok Ads", status: "active", spend: Math.round(6000 * mult), revenue: Math.round(20400 * mult), roas: 3.4, impressions: Math.round(5800000 * mult), clicks: Math.round(46400 * mult), conversions: Math.round(48 * mult), cpa: 125, cpc: 0.13 },
-        { id: "c6", name: "Competitor Keywords — Google", platform: "Google Ads", status: "active", spend: Math.round(9000 * mult), revenue: Math.round(43200 * mult), roas: 4.8, impressions: Math.round(128000 * mult), clicks: Math.round(9600 * mult), conversions: Math.round(72 * mult), cpa: 125, cpc: 0.94 },
-        { id: "c7", name: "X Ads — Executive Reach", platform: "X Ads", status: "active", spend: Math.round(4000 * mult), revenue: Math.round(12800 * mult), roas: 3.2, impressions: Math.round(2200000 * mult), clicks: Math.round(22000 * mult), conversions: Math.round(24 * mult), cpa: 167, cpc: 0.18 },
-        { id: "c8", name: "CXO Account Targeting", platform: "LinkedIn Ads", status: "paused", spend: Math.round(3200 * mult), revenue: Math.round(9600 * mult), roas: 3.0, impressions: Math.round(48000 * mult), clicks: Math.round(1920 * mult), conversions: Math.round(18 * mult), cpa: 178, cpc: 1.67 },
+        { id: "c1", name: "Tier-1 ABM — LinkedIn", platform: "LinkedIn Ads", status: "active", spend: Math.round(18000 * mult), revenue: Math.round(84000 * mult), roas: 4.7, impressions: Math.round(180000 * mult), clicks: Math.round(7200 * mult), conversions: Math.round(124 * mult), cpa: 145, cpc: 2.50 },
+        { id: "c2", name: "Enterprise Pipeline — Google", platform: "Google Ads", status: "active", spend: Math.round(22000 * mult), revenue: Math.round(90900 * mult), roas: 4.1, impressions: Math.round(320000 * mult), clicks: Math.round(16000 * mult), conversions: Math.round(148 * mult), cpa: 149, cpc: 1.38 },
+        { id: "c3", name: "Demo Retargeting — Meta", platform: "Meta Ads", status: "active", spend: Math.round(12000 * mult), revenue: Math.round(47700 * mult), roas: 4.0, impressions: Math.round(840000 * mult), clicks: Math.round(12600 * mult), conversions: Math.round(96 * mult), cpa: 125, cpc: 0.95 },
+        { id: "c4", name: "VP Sales Sequence — LinkedIn", platform: "LinkedIn Ads", status: "active", spend: Math.round(8000 * mult), revenue: Math.round(33000 * mult), roas: 4.1, impressions: Math.round(92000 * mult), clicks: Math.round(3680 * mult), conversions: Math.round(58 * mult), cpa: 138, cpc: 2.17 },
+        { id: "c5", name: "Brand Awareness — TikTok", platform: "TikTok Ads", status: "active", spend: Math.round(6000 * mult), revenue: Math.round(15600 * mult), roas: 2.6, impressions: Math.round(5800000 * mult), clicks: Math.round(46400 * mult), conversions: Math.round(48 * mult), cpa: 125, cpc: 0.13 },
+        { id: "c6", name: "Competitor Keywords — Google", platform: "Google Ads", status: "active", spend: Math.round(9000 * mult), revenue: Math.round(33000 * mult), roas: 3.7, impressions: Math.round(128000 * mult), clicks: Math.round(9600 * mult), conversions: Math.round(72 * mult), cpa: 125, cpc: 0.94 },
+        { id: "c7", name: "X Ads — Executive Reach", platform: "X Ads", status: "active", spend: Math.round(4000 * mult), revenue: Math.round(9800 * mult), roas: 2.5, impressions: Math.round(2200000 * mult), clicks: Math.round(22000 * mult), conversions: Math.round(24 * mult), cpa: 167, cpc: 0.18 },
+        { id: "c8", name: "CXO Account Targeting", platform: "LinkedIn Ads", status: "paused", spend: Math.round(3200 * mult), revenue: Math.round(7300 * mult), roas: 2.3, impressions: Math.round(48000 * mult), clicks: Math.round(1920 * mult), conversions: Math.round(18 * mult), cpa: 178, cpc: 1.67 },
       ],
       platformBreakdown: [
-        { platform: "LinkedIn Ads", spend: Math.round(29200 * mult), revenue: Math.round(162600 * mult), roas: 5.6, color: "#0A66C2" },
-        { platform: "Google Ads", spend: Math.round(31000 * mult), revenue: Math.round(162000 * mult), roas: 5.2, color: "#4285F4" },
-        { platform: "Meta Ads", spend: Math.round(12000 * mult), revenue: Math.round(62400 * mult), roas: 5.2, color: "#1877F2" },
-        { platform: "TikTok Ads", spend: Math.round(6000 * mult), revenue: Math.round(20400 * mult), roas: 3.4, color: "#FF0050" },
-        { platform: "X Ads", spend: Math.round(4000 * mult), revenue: Math.round(12800 * mult), roas: 3.2, color: "#1DA1F2" },
+        { platform: "LinkedIn Ads", spend: Math.round(29200 * mult), revenue: Math.round(124300 * mult), roas: 4.3, color: "#0A66C2" },
+        { platform: "Google Ads", spend: Math.round(31000 * mult), revenue: Math.round(123900 * mult), roas: 4.0, color: "#4285F4" },
+        { platform: "Meta Ads", spend: Math.round(12000 * mult), revenue: Math.round(47700 * mult), roas: 4.0, color: "#1877F2" },
+        { platform: "TikTok Ads", spend: Math.round(6000 * mult), revenue: Math.round(15600 * mult), roas: 2.6, color: "#FF0050" },
+        { platform: "X Ads", spend: Math.round(4000 * mult), revenue: Math.round(9800 * mult), roas: 2.5, color: "#1DA1F2" },
       ],
       spendTrend: Array.from({ length: 14 }, (_, i) => ({
         date: new Date(2026, 1, 1 + i * 2).toISOString().split("T")[0],
         spend: Math.round((4342 + Math.sin(i * 0.5) * 1002 + i * 234) * mult),
-        revenue: Math.round((22388 + Math.cos(i * 0.4) * 4014 + i * 1235) * mult),
+        revenue: Math.round((17127 + Math.cos(i * 0.4) * 3071 + i * 945) * mult),
       })),
       bestCampaigns: [
-        { name: "Enterprise Pipeline — Google", platform: "Google Ads", revenue: Math.round(118800 * mult), conversions: Math.round(148 * mult), roas: 5.4 },
-        { name: "Tier-1 ABM — LinkedIn", platform: "LinkedIn Ads", revenue: Math.round(109800 * mult), conversions: Math.round(124 * mult), roas: 6.1 },
-        { name: "Demo Retargeting — Meta", platform: "Meta Ads", revenue: Math.round(62400 * mult), conversions: Math.round(96 * mult), roas: 5.2 },
+        { name: "Enterprise Pipeline — Google", platform: "Google Ads", revenue: Math.round(90900 * mult), conversions: Math.round(148 * mult), roas: 4.1 },
+        { name: "Tier-1 ABM — LinkedIn", platform: "LinkedIn Ads", revenue: Math.round(84000 * mult), conversions: Math.round(124 * mult), roas: 4.7 },
+        { name: "Demo Retargeting — Meta", platform: "Meta Ads", revenue: Math.round(47700 * mult), conversions: Math.round(96 * mult), roas: 4.0 },
       ],
       bestAds: [
-        { name: "Enterprise ROI Walkthrough — Video", platform: "LinkedIn Ads", revenue: Math.round(64200 * mult), conversions: Math.round(72 * mult), ctr: 5.8 },
-        { name: "Pipeline Intelligence Demo — 60s", platform: "Google Ads", revenue: Math.round(52000 * mult), conversions: Math.round(68 * mult), ctr: 7.2 },
-        { name: "CXO Social Proof — Carousel", platform: "Meta Ads", revenue: Math.round(38800 * mult), conversions: Math.round(52 * mult), ctr: 4.4 },
+        { name: "Enterprise ROI Walkthrough — Video", platform: "LinkedIn Ads", revenue: Math.round(49100 * mult), conversions: Math.round(72 * mult), ctr: 5.8 },
+        { name: "Pipeline Intelligence Demo — 60s", platform: "Google Ads", revenue: Math.round(39800 * mult), conversions: Math.round(68 * mult), ctr: 7.2 },
+        { name: "CXO Social Proof — Carousel", platform: "Meta Ads", revenue: Math.round(29700 * mult), conversions: Math.round(52 * mult), ctr: 4.4 },
       ],
     },
     narrativeIntel: {
