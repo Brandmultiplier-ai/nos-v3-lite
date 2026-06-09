@@ -15,9 +15,9 @@ export function ContextStrip() {
       {/* Logo */}
       <Link href="/" aria-label="NOS — Narrative Operating System" className="flex items-center shrink-0 mr-2 group">
         {/* NOS wordmark — the O is the eclipse (BrandMultiplier purple→indigo) */}
-        <span className="flex items-center text-[20px] font-bold tracking-[-0.03em] leading-none text-[var(--nos-text-primary)]">
+        <span className="flex items-center text-[20px] font-bold tracking-[0.04em] leading-none text-[var(--nos-text-primary)]">
           N
-          <svg viewBox="0 0 100 100" aria-hidden="true" className="transition-transform group-hover:scale-105" style={{ width: "0.78em", height: "0.78em", marginInline: "0.01em" }}>
+          <svg viewBox="0 0 100 100" aria-hidden="true" className="transition-transform group-hover:scale-105" style={{ width: "0.86em", height: "0.86em", marginInline: "0.04em" }}>
             <defs>
               <linearGradient id="nosEclipseGrad" x1="20" y1="14" x2="82" y2="88" gradientUnits="userSpaceOnUse">
                 <stop stopColor="#A855F7" />
