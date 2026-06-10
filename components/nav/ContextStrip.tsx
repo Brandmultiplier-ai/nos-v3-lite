@@ -17,18 +17,27 @@ export function ContextStrip() {
         {/* NOS wordmark — the O is the eclipse (BrandMultiplier purple→indigo) */}
         <span className="flex items-center text-[20px] font-bold tracking-[0.04em] leading-none text-[var(--nos-text-primary)]">
           N
-          <svg viewBox="0 0 100 100" aria-hidden="true" className="transition-transform group-hover:scale-105" style={{ width: "0.86em", height: "0.86em", marginInline: "0.04em" }}>
+          <svg viewBox="0 0 100 100" aria-hidden="true" className="transition-transform group-hover:scale-105" style={{ width: "0.92em", height: "0.92em", marginInline: "0.02em", overflow: "visible" }}>
             <defs>
-              <linearGradient id="nosEclipseGrad" x1="20" y1="14" x2="82" y2="88" gradientUnits="userSpaceOnUse">
+              <linearGradient id="nosEclipseGrad" x1="18" y1="14" x2="84" y2="88" gradientUnits="userSpaceOnUse">
                 <stop stopColor="#A855F7" />
                 <stop offset="1" stopColor="#6366F1" />
               </linearGradient>
-              <mask id="nosEclipseMask">
-                <circle cx="50" cy="50" r="42" fill="#fff" />
-                <circle cx="61" cy="39" r="35" fill="#000" />
-              </mask>
+              <radialGradient id="nosEclipseCore" cx="42%" cy="38%" r="70%">
+                <stop offset="0" stopColor="#1a1830" />
+                <stop offset="1" stopColor="#08070d" />
+              </radialGradient>
+              <filter id="nosEclipseGlow" x="-60%" y="-60%" width="220%" height="220%">
+                <feGaussianBlur stdDeviation="2.4" result="b" />
+                <feMerge>
+                  <feMergeNode in="b" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
             </defs>
-            <rect width="100" height="100" fill="url(#nosEclipseGrad)" mask="url(#nosEclipseMask)" />
+            <circle cx="50" cy="50" r="30" fill="url(#nosEclipseCore)" />
+            <circle cx="50" cy="50" r="35.5" fill="none" stroke="url(#nosEclipseGrad)" strokeWidth="6" filter="url(#nosEclipseGlow)" />
+            <circle cx="73" cy="27" r="4.6" fill="#fff" filter="url(#nosEclipseGlow)" />
           </svg>
           S
         </span>
