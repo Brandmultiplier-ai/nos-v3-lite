@@ -91,40 +91,40 @@ function BrandLogo({ id, size = 32 }: { id: string; size?: number }) {
           <path d="M18 5 9.5 17.5H14.5L13 27 22.5 14H17.4L18 5Z" fill="#fff" />
         </svg>
       );
-    /* Smartlead — email sequencer (recreated mark) */
+    /* Smartlead — official mark (megaphone on violet) */
     case "smartlead":
       return (
         <svg width={s} height={s} viewBox="0 0 32 32" fill="none">
-          <rect width="32" height="32" rx="7" fill="#2563EB" />
-          <path d="M8.5 9.5H23.5L18 16.2V22.6L14 20V16.2Z" fill="#fff" />
+          <rect width="32" height="32" rx="7" fill="#6C5CE7" />
+          <circle cx="11" cy="13" r="3.7" fill="#fff" />
+          <rect x="9.3" y="15.4" width="3.4" height="6" rx="1.7" fill="#fff" />
+          <path d="M14.6 8.2 24 13 14.6 17.8Z" fill="#fff" />
+          <circle cx="26.4" cy="13" r="1.7" fill="#fff" />
         </svg>
       );
-    /* Salesloft — email sequencer (recreated mark, "loft" chevrons) */
+    /* Salesloft — official mark (serif S + lime dot on dark green) */
     case "salesloft":
       return (
         <svg width={s} height={s} viewBox="0 0 32 32" fill="none">
-          <rect width="32" height="32" rx="7" fill="#16223D" />
-          <path d="M8 16.5 16 9.5 24 16.5" stroke="#39B6F0" strokeWidth="2.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M8 21.8 16 14.8 24 21.8" stroke="#39B6F0" strokeWidth="2.4" fill="none" strokeLinecap="round" strokeLinejoin="round" opacity="0.5" />
+          <rect width="32" height="32" rx="7" fill="#0E2E1C" />
+          <text x="13.5" y="24" textAnchor="middle" fontFamily="Georgia, 'Times New Roman', serif" fontSize="21" fontWeight="700" fill="#fff">S</text>
+          <circle cx="22" cy="21.5" r="2.5" fill="#93C83F" />
         </svg>
       );
-    /* Vector — website intelligence, enterprise (recreated mark) */
+    /* Vector — official mark (serif V on blue) */
     case "vector":
       return (
         <svg width={s} height={s} viewBox="0 0 32 32" fill="none">
-          <rect width="32" height="32" rx="7" fill="#0C0C12" />
-          <circle cx="10" cy="22" r="2.3" fill="#fff" />
-          <path d="M11.2 20.8 20.8 11.2" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" />
-          <path d="M15.6 11.2H20.8V16.4" stroke="#fff" strokeWidth="2.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          <rect width="32" height="32" rx="7" fill="#1452F0" />
+          <text x="16" y="23.5" textAnchor="middle" fontFamily="Georgia, 'Times New Roman', serif" fontSize="20" fontWeight="700" fill="#fff">V</text>
         </svg>
       );
-    /* RB2B — website intelligence (recreated wordmark monogram) */
+    /* RB2B — official mark (black wordmark on lime green) */
     case "rb2b":
       return (
         <svg width={s} height={s} viewBox="0 0 32 32" fill="none">
-          <rect width="32" height="32" rx="7" fill="#111114" />
-          <text x="16" y="21.5" textAnchor="middle" fontFamily="Geist, system-ui, sans-serif" fontSize="13" fontWeight="800" letterSpacing="-0.5" fill="#fff">rb</text>
-          <circle cx="23.5" cy="11" r="2" fill="#A3E635" />
+          <rect width="32" height="32" rx="7" fill="#5CE600" />
+          <text x="16" y="19" textAnchor="middle" fontFamily="ui-monospace, 'SF Mono', Menlo, monospace" fontSize="8.4" fontWeight="800" letterSpacing="0.3" fill="#000">RB2B</text>
         </svg>
       );
     /* Google Search Console — official multicolor (kept) */
