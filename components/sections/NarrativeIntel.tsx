@@ -138,6 +138,11 @@ export function NarrativeIntel({ variant = "a" }: SectionProps) {
         info="Total pipeline attributed across all narrative marketing channels in the selected period."
       />
 
+      {/* AI Narrative */}
+      <motion.div variants={itemVariants}>
+        <InsightCard text={aiNarrative} />
+      </motion.div>
+
       {/* NRI Score Card */}
       <motion.div variants={itemVariants}>
         <NRIScoreCard />
@@ -166,11 +171,6 @@ export function NarrativeIntel({ variant = "a" }: SectionProps) {
         <DashboardCard info="Composite signal strength across LinkedIn, website intent, email, search, and content channels over time.">
           <SignalAreaChart data={signalTimeline} />
         </DashboardCard>
-      </motion.div>
-
-      {/* AI Narrative */}
-      <motion.div variants={itemVariants}>
-        <InsightCard text={aiNarrative} />
       </motion.div>
 
       {/* Recommended Actions */}
