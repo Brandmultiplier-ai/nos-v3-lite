@@ -22,6 +22,13 @@ export const metadata: Metadata = {
   title: "NOS — Narrative Operating System",
   description:
     "B2B narrative marketing intelligence platform. Translate all your content and outreach signals into one thing — pipeline.",
+  // Demo dashboard with mock data — keep it out of search indexes.
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+    googleBot: { index: false, follow: false },
+  },
 };
 
 export default function RootLayout({
