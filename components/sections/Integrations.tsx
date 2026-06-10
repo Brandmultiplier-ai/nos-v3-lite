@@ -83,6 +83,50 @@ function BrandLogo({ id, size = 32 }: { id: string; size?: number }) {
     );
   }
   switch (id) {
+    /* Instantly — email sequencer (recreated mark) */
+    case "instantly":
+      return (
+        <svg width={s} height={s} viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="7" fill="#5B5BF0" />
+          <path d="M18 5 9.5 17.5H14.5L13 27 22.5 14H17.4L18 5Z" fill="#fff" />
+        </svg>
+      );
+    /* Smartlead — email sequencer (recreated mark) */
+    case "smartlead":
+      return (
+        <svg width={s} height={s} viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="7" fill="#2563EB" />
+          <path d="M8.5 9.5H23.5L18 16.2V22.6L14 20V16.2Z" fill="#fff" />
+        </svg>
+      );
+    /* Salesloft — email sequencer (recreated mark, "loft" chevrons) */
+    case "salesloft":
+      return (
+        <svg width={s} height={s} viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="7" fill="#16223D" />
+          <path d="M8 16.5 16 9.5 24 16.5" stroke="#39B6F0" strokeWidth="2.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M8 21.8 16 14.8 24 21.8" stroke="#39B6F0" strokeWidth="2.4" fill="none" strokeLinecap="round" strokeLinejoin="round" opacity="0.5" />
+        </svg>
+      );
+    /* Vector — website intelligence, enterprise (recreated mark) */
+    case "vector":
+      return (
+        <svg width={s} height={s} viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="7" fill="#0C0C12" />
+          <circle cx="10" cy="22" r="2.3" fill="#fff" />
+          <path d="M11.2 20.8 20.8 11.2" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" />
+          <path d="M15.6 11.2H20.8V16.4" stroke="#fff" strokeWidth="2.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
+    /* RB2B — website intelligence (recreated wordmark monogram) */
+    case "rb2b":
+      return (
+        <svg width={s} height={s} viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="7" fill="#111114" />
+          <text x="16" y="21.5" textAnchor="middle" fontFamily="Geist, system-ui, sans-serif" fontSize="13" fontWeight="800" letterSpacing="-0.5" fill="#fff">rb</text>
+          <circle cx="23.5" cy="11" r="2" fill="#A3E635" />
+        </svg>
+      );
     /* Google Search Console — official multicolor (kept) */
     case "google-search":
       return (
