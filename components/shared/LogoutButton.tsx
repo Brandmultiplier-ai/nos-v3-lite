@@ -11,7 +11,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-export function LogoutButton() {
+type LogoutButtonProps = {
+  variant?: "header" | "sidebar";
+};
+
+export function LogoutButton({ variant = "header" }: LogoutButtonProps) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -28,20 +32,29 @@ export function LogoutButton() {
     }
   }
 
+  const isSidebar = variant === "sidebar";
+
   return (
     <>
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="h-8 px-2.5 rounded-lg flex items-center gap-1.5 text-xs font-medium transition-all hover:bg-[var(--nos-bg-elevated)]"
+        className={
+          isSidebar
+            ? "w-full h-9 px-3 rounded-lg flex items-center justify-center gap-2 text-xs font-semibold transition-all hover:bg-[rgba(255,68,85,0.08)]"
+            : "h-8 px-3 rounded-lg flex items-center gap-1.5 text-xs font-semibold transition-all hover:bg-[var(--nos-bg-elevated)] shrink-0"
+        }
         style={{
-          border: "1px solid var(--border)",
-          color: "var(--nos-text-muted)",
+          border: isSidebar
+            ? "1px solid rgba(255,68,85,0.25)"
+            : "1px solid var(--border)",
+          color: isSidebar ? "var(--nos-negative)" : "var(--nos-text-secondary)",
+          background: isSidebar ? "rgba(255,68,85,0.06)" : "var(--nos-bg-elevated)",
         }}
         aria-label="Log out"
       >
-        <LogOut size={13} />
-        <span className="hidden sm:inline">Log out</span>
+        <LogOut size={isSidebar ? 14 : 13} />
+        Log out
       </button>
 
       <Dialog open={open} onOpenChange={(next) => !loading && setOpen(next)}>

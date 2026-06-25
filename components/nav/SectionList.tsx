@@ -8,6 +8,7 @@ import {
   Brain, BarChart3, Target, Search, Globe, FileText, Mail, DollarSign, Puzzle, Lock,
 } from "lucide-react";
 import { useState } from "react";
+import { LogoutButton } from "@/components/shared/LogoutButton";
 
 const sections = [
   {
@@ -300,6 +301,10 @@ export function SectionList() {
             />
           ))}
         </div>
+      </div>
+
+      <div className="px-4 py-3 border-t border-[var(--border)]">
+        <LogoutButton variant="sidebar" />
       </div>
     </aside>
   );
