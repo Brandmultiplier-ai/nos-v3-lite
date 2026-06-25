@@ -26,7 +26,7 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
       channels: ["linkedin", "instagram", "facebook", "newsletter", "email"],
     },
     kpis: {
-      cac: { value: 10350, change: range === "7d" ? -2 : range === "30d" ? -6 : -14, sparkline: spark(), prefix: "$" },
+      cac: { value: 10350, change: range === "7d" ? 3 : range === "30d" ? 12 : 18, sparkline: spark(), prefix: "$" },
       pipeline: { value: Math.round(310000 * mult), change: range === "7d" ? 5 : range === "30d" ? 12 : 22, sparkline: spark(), prefix: "$" },
       dealVelocity: { value: 21, change: range === "7d" ? -5 : range === "30d" ? -14 : -24, sparkline: spark(), suffix: "d" },
       dealsCreated: { value: Math.round(22 * mult), change: range === "7d" ? 6 : range === "30d" ? 18 : 34, sparkline: spark() },

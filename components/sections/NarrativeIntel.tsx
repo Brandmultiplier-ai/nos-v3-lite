@@ -26,11 +26,15 @@ function HeroKPICard({
   field,
   tooltip,
   invertChange = false,
+  flipDisplaySign = invertChange,
 }: {
   label: string;
   field: KPIMetric;
   tooltip: string;
+  /** Lower-is-better: negative raw change = good (green), positive = bad (red). */
   invertChange?: boolean;
+  /** When true with invertChange, flip sign for display (e.g. Sales Velocity). CAC keeps raw +/-. */
+  flipDisplaySign?: boolean;
 }) {
   const { value, change, sparkline, prefix = "", suffix = "" } = field;
   const isNeutral = change === 0;
@@ -51,15 +55,24 @@ function HeroKPICard({
     ? "rgba(52,211,153,0.08)"
     : "rgba(255,68,85,0.08)";
 
-  // For inverted metrics (lower = better), flip the displayed sign so a -12% CAC shows as +12% green.
   const displayChange = isNeutral
     ? "0%"
-    : invertChange
+    : flipDisplaySign && invertChange
     ? `${change < 0 ? "+" : "-"}${Math.abs(change)}%`
     : `${change > 0 ? "+" : ""}${change}%`;
 
+  // CAC: line follows raw change (+ up/red, − down/green). Velocity: line follows improvement.
+  const sparkDirection =
+    invertChange && !flipDisplaySign
+      ? change > 0
+        ? "up"
+        : "down"
+      : isGood
+      ? "up"
+      : "down";
+
   return (
-    <div className="nos-card flex flex-col items-center text-center gap-3 py-6 px-4 relative group">
+    <div className="nos-card flex flex-col items-center text-center gap-3 py-6 px-4 relative group min-w-0">
       <div
         className="absolute top-0 left-8 right-8 h-px rounded-full pointer-events-none"
         style={{
@@ -70,7 +83,7 @@ function HeroKPICard({
       <div className="absolute top-3 right-3">
         <CardInfoButton description={tooltip} />
       </div>
-      <p className="text-label-caps text-center w-full">{label}</p>
+      <p className="text-label-caps text-center w-full truncate px-1">{label}</p>
       <p
         className="font-mono-metric"
         style={{ color: "var(--nos-text-primary)" }}
@@ -84,7 +97,7 @@ function HeroKPICard({
         >
           <span className="text-sm font-bold">{displayChange}</span>
         </div>
-        <MiniSparkline data={sparkline} color={sparkColor} width={64} height={24} direction={isGood ? "up" : "down"} />
+        <MiniSparkline data={sparkline} color={sparkColor} width={64} height={24} direction={sparkDirection} />
       </div>
     </div>
   );
@@ -117,8 +130,15 @@ export function NarrativeIntel({ variant = "a" }: SectionProps) {
   const data = useClientData();
   const { kpis, signalTimeline, aiNarrative, recommendedActions, pipelineBridge } = data;
 
-  const heroKPIs = [
-    { key: "cac", label: "Customer Acq. Cost", field: kpis.cac, tooltip: "Average cost to acquire a new customer, attributed to narrative marketing activities.", invertChange: true },
+  const heroKPIs: {
+    key: string;
+    label: string;
+    field: KPIMetric;
+    tooltip: string;
+    invertChange?: boolean;
+    flipDisplaySign?: boolean;
+  }[] = [
+    { key: "cac", label: "Customer Acq. Cost", field: kpis.cac, tooltip: "Average cost to acquire a new customer, attributed to narrative marketing activities.", invertChange: true, flipDisplaySign: false },
     { key: "ltv", label: "Customer LTV", field: kpis.ltv, tooltip: "Average lifetime value of customers acquired through narrative marketing channels.", invertChange: false },
     { key: "avgDealSize", label: "Avg Deal Size", field: kpis.avgDealSize, tooltip: "Average closed-won deal value for opportunities influenced by narrative marketing.", invertChange: false },
     { key: "dealVelocity", label: "Sales Velocity", field: kpis.dealVelocity, tooltip: "Average days from first signal touch to closed-won deal for narrative-sourced leads.", invertChange: true },
@@ -146,7 +166,7 @@ export function NarrativeIntel({ variant = "a" }: SectionProps) {
       </motion.div>
 
       {/* Hero KPI Row */}
-      <motion.div variants={itemVariants} className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4">
+      <motion.div variants={itemVariants} className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4 min-w-0">
         {heroKPIs.map((kpi) => (
           <HeroKPICard
             key={kpi.key}
@@ -154,6 +174,7 @@ export function NarrativeIntel({ variant = "a" }: SectionProps) {
             field={kpi.field}
             tooltip={kpi.tooltip}
             invertChange={kpi.invertChange}
+            flipDisplaySign={kpi.flipDisplaySign}
           />
         ))}
       </motion.div>

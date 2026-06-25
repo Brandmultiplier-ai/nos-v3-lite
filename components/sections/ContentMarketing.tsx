@@ -81,38 +81,42 @@ function SocialTab() {
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
       {/* Platform stat cards */}
-      <motion.div variants={itemVariants} className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 gap-3">
         {platformStats.map((p) => (
-          <DashboardCard key={p.platform} info={`${p.platform} stats: followers, reach, engagement rate, and published posts.`}>
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-2 h-2 rounded-full" style={{ background: CHANNEL_COLORS[p.platform] ?? "var(--nos-accent)" }} />
-              <span className="text-xs font-semibold" style={{ color: "var(--nos-text-primary)" }}>{p.platform}</span>
+          <DashboardCard key={p.platform} className="min-w-0" info={`${p.platform} stats: followers, reach, engagement rate, and published posts.`}>
+            <div className="flex items-center gap-2 mb-3 min-w-0">
+              <div className="w-2 h-2 rounded-full shrink-0" style={{ background: CHANNEL_COLORS[p.platform] ?? "var(--nos-accent)" }} />
+              <span className="text-xs font-semibold truncate" style={{ color: "var(--nos-text-primary)" }}>{p.platform}</span>
             </div>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-2 pr-6">
-              <div>
-                <p className="text-label-caps mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Followers</p>
-                <p className="text-sm font-bold" style={{ fontFamily: "var(--font-geist-mono)", color: "var(--nos-text-primary)" }}>{fmtNum(p.followers)}</p>
-                <p className="text-[9px] font-semibold" style={{ color: p.followersChange >= 0 ? "var(--nos-positive)" : "var(--nos-negative)" }}>
-                  {p.followersChange >= 0 ? "+" : ""}{p.followersChange}%
-                </p>
-              </div>
-              <div>
-                <p className="text-label-caps mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Eng. Rate</p>
-                <p className="text-sm font-bold" style={{ fontFamily: "var(--font-geist-mono)", color: "var(--nos-positive)" }}>{p.engagementRate.toFixed(1)}%</p>
-              </div>
-              <div>
-                <p className="text-label-caps mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Reach</p>
-                <p className="text-xs font-semibold" style={{ color: "var(--nos-text-secondary)" }}>{fmtNum(p.reach)}</p>
-              </div>
-              {p.reelsWatchTime && (
-                <div>
-                  <p className="text-label-caps mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Watch Time</p>
-                  <p className="text-xs font-semibold" style={{ color: "var(--nos-accent)" }}>{p.reelsWatchTime}s</p>
+            <div className="space-y-3 pr-6 min-w-0">
+              <div className="flex items-start justify-between gap-3 min-w-0">
+                <div className="min-w-0 flex-1">
+                  <p className="text-[10px] font-semibold uppercase tracking-wide truncate mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Followers</p>
+                  <p className="text-sm font-bold" style={{ fontFamily: "var(--font-geist-mono)", color: "var(--nos-text-primary)" }}>{fmtNum(p.followers)}</p>
+                  <p className="text-[9px] font-semibold" style={{ color: p.followersChange >= 0 ? "var(--nos-positive)" : "var(--nos-negative)" }}>
+                    {p.followersChange >= 0 ? "+" : ""}{p.followersChange}%
+                  </p>
                 </div>
-              )}
+                <div className="min-w-0 shrink-0 text-right">
+                  <p className="text-[10px] font-semibold uppercase tracking-wide truncate mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Eng. Rate</p>
+                  <p className="text-sm font-bold" style={{ fontFamily: "var(--font-geist-mono)", color: "var(--nos-positive)" }}>{p.engagementRate.toFixed(1)}%</p>
+                </div>
+              </div>
+              <div className="flex items-start justify-between gap-3 min-w-0">
+                <div className="min-w-0 flex-1">
+                  <p className="text-[10px] font-semibold uppercase tracking-wide truncate mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Reach</p>
+                  <p className="text-xs font-semibold" style={{ color: "var(--nos-text-secondary)" }}>{fmtNum(p.reach)}</p>
+                </div>
+                {p.reelsWatchTime && (
+                  <div className="min-w-0 shrink-0 text-right">
+                    <p className="text-[10px] font-semibold uppercase tracking-wide truncate mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Watch Time</p>
+                    <p className="text-xs font-semibold" style={{ color: "var(--nos-accent)" }}>{p.reelsWatchTime}s</p>
+                  </div>
+                )}
+              </div>
               {p.hookRate && (
-                <div>
-                  <p className="text-label-caps mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Hook Rate</p>
+                <div className="min-w-0">
+                  <p className="text-[10px] font-semibold uppercase tracking-wide truncate mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Hook Rate</p>
                   <p className="text-xs font-semibold" style={{ color: "var(--nos-accent)" }}>{p.hookRate}%</p>
                 </div>
               )}
