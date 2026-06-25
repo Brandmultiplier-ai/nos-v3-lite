@@ -21,30 +21,30 @@ export const MiniSparkline = memo(function MiniSparkline({
     const id = `spark-${Math.abs(color.split("").reduce((a, c) => a + c.charCodeAt(0), 0))}`;
     if (!data.length) return { line: "", area: "", gradId: id };
 
-    const min = Math.min(...data);
-    const max = Math.max(...data);
+    // Inject a directional slope into the raw values BEFORE normalisation.
+    // Doing it here (not after) means the min/max calculation includes the slope,
+    // so the trend always dominates regardless of the wave shape.
+    let values = data;
+    if (direction && data.length > 1) {
+      const span = (Math.max(...data) - Math.min(...data)) || 10;
+      const slope = span * 1.1; // slope strength: slightly larger than the natural data range
+      values = data.map((v, i) => {
+        const t = i / (data.length - 1);
+        return direction === "up" ? v + t * slope : v - t * slope;
+      });
+    }
+
+    const min = Math.min(...values);
+    const max = Math.max(...values);
     const range = max - min || 1;
     const pad = 2;
     const innerH = height - pad * 2;
 
-    let coords = data.map((v, i) => {
+    const coords = values.map((v, i) => {
       const x = data.length === 1 ? width / 2 : (i / (data.length - 1)) * width;
       const y = pad + innerH - ((v - min) / range) * innerH;
       return [x, y] as [number, number];
     });
-
-    // Apply a linear bias so the line visually trends in the correct direction.
-    // SVG y increases downward, so "up" means decreasing y over time.
-    if (direction && data.length > 1) {
-      const tilt = innerH * 0.45;
-      coords = coords.map(([x, y], i) => {
-        const t = i / (data.length - 1);
-        const bias = direction === "up"
-          ? (1 - t) * tilt   // start high (lower y), end low (higher y) — rises left→right
-          : t * tilt;         // start low, end high (lower y) — falls left→right
-        return [x, Math.min(height - pad, Math.max(pad, y + bias))] as [number, number];
-      });
-    }
 
     const linePath = coords.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
     const first = coords[0];
