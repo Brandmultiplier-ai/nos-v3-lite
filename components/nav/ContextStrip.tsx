@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ClientSwitcher } from "@/components/shared/ClientSwitcher";
 import { DateRangePicker } from "@/components/shared/DateRangePicker";
 import { ThemeToggle } from "@/components/shared/ThemeToggle";
+import { LogoutButton } from "@/components/shared/LogoutButton";
 
 export function ContextStrip() {
 
@@ -59,6 +60,7 @@ export function ContextStrip() {
 
       <div className="ml-auto flex items-center gap-1.5">
         <ThemeToggle />
+        <LogoutButton />
       </div>
     </header>
   );
