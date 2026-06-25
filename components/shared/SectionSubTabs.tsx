@@ -29,7 +29,7 @@ export function SectionSubTabs({ tabs }: SectionSubTabsProps) {
         {tabs.map((tab) => {
           const isActive = pathname === tab.path || (tab.path.endsWith("/social") && pathname === "/content");
           return (
-            <Link key={tab.id} href={tab.path} className="relative">
+            <Link key={tab.id} href={tab.path} scroll={false} className="relative">
               {isActive && (
                 <motion.div
                   layoutId="sectionSubTab"

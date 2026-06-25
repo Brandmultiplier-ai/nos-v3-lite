@@ -17,10 +17,13 @@ interface PhaseMetricCardProps {
   compact?: boolean;
 }
 
-/** Lower-is-better detector: these metrics improve when the value drops. */
-const LOWER_IS_BETTER = /velocity|cac|churn|cycle|cost/i;
+/** Lower-is-better detector: these metrics improve when the value drops.
+ *  LTV:CAC is explicitly excluded — it's a ratio where higher is better. */
 function isLowerBetter(name: string): boolean {
-  return LOWER_IS_BETTER.test(name);
+  const n = name.toLowerCase();
+  // LTV:CAC ratio going up is GOOD — don't invert it even though it contains "cac"
+  if (n.includes("ltv:cac") || n.includes("ltv to cac")) return false;
+  return /velocity|cac|churn|cycle|cost/i.test(name);
 }
 
 function TrendIcon({ change, invertPositive = false }: { change: number; invertPositive?: boolean }) {

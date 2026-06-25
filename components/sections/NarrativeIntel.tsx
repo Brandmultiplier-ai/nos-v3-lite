@@ -11,7 +11,7 @@ import { DashboardCard } from "@/components/shared/DashboardCard";
 import { CardInfoButton } from "@/components/shared/CardInfoButton";
 import { MiniSparkline } from "@/components/charts/MiniSparkline";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, TrendingDown, Minus, Target, Search } from "lucide-react";
+import { TrendingUp, Target, Search } from "lucide-react";
 import type { KPIMetric } from "@/lib/data/types";
 
 function fmtHero(value: number, prefix = "", suffix = "") {
@@ -51,6 +51,13 @@ function HeroKPICard({
     ? "rgba(52,211,153,0.08)"
     : "rgba(255,68,85,0.08)";
 
+  // For inverted metrics (lower = better), flip the displayed sign so a -12% CAC shows as +12% green.
+  const displayChange = isNeutral
+    ? "0%"
+    : invertChange
+    ? `${change < 0 ? "+" : "-"}${Math.abs(change)}%`
+    : `${change > 0 ? "+" : ""}${change}%`;
+
   return (
     <div className="nos-card flex flex-col items-center text-center gap-3 py-6 px-4 relative group">
       <div
@@ -72,22 +79,12 @@ function HeroKPICard({
       </p>
       <div className="flex flex-col items-center gap-2">
         <div
-          className="flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold"
+          className="flex items-center px-2.5 py-0.5 rounded-full"
           style={{ background: trendBg, color: trendColor }}
         >
-          {isNeutral ? (
-            <Minus size={11} />
-          ) : isGood ? (
-            <TrendingUp size={11} />
-          ) : (
-            <TrendingDown size={11} />
-          )}
-          <span>
-            {change >= 0 ? "+" : ""}
-            {change}%
-          </span>
+          <span className="text-sm font-bold">{displayChange}</span>
         </div>
-        <MiniSparkline data={sparkline} color={sparkColor} width={64} height={24} />
+        <MiniSparkline data={sparkline} color={sparkColor} width={64} height={24} direction={isGood ? "up" : "down"} />
       </div>
     </div>
   );

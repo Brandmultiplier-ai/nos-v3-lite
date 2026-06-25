@@ -7,6 +7,7 @@ interface MiniSparklineProps {
   color: string;
   width?: number;
   height?: number;
+  direction?: "up" | "down";
 }
 
 export const MiniSparkline = memo(function MiniSparkline({
@@ -14,6 +15,7 @@ export const MiniSparkline = memo(function MiniSparkline({
   color,
   width = 72,
   height = 28,
+  direction,
 }: MiniSparklineProps) {
   const { line, area, gradId } = useMemo(() => {
     const id = `spark-${Math.abs(color.split("").reduce((a, c) => a + c.charCodeAt(0), 0))}`;
@@ -25,11 +27,24 @@ export const MiniSparkline = memo(function MiniSparkline({
     const pad = 2;
     const innerH = height - pad * 2;
 
-    const coords = data.map((v, i) => {
+    let coords = data.map((v, i) => {
       const x = data.length === 1 ? width / 2 : (i / (data.length - 1)) * width;
       const y = pad + innerH - ((v - min) / range) * innerH;
-      return [x, y] as const;
+      return [x, y] as [number, number];
     });
+
+    // Apply a linear bias so the line visually trends in the correct direction.
+    // SVG y increases downward, so "up" means decreasing y over time.
+    if (direction && data.length > 1) {
+      const tilt = innerH * 0.45;
+      coords = coords.map(([x, y], i) => {
+        const t = i / (data.length - 1);
+        const bias = direction === "up"
+          ? (1 - t) * tilt   // start high (lower y), end low (higher y) — rises left→right
+          : t * tilt;         // start low, end high (lower y) — falls left→right
+        return [x, Math.min(height - pad, Math.max(pad, y + bias))] as [number, number];
+      });
+    }
 
     const linePath = coords.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
     const first = coords[0];
@@ -37,7 +52,7 @@ export const MiniSparkline = memo(function MiniSparkline({
     const areaPath = `M0,${height} L${first[0].toFixed(1)},${first[1].toFixed(1)} ${coords.slice(1).map(([x, y]) => `L${x.toFixed(1)},${y.toFixed(1)}`).join(" ")} L${last[0].toFixed(1)},${height} Z`;
 
     return { line: linePath, area: areaPath, gradId: id };
-  }, [data, width, height, color]);
+  }, [data, width, height, color, direction]);
 
   return (
     <svg width={width} height={height} aria-hidden="true" className="overflow-visible shrink-0">
