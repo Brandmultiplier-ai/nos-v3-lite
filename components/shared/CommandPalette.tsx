@@ -38,7 +38,7 @@ const sections = [
 ];
 
 const clients = [
-  { id: "nexus", label: "Nexus Labs", type: "SaaS · Series B" },
+  { id: "nexus", label: "Nexfinity", type: "SaaS · Series B" },
   { id: "meridian", label: "Meridian Brands", type: "D2C-adjacent B2B" },
   { id: "apex", label: "Apex Systems", type: "Enterprise B2B" },
 ];

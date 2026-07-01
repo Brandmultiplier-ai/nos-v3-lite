@@ -20,7 +20,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
   return {
     meta: {
       id: "nexus",
-      name: "Nexus Labs",
+      name: "Nexfinity",
       type: "SaaS",
       stage: "Series B",
       channels: ["linkedin", "website", "email", "search"],
@@ -121,7 +121,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
         summary: range === "7d"
           ? "This week's positioning signals are stable. NarrateIQ posted two comparison articles targeting your top keyword — monitor share-of-voice closely. No immediate quadrant movement, but early competitive activity warrants attention."
           : range === "30d"
-          ? "Nexus Labs is positioned firmly in the Leaders quadrant with narrative strength above 74/100. A strong market position reduces CAC across every channel — buyers arrive with positive pre-existing associations, meaning shorter sales cycles and higher win rates against weaker-positioned competitors."
+          ? "Nexfinity is positioned firmly in the Leaders quadrant with narrative strength above 74/100. A strong market position reduces CAC across every channel — buyers arrive with positive pre-existing associations, meaning shorter sales cycles and higher win rates against weaker-positioned competitors."
           : "Over the quarter, your positioning score has improved by 12 points while NarrateIQ lost ground. The compounding effect of consistent narrative investment is showing — sustained Leaders quadrant presence correlates with a 28% improvement in brand-influenced pipeline this quarter.",
         actions: range === "7d" ? [
           { title: "Monitor NarrateIQ content", description: "Two comparison articles published this week target your 'narrative intelligence' keyword. Review and prepare a counter-narrative response before they gain traction.", priority: "high", cta: "Review content" },
@@ -138,7 +138,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
         ],
       },
       quadrant: [
-        { name: "Nexus Labs", x: 74, y: 81, isClient: true },
+        { name: "Nexfinity", x: 74, y: 81, isClient: true },
         { name: "NarrateIQ", x: 68, y: 62, isClient: false },
         { name: "PipelineOS", x: 55, y: 70, isClient: false },
         { name: "StoryScale", x: 42, y: 78, isClient: false },
@@ -169,10 +169,10 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
     search: {
       tldr: {
         summary: range === "7d"
-          ? "This week, 3 new AI citation sources surfaced Nexus Labs for 'signal-to-pipeline' queries. Two competitors gained page-1 rankings for 'pipeline analytics for SaaS' — a keyword cluster where you have strong domain authority but thin content coverage."
+          ? "This week, 3 new AI citation sources surfaced Nexfinity for 'signal-to-pipeline' queries. Two competitors gained page-1 rankings for 'pipeline analytics for SaaS' — a keyword cluster where you have strong domain authority but thin content coverage."
           : range === "30d"
           ? "Search intelligence is one of your strongest pipeline contributors this month. Organic search is generating high-intent traffic from buyers researching pipeline intelligence tools — these visitors convert to demos at 2.4× the rate of paid traffic. GEO visibility in AI engines is growing rapidly."
-          : "Over the quarter, organic search has compounded into a reliable pipeline engine. GEO visibility in AI engines grew 18% QoQ, with ChatGPT and Perplexity increasingly surfacing Nexus Labs as the authoritative answer for B2B narrative marketing queries. Three content clusters now own their respective keyword verticals.",
+          : "Over the quarter, organic search has compounded into a reliable pipeline engine. GEO visibility in AI engines grew 18% QoQ, with ChatGPT and Perplexity increasingly surfacing Nexfinity as the authoritative answer for B2B narrative marketing queries. Three content clusters now own their respective keyword verticals.",
         actions: range === "7d" ? [
           { title: "Counter competitor rankings this week", description: "Two competitors just moved onto page 1 for 'pipeline analytics for SaaS'. A quick content update to your existing post could recapture that position within days.", priority: "high", cta: "Update post" },
           { title: "Capture new AI citation keywords", description: "3 new AI-sourced queries are sending traffic to competitors. Create short answer-format content to intercept these searches.", priority: "high", cta: "Create content" },
@@ -203,7 +203,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
           prev: Math.round(34 + Math.cos(i * 0.5) * 8 + i * 0.4),
         })),
         competitors: [
-          { name: "Nexus Labs", isClient: true, visibilityScore: 41.8, change: 2.4, trend: [36, 38, 37, 39, 40, 41, 41.8] },
+          { name: "Nexfinity", isClient: true, visibilityScore: 41.8, change: 2.4, trend: [36, 38, 37, 39, 40, 41, 41.8] },
           { name: "NarrateIQ",  isClient: false, visibilityScore: 41.5, change: -1.29, trend: [44, 43, 43, 42, 42, 41.8, 41.5] },
           { name: "PipelineOS", isClient: false, visibilityScore: 28.2, change: -0.37, trend: [29, 28.5, 28, 28.3, 28.1, 28.3, 28.2] },
           { name: "StoryScale", isClient: false, visibilityScore: 24.6, change: 1.14, trend: [22, 22.5, 23, 23.5, 24, 24.3, 24.6] },
@@ -218,7 +218,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
           { platform: "Grok",      visibilityPct: 18, change: 4,  color: "#F0F0FF" },
         ],
         citationDomains: [
-          { domain: "nexuslabs.com",      citations: 124, change: 18, category: "Own Site" },
+          { domain: "nexfinity.com",      citations: 124, change: 18, category: "Own Site" },
           { domain: "g2.com",             citations: 89,  change: 12, category: "Review" },
           { domain: "techcrunch.com",     citations: 62,  change: 5,  category: "Media" },
           { domain: "linkedin.com",       citations: 58,  change: 9,  category: "Social" },
@@ -506,7 +506,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
       openRate: { value: 41, change: 3, sparkline: spark() },
       clickRate: { value: 8.2, change: 1, sparkline: spark() },
       newsletters: [
-        { id: "n1", subject: "How Nexus increased pipeline 40% by changing one word in their narrative", sent: 4200, openRate: 41, clickRate: 8.2, unsubscribes: 12, pipeline: 48000, date: "2026-02-14" },
+        { id: "n1", subject: "How Nexfinity increased pipeline 40% by changing one word in their narrative", sent: 4200, openRate: 41, clickRate: 8.2, unsubscribes: 12, pipeline: 48000, date: "2026-02-14" },
         { id: "n2", subject: "The 3 signals that predict enterprise deals before they happen", sent: 4150, openRate: 38, clickRate: 6.8, unsubscribes: 8, pipeline: 32000, date: "2026-02-07" },
         { id: "n3", subject: "NOS Benchmark Report: Q1 2026 Pipeline Velocity Index", sent: 4100, openRate: 44, clickRate: 11.2, unsubscribes: 5, pipeline: 62000, date: "2026-01-31" },
       ],
@@ -603,10 +603,10 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
         },
       ],
       inboxHealth: [
-        { email: "alex@nexuslabs.com",   warmupScore: 94, deliverabilityScore: 96, spamScore: 0.8, blacklisted: false, daysWarmedUp: 42, status: "healthy" },
-        { email: "sarah@nexuslabs.com",  warmupScore: 88, deliverabilityScore: 91, spamScore: 1.2, blacklisted: false, daysWarmedUp: 38, status: "healthy" },
-        { email: "growth@nexuslabs.com", warmupScore: 74, deliverabilityScore: 78, spamScore: 2.4, blacklisted: false, daysWarmedUp: 21, status: "warming" },
-        { email: "outreach@nexuslabs.com", warmupScore: 48, deliverabilityScore: 52, spamScore: 4.8, blacklisted: false, daysWarmedUp: 9, status: "at-risk" },
+        { email: "alex@nexfinity.com",   warmupScore: 94, deliverabilityScore: 96, spamScore: 0.8, blacklisted: false, daysWarmedUp: 42, status: "healthy" },
+        { email: "sarah@nexfinity.com",  warmupScore: 88, deliverabilityScore: 91, spamScore: 1.2, blacklisted: false, daysWarmedUp: 38, status: "healthy" },
+        { email: "growth@nexfinity.com", warmupScore: 74, deliverabilityScore: 78, spamScore: 2.4, blacklisted: false, daysWarmedUp: 21, status: "warming" },
+        { email: "outreach@nexfinity.com", warmupScore: 48, deliverabilityScore: 52, spamScore: 4.8, blacklisted: false, daysWarmedUp: 9, status: "at-risk" },
       ],
       emailFunnel: [
         { stage: "Contacted", count: Math.round(46200 * mult), rate: 100, color: "#0EA5E9" },

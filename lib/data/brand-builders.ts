@@ -3,11 +3,11 @@ import { createSparklineFactory } from "./sparkline";
 
 const spark = createSparklineFactory(70, 20);
 
-// ─── Nexus Labs ───────────────────────────────────────────────────
+// ─── Nexfinity ───────────────────────────────────────────────────
 export function makeNexusBrand(mult: number): BrandData {
   return {
     tldr: {
-      summary: "Brand intelligence is trending strongly positive for Nexus Labs. Awareness and Trust scores are up 9 and 6 points respectively, expanding your share of voice in the Series B SaaS category. A stronger brand narrative means buyers arrive warmer — reducing sales cycle friction and improving conversion rates at the bottom of the funnel.",
+      summary: "Brand intelligence is trending strongly positive for Nexfinity. Awareness and Trust scores are up 9 and 6 points respectively, expanding your share of voice in the Series B SaaS category. A stronger brand narrative means buyers arrive warmer — reducing sales cycle friction and improving conversion rates at the bottom of the funnel.",
       actions: [
         { title: "Amplify Trust Content", description: "Repurpose positive customer outcomes and analyst mentions into evergreen social assets to compound trust gains.", priority: "high", cta: "Create assets" },
         { title: "Align Messaging Across Channels", description: "Audit LinkedIn, blog, and email for consistent positioning language — inconsistency is diluting Awareness lift.", priority: "high", cta: "Run audit" },
@@ -38,7 +38,7 @@ export function makeNexusBrand(mult: number): BrandData {
     ],
     scoreboard: [
       {
-        name: "Nexus Labs",
+        name: "Nexfinity",
         isClient: true,
         brandScore: { score: 81, change: 7 },
         awareness: { score: 76, change: 9 },
@@ -100,7 +100,7 @@ export function makeNexusBrand(mult: number): BrandData {
       byChannel: [
         {
           network: "linkedin",
-          channelName: "Nexus Labs",
+          channelName: "Nexfinity",
           fans: Math.round(34700 * mult),
           fansChange: 48,
           // netNew sign now consistent with fansChange (+) and increase − decrease
@@ -119,7 +119,7 @@ export function makeNexusBrand(mult: number): BrandData {
         },
         {
           network: "website",
-          channelName: "Nexus Labs Blog",
+          channelName: "Nexfinity Blog",
           fans: Math.round(3100 * mult),
           fansChange: 34,
           netNew: 92,

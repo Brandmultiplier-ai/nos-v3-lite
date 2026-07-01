@@ -11,7 +11,7 @@ import {
 import { ChevronDown, Check } from "lucide-react";
 
 const clients: { id: ClientId; name: string; type: string; stage: string; initials: string }[] = [
-  { id: "nexus", name: "Nexus Labs", type: "SaaS", stage: "Series B", initials: "NL" },
+  { id: "nexus", name: "Nexfinity", type: "SaaS", stage: "Series B", initials: "NX" },
   { id: "meridian", name: "Meridian Brands", type: "D2C-adjacent B2B", stage: "Growth", initials: "MB" },
   { id: "apex", name: "Apex Systems", type: "Enterprise B2B", stage: "Enterprise", initials: "AS" },
 ];

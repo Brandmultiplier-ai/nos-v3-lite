@@ -2,7 +2,7 @@
 
 **NOS v3** is a B2B narrative marketing intelligence dashboard built for BrandMultiplier. It translates content, search, outreach, web, and paid media signals into pipeline outcomes — with AI summaries, recommended actions, and a proprietary **Narrative Resonance Index (NRI)**.
 
-This is a **demo/mock-data application** with three client workspaces (Nexus Labs, Meridian Brands, Apex Systems) and date-range filtering (7d / 30d / 90d).
+This is a **demo/mock-data application** with three client workspaces (Nexfinity, Meridian Brands, Apex Systems) and date-range filtering (7d / 30d / 90d).
 
 ---
 
@@ -229,7 +229,7 @@ Framer Motion handles page transitions (`AnimatePresence`), staggered card revea
 | `CardInfoButton` | `components/shared/CardInfoButton.tsx` | Tooltip info icon — positioned top-right of cards |
 | `SectionTLDR` | `components/shared/SectionTLDR.tsx` | AI Channel Summary + Recommended Actions grid (no CTAs) |
 | `SectionSubTabs` | `components/shared/SectionSubTabs.tsx` | Centered pill tabs for sub-sections (SEO/GEO, email/LinkedIn, etc.) |
-| `ClientSwitcher` | `components/shared/ClientSwitcher.tsx` | Nexus / Meridian / Apex workspace picker |
+| `ClientSwitcher` | `components/shared/ClientSwitcher.tsx` | Nexfinity / Meridian / Apex workspace picker |
 | `DateRangePicker` | `components/shared/DateRangePicker.tsx` | 7d / 30d / 90d dropdown |
 | `ThemeProvider` | `components/shared/ThemeProvider.tsx` | Dark/light theme context |
 | `ThemeToggle` | `components/shared/ThemeToggle.tsx` | Sun/moon toggle button |
@@ -302,7 +302,7 @@ Located in `components/ui/`: `button`, `badge`, `card`, `dialog`, `dropdown-menu
 
 | Client | Type | Plan | NRI | Notes |
 |--------|------|------|-----|-------|
-| **Nexus Labs** | SaaS, Series B | DFY | 4.2 | LinkedIn + website-led pipeline |
+| **Nexfinity** | SaaS, Series B | DFY | 4.2 | LinkedIn + website-led pipeline |
 | **Meridian Brands** | D2C-adjacent B2B | DWY | 3.4 | Instagram + newsletter-led |
 | **Apex Systems** | Enterprise B2B | Enterprise | 2.7 | Paid Media enabled, executive LinkedIn + CISO outreach |
 
@@ -334,7 +334,7 @@ Five narrative phases, each with a **Growth Metric** and **Emotional Indicator**
 
 ### Enterprise Gating
 
-Paid Media nav item is disabled for Nexus and Meridian with a tooltip. Apex (Enterprise) has full access.
+Paid Media nav item is disabled for Nexfinity and Meridian with a tooltip. Apex (Enterprise) has full access.
 
 ---
 
