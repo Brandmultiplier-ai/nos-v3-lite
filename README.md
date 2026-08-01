@@ -36,6 +36,22 @@ npm run lint    # ESLint
 
 ---
 
+## Environment Variables & Access Codes
+
+Login (`app/login`) is gated by a small server-side allowlist of passcodes defined in [`lib/auth-codes.ts`](lib/auth-codes.ts) — no database, just env vars. Each code is independently revocable and can carry its own expiry date.
+
+| Env var | Used for | Expiry |
+|---------|----------|--------|
+| `DASHBOARD_PASSWORD` | Internal / sales-call passcode. Current value: `demo-NOS1`. | Never |
+| `SPC_ACCESS_CODE` | Distinct passcode issued to SPC only, so it can be revoked/rotated without touching the sales code. | Hardcoded in `lib/auth-codes.ts` — expires **Oct 31, 2026** |
+| `N8N_LOG_WEBHOOK_URL` | Optional. If set, every login attempt (success/failure) is POSTed to this n8n webhook with timestamp, which code was used, IP, geo (country/city/region via Vercel's free geo headers), and user agent — cheap signal on whether a code was actually used. | n/a |
+
+Set these in `.env.local` for local dev and in your Vercel project's Environment Variables for deployed environments. None of these are committed to the repo.
+
+To add or revoke a code later (e.g. issue a new one to another prospect), edit the `ACCESS_CODES` array in [`lib/auth-codes.ts`](lib/auth-codes.ts) — add an entry with its own env var and `expiresAt`, or blank/remove an existing one to revoke it immediately.
+
+---
+
 ## Project Structure
 
 ```
