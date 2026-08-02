@@ -28,11 +28,11 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
     kpis: {
       cac: { value: 165000, change: range === "7d" ? -1 : range === "30d" ? -4 : -10, sparkline: spark(), prefix: "$" },
       pipeline: { value: Math.round(2100000 * mult), change: range === "7d" ? 4 : range === "30d" ? 9 : 17, sparkline: spark(), prefix: "$" },
-      dealVelocity: { value: 58, change: range === "7d" ? -1 : range === "30d" ? -3 : -8, sparkline: spark(), suffix: "d" },
+      dealVelocity: { value: 52, change: range === "7d" ? -2 : range === "30d" ? -4 : -9, sparkline: spark(), suffix: "d" },
       dealsCreated: { value: Math.round(8 * mult), change: range === "7d" ? 5 : range === "30d" ? 14 : 26, sparkline: spark() },
       closedWon: { value: Math.round(7 * mult), change: range === "7d" ? 8 : range === "30d" ? 19 : 34, sparkline: spark() },
       attributedRevenue: { value: Math.round(540000 * mult), change: range === "7d" ? 8 : range === "30d" ? 22 : 38, sparkline: spark(), prefix: "$" },
-      ltv: { value: 446000, change: range === "7d" ? 2 : range === "30d" ? 7 : 14, sparkline: spark(), prefix: "$" },
+      ltv: { value: 610000, change: range === "7d" ? 2 : range === "30d" ? 7 : 14, sparkline: spark(), prefix: "$" },
       avgDealSize: { value: 186000, change: range === "7d" ? 4 : range === "30d" ? 11 : 19, sparkline: spark(), prefix: "$" },
     },
     signalTimeline: dates.map((date, i) => ({
@@ -770,7 +770,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
       ],
     },
     narrativeIntel: {
-      nri: { current: 2.7, target: 2, tier: "DIY", trend: "up" },
+      nri: { current: 2.4, target: 2, tier: "DIY", trend: "up" },
       phaseMetrics: {
         phase1: {
           growthMetric: { name: "Market perception", value: "+6%", change: 6 },
@@ -781,7 +781,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
           emotionalIndicator: { name: "Engagement time", value: "2m 18s", change: 4 },
         },
         phase3: {
-          growthMetric: { name: "Pipeline velocity", value: "52 days", change: -4 },
+          growthMetric: { name: "Pipeline velocity", value: "52 days", change: range === "90d" ? -9 : -4 },
           emotionalIndicator: { name: "NPS", value: "+11", change: 2 },
         },
         phase4: {
@@ -789,7 +789,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
           emotionalIndicator: { name: "Affinity index", value: "39/100", change: 2 },
         },
         phase5: {
-          growthMetric: { name: "LTV:CAC", value: "2.7:1", change: 3 },
+          growthMetric: { name: "LTV:CAC", value: "3.7:1", change: 3 },
           emotionalIndicator: { name: "Advocacy rate", value: "12%", change: 1 },
         },
       },
@@ -798,7 +798,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
       section: "Narrative Intel",
       attributed: Math.round(2100000 * mult),
       deals: Math.round(42 * mult),
-      velocity: 58,
+      velocity: 52,
     },
   };
 }

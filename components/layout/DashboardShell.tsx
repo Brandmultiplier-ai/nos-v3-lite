@@ -1,16 +1,27 @@
 "use client";
 
+import { Suspense } from "react";
 import { ClientDataProvider, useDataKey } from "@/lib/data";
 import { ContextStrip } from "@/components/nav/ContextStrip";
 import { SectionList } from "@/components/nav/SectionList";
+import { WorkspaceQueryInit } from "@/components/shared/WorkspaceQueryInit";
 
 export function DashboardShell({ children }: { children: React.ReactNode }) {
   const dataKey = useDataKey();
 
   return (
     <ClientDataProvider>
+      <Suspense fallback={null}>
+        <WorkspaceQueryInit />
+      </Suspense>
       <div className="hidden md:flex flex-col h-screen overflow-hidden bg-[var(--nos-bg-canvas)]">
         <ContextStrip />
+        <div
+          className="shrink-0 w-full flex items-center justify-center"
+          style={{ height: 28, background: "#F3F1FA", color: "#4940C6", fontSize: 11 }}
+        >
+          Demonstration environment — all figures are illustrative.
+        </div>
         <div className="flex flex-1 overflow-hidden min-h-0">
           <SectionList key={`nav-${dataKey}`} />
           <main className="flex-1 overflow-y-auto min-w-0">

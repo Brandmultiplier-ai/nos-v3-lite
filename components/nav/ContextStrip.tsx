@@ -47,10 +47,10 @@ export function ContextStrip() {
 
         <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[var(--nos-bg-elevated)] border border-[var(--border)] shrink-0">
           <span
-            className="w-1.5 h-1.5 rounded-full bg-[var(--nos-positive)]"
-            style={{ animation: "pulseGlow 2s ease-in-out infinite" }}
+            className="w-1.5 h-1.5 rounded-full"
+            style={{ background: "#666666", animation: "pulseGlow 2s ease-in-out infinite" }}
           />
-          <span className="text-[10px] font-medium text-[var(--nos-text-muted)]">Live</span>
+          <span className="text-[10px] font-medium" style={{ color: "#666666" }}>SAMPLE</span>
         </div>
       </div>
 

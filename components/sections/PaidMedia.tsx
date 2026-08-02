@@ -18,6 +18,7 @@ import {
 } from "recharts";
 import { useClientData } from "@/lib/data";
 import { SectionTLDR } from "@/components/shared/SectionTLDR";
+import { PhaseSecondaryKPI } from "@/components/cards/PhaseSecondaryKPI";
 import { ChartAxisLabels } from "@/components/charts/ChartAxisLabels";
 import { CardInfoButton } from "@/components/shared/CardInfoButton";
 import { Badge } from "@/components/ui/badge";
@@ -263,6 +264,11 @@ export function PaidMedia({ variant = "a" }: SectionProps) {
       {/* AI TLDR */}
       <motion.div variants={itemVariants}>
         <SectionTLDR tldr={paidMedia.tldr} />
+      </motion.div>
+
+      {/* Phase 5 — Realization: LTV:CAC + Advocacy rate */}
+      <motion.div variants={itemVariants}>
+        <PhaseSecondaryKPI phase={5} pair={data.narrativeIntel.phaseMetrics.phase5} />
       </motion.div>
 
       {/* ── Row 1: Hero KPI tiles (RedTrack style) ── */}

@@ -28,7 +28,7 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
     kpis: {
       cac: { value: 10350, change: range === "7d" ? 3 : range === "30d" ? 12 : 18, sparkline: spark(), prefix: "$" },
       pipeline: { value: Math.round(310000 * mult), change: range === "7d" ? 5 : range === "30d" ? 12 : 22, sparkline: spark(), prefix: "$" },
-      dealVelocity: { value: 21, change: range === "7d" ? -5 : range === "30d" ? -14 : -24, sparkline: spark(), suffix: "d" },
+      dealVelocity: { value: 21, change: -8, sparkline: spark(), suffix: "d" },
       dealsCreated: { value: Math.round(22 * mult), change: range === "7d" ? 6 : range === "30d" ? 18 : 34, sparkline: spark() },
       closedWon: { value: Math.round(3 * mult), change: range === "7d" ? 12 : range === "30d" ? 34 : 52, sparkline: spark() },
       attributedRevenue: { value: Math.round(78000 * mult), change: range === "7d" ? 10 : range === "30d" ? 28 : 44, sparkline: spark(), prefix: "$" },
@@ -758,7 +758,7 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
       ],
     },
     narrativeIntel: {
-      nri: { current: 3.4, target: 3, tier: "DWY", trend: "stable" },
+      nri: { current: 3.1, target: 3, tier: "DWY", trend: "stable" },
       phaseMetrics: {
         phase1: {
           growthMetric: { name: "Market perception", value: "+12%", change: 12 },
@@ -777,7 +777,7 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
           emotionalIndicator: { name: "Affinity index", value: "52/100", change: 4 },
         },
         phase5: {
-          growthMetric: { name: "LTV:CAC", value: "3.4:1", change: 6 },
+          growthMetric: { name: "LTV:CAC", value: "3.5:1", change: 6 },
           emotionalIndicator: { name: "Advocacy rate", value: "21%", change: 3 },
         },
       },

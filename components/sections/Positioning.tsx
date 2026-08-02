@@ -8,6 +8,7 @@ import { GartnerQuadrant } from "@/components/charts/GartnerQuadrant";
 import { PositioningQuadrantDots } from "@/components/charts/PositioningQuadrantDots";
 import { TrendLine } from "@/components/charts/TrendLine";
 import { DashboardCard } from "@/components/shared/DashboardCard";
+import { PhaseSecondaryKPI } from "@/components/cards/PhaseSecondaryKPI";
 import { TrendingUp, TrendingDown, Minus } from "lucide-react";
 
 const containerVariants = {
@@ -40,6 +41,11 @@ export function Positioning() {
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
 
       <SectionTLDR tldr={positioning.tldr} />
+
+      {/* Phase 1 — Anchor: Market perception + Sentiment score */}
+      <motion.div variants={itemVariants}>
+        <PhaseSecondaryKPI phase={1} pair={data.narrativeIntel.phaseMetrics.phase1} />
+      </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
         <motion.div variants={itemVariants} className="lg:col-span-3">

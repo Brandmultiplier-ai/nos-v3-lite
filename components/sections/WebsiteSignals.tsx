@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useClientData } from "@/lib/data";
 import { SectionTLDR } from "@/components/shared/SectionTLDR";
 import { KPICard } from "@/components/cards/KPICard";
+import { PhaseSecondaryKPI } from "@/components/cards/PhaseSecondaryKPI";
 import { DashboardCard } from "@/components/shared/DashboardCard";
 import { TrendLine } from "@/components/charts/TrendLine";
 import { DonutChart } from "@/components/charts/DonutChart";
@@ -203,6 +204,11 @@ export function WebsiteSignals() {
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
 
       <SectionTLDR tldr={website.tldr} />
+
+      {/* Phase 3 — Shift: Pipeline velocity + NPS */}
+      <motion.div variants={itemVariants}>
+        <PhaseSecondaryKPI phase={3} pair={data.narrativeIntel.phaseMetrics.phase3} />
+      </motion.div>
 
       {/* ── Behavioral KPI strip ─────────────────────────────────────────────── */}
       <motion.div variants={itemVariants} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">

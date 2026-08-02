@@ -94,20 +94,20 @@ export default function DashboardPage() {
             </p>
           </div>
 
-          {/* Live status */}
+          {/* Sample data status */}
           <div
             className="flex items-center gap-2 px-3 py-1.5 rounded-full shrink-0"
             style={{
-              background: "rgba(52,211,153,0.06)",
-              border: "1px solid rgba(52,211,153,0.15)",
+              background: "rgba(102,102,102,0.06)",
+              border: "1px solid rgba(102,102,102,0.15)",
             }}
           >
             <span
               className="w-1.5 h-1.5 rounded-full"
-              style={{ background: "var(--nos-positive)", animation: "pulseGlow 2s ease-in-out infinite" }}
+              style={{ background: "#666666", animation: "pulseGlow 2s ease-in-out infinite" }}
             />
-            <span className="text-[10px] font-medium" style={{ color: "var(--nos-positive)" }}>
-              Synced
+            <span className="text-[10px] font-medium" style={{ color: "#666666" }}>
+              Sample data
             </span>
           </div>
         </div>

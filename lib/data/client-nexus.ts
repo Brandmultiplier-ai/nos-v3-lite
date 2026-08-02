@@ -28,7 +28,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
     kpis: {
       cac: { value: 34500, change: range === "7d" ? -4 : range === "30d" ? -12 : -19, sparkline: spark(), prefix: "$" },
       pipeline: { value: Math.round(840000 * mult), change: range === "7d" ? 9 : range === "30d" ? 18 : 31, sparkline: spark(), prefix: "$" },
-      dealVelocity: { value: 34, change: range === "7d" ? -2 : range === "30d" ? -8 : -16, sparkline: spark(), suffix: "d" },
+      dealVelocity: { value: 28, change: -18, sparkline: spark(), suffix: "d" },
       dealsCreated: { value: Math.round(14 * mult), change: range === "7d" ? 8 : range === "30d" ? 22 : 38, sparkline: spark() },
       closedWon: { value: Math.round(5 * mult), change: range === "7d" ? 4 : range === "30d" ? 15 : 28, sparkline: spark() },
       attributedRevenue: { value: Math.round(210000 * mult), change: range === "7d" ? 12 : range === "30d" ? 31 : 48, sparkline: spark(), prefix: "$" },
@@ -798,7 +798,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
       ],
     },
     narrativeIntel: {
-      nri: { current: 4.2, target: 4, tier: "DFY", trend: "up" },
+      nri: { current: 4.4, target: 4, tier: "DFY", trend: "up" },
       phaseMetrics: {
         phase1: {
           growthMetric: { name: "Market perception", value: "+18%", change: 18 },
@@ -817,7 +817,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
           emotionalIndicator: { name: "Affinity index", value: "68/100", change: 9 },
         },
         phase5: {
-          growthMetric: { name: "LTV:CAC", value: "4.2:1", change: 11 },
+          growthMetric: { name: "LTV:CAC", value: "4.1:1", change: 11 },
           emotionalIndicator: { name: "Advocacy rate", value: "34%", change: 6 },
         },
       },
@@ -826,7 +826,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
       section: "Narrative Intel",
       attributed: Math.round(840000 * mult),
       deals: Math.round(28 * mult),
-      velocity: 34,
+      velocity: 28,
     },
   };
 }

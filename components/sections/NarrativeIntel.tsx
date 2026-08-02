@@ -141,7 +141,7 @@ export function NarrativeIntel({ variant = "a" }: SectionProps) {
     { key: "cac", label: "Customer Acq. Cost", field: kpis.cac, tooltip: "Average cost to acquire a new customer, attributed to narrative marketing activities.", invertChange: true, flipDisplaySign: false },
     { key: "ltv", label: "Customer LTV", field: kpis.ltv, tooltip: "Average lifetime value of customers acquired through narrative marketing channels.", invertChange: false },
     { key: "avgDealSize", label: "Avg Deal Size", field: kpis.avgDealSize, tooltip: "Average closed-won deal value for opportunities influenced by narrative marketing.", invertChange: false },
-    { key: "dealVelocity", label: "Sales Velocity", field: kpis.dealVelocity, tooltip: "Average days from first signal touch to closed-won deal for narrative-sourced leads.", invertChange: true },
+    { key: "dealVelocity", label: "Sales Velocity", field: kpis.dealVelocity, tooltip: "Average days from first signal touch to closed-won deal for narrative-sourced leads.", invertChange: true, flipDisplaySign: false },
     { key: "attributedRevenue", label: "Revenue", field: kpis.attributedRevenue, tooltip: "Revenue closed-won where narrative marketing was attributed as an influence factor.", invertChange: false },
   ];
 
