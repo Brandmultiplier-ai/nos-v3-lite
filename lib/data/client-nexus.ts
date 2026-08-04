@@ -98,7 +98,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
         priority: "high",
         icon: "TrendingUp",
         title: "Scale the LinkedIn-to-email channel sequence",
-        description: "Accounts touched via LinkedIn then email over 90 days convert at 2.8× the single-channel rate. Formalise this as a standard multi-touch cadence.",
+        description: "Accounts touched via LinkedIn then email over 90 days convert at 2.8× the single-channel rate. Formalize this as a standard multi-touch cadence.",
         cta: "Build playbook",
       },
       {
@@ -133,7 +133,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
           { title: "Attack #2 Competitor", description: "The second-ranked competitor has weaker Trust scores — create direct comparison content to capture their buyers.", priority: "medium", cta: "Draft comparison" },
           { title: "Expand Keyword Ownership", description: "3 emerging keywords in your category have low competition. Own them now before bigger players enter.", priority: "medium", cta: "Review keywords" },
         ] : [
-          { title: "Formalise positioning playbook", description: "Quarter of sustained Leaders quadrant presence provides a strong foundation. Document the messaging, keywords, and channels that drove this position as a repeatable playbook.", priority: "high", cta: "Create playbook" },
+          { title: "Formalize positioning playbook", description: "Quarter of sustained Leaders quadrant presence provides a strong foundation. Document the messaging, keywords, and channels that drove this position as a repeatable playbook.", priority: "high", cta: "Create playbook" },
           { title: "Enter new category segments", description: "Your narrative strength score (81) gives you credibility to enter two adjacent keyword clusters that have grown 40% this quarter.", priority: "medium", cta: "Plan expansion" },
           { title: "Commission brand equity study", description: "90 days of positioning data is a credible baseline for an external brand equity measurement — use it to validate GTM strategy for next quarter.", priority: "medium", cta: "Plan study" },
         ],
@@ -298,7 +298,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
           { title: "Review this week's rage-click sessions", description: "3 session recordings this week flagged rage-clicks on the pricing page CTA. Watch and fix the UX issue before more leads are lost.", priority: "high", cta: "View recordings" },
           { title: "Add intent data to CRM", description: "Sync this week's high-intent company identifications to your CRM to keep AEs informed before their next prospect call.", priority: "medium", cta: "Sync to CRM" },
         ] : range === "30d" ? [
-          { title: "Trigger outreach on hot accounts", description: "22 companies scored 'Hot' this month with no open opportunity. Route them to SDRs immediately for personalised outreach.", priority: "high", cta: "Create workflow" },
+          { title: "Trigger outreach on hot accounts", description: "22 companies scored 'Hot' this month with no open opportunity. Route them to SDRs immediately for personalized outreach.", priority: "high", cta: "Create workflow" },
           { title: "Reduce quick-back rate", description: "9.4% of visitors leave within 8 seconds — review landing page clarity and headline alignment with ad messaging.", priority: "high", cta: "Review pages" },
           { title: "Retarget warm accounts", description: "Build a retargeting audience from companies that visited pricing or case study pages but haven't requested a demo.", priority: "medium", cta: "Build audience" },
         ] : [
@@ -393,7 +393,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
           : "Over the quarter, content has compounded into a reliable pipeline engine. LinkedIn and newsletter together attributed $280k in influenced pipeline. Blog organic traffic grew 34% QoQ, and content-sourced leads now have a 22% lower CAC than paid channels.",
         actions: range === "7d" ? [
           { title: "Publish a data-led post today", description: "This week's top post pattern: proprietary data + a specific insight. You have unpublished benchmark data from last week that would perform well — draft and post today.", priority: "high", cta: "Draft post" },
-          { title: "Respond to newsletter replies", description: "18 subscribers replied to this week's newsletter. Personalised replies from the founder convert to demo calls at a high rate — action within 24 hours.", priority: "high", cta: "Review replies" },
+          { title: "Respond to newsletter replies", description: "18 subscribers replied to this week's newsletter. Personalized replies from the founder convert to demo calls at a high rate — action within 24 hours.", priority: "high", cta: "Review replies" },
           { title: "Update the top-ranking blog post", description: "Your highest-traffic post was last updated 4 months ago. A freshness update keeps it ranking and improves on-page engagement.", priority: "medium", cta: "Update post" },
         ] : range === "30d" ? [
           { title: "Double down on data-led LinkedIn posts", description: "Your top 3 posts all featured proprietary data. Schedule 2 data-driven posts per week to replicate this pattern.", priority: "high", cta: "Plan posts" },
@@ -541,10 +541,10 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
           { title: "Review inbox health for at-risk accounts", description: "One sending account dropped below the healthy threshold this week. A brief pause and warmup review will protect deliverability for next week.", priority: "medium", cta: "Check inbox health" },
         ] : range === "30d" ? [
           { title: "Scale CFO-persona sequences", description: "The CFO sequence is your highest-converting — build 2 new variations and increase contact volume by 40%.", priority: "high", cta: "Build sequences" },
-          { title: "Improve follow-up timing", description: "Days 3 and 7 follow-ups have the highest reply rates. Restructure all sequences to prioritise these intervals.", priority: "high", cta: "Restructure cadences" },
+          { title: "Improve follow-up timing", description: "Days 3 and 7 follow-ups have the highest reply rates. Restructure all sequences to prioritize these intervals.", priority: "high", cta: "Restructure cadences" },
           { title: "Combine LinkedIn and email", description: "Accounts touched via both LinkedIn and email convert at 2.1× rate. Sync LinkedIn view events into email trigger logic.", priority: "medium", cta: "Set up integration" },
         ] : [
-          { title: "Build a formal multi-touch playbook", description: "90 days of data confirms the LinkedIn + Email sequence generates 2.1× the reply rate of single-channel outreach. Formalise this as the standard sequence structure for all reps.", priority: "high", cta: "Build playbook" },
+          { title: "Build a formal multi-touch playbook", description: "90 days of data confirms the LinkedIn + Email sequence generates 2.1× the reply rate of single-channel outreach. Formalize this as the standard sequence structure for all reps.", priority: "high", cta: "Build playbook" },
           { title: "Expand to VP Marketing persona sequences", description: "CFO sequences have proven their ROI. The VP Marketing persona shares similar pain points and has shown strong intent signals from website data this quarter.", priority: "medium", cta: "Build sequence" },
           { title: "Plan Q3 outreach capacity", description: "At current reply-to-opportunity conversion rates, adding 20% more contact volume would generate an estimated $56k additional pipeline next quarter.", priority: "medium", cta: "Plan capacity" },
         ],
@@ -736,66 +736,66 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
       { id: "instantly", name: "Instantly", category: "outreach", connected: true, lastSync: "12 min ago" },
       { id: "rb2b", name: "RB2B", category: "website-intel", connected: true, lastSync: "Real-time" },
       { id: "analytics", name: "Google Analytics", category: "analytics", connected: true, lastSync: "Real-time" },
-      { id: "meta-ads", name: "Meta Ads", category: "paid-media", connected: true, lastSync: "30 min ago" },
-      { id: "google-ads", name: "Google Ads", category: "paid-media", connected: true, lastSync: "45 min ago" },
-      { id: "linkedin-ads", name: "LinkedIn Ads", category: "paid-media", connected: false },
+      { id: "meta-ads", name: "Meta Ads", category: "paid-media", connected: false },
+      { id: "google-ads", name: "Google Search Ads", category: "paid-media", connected: true, lastSync: "45 min ago" },
+      { id: "linkedin-ads", name: "LinkedIn Ads", category: "paid-media", connected: true, lastSync: "30 min ago" },
       { id: "tiktok-ads", name: "TikTok Ads", category: "paid-media", connected: false },
+      { id: "g2-capterra", name: "G2 & Capterra", category: "paid-media", connected: true, lastSync: "1 hour ago" },
       { id: "x-ads", name: "X Ads", category: "paid-media", connected: false },
       { id: "reddit-ads", name: "Reddit Ads", category: "paid-media", connected: false },
     ],
     paidMedia: {
       tldr: {
         summary: range === "7d"
-          ? "This week, Meta Ads and Google Ads are running above ROAS benchmarks. Your top-performing campaign delivered 3.9× ROAS in the last 7 days. LinkedIn Ads are not yet connected — adding them could provide visibility into $48k estimated pipeline from paid social."
+          ? "This week, LinkedIn Ads is running well above benchmark at 4.8× ROAS, leading conversion volume for the Series B ICP. Google Search continues to deliver reliable category-intent traffic at 3.2×. The G2 and Capterra review placements are the fastest-improving line, converting comparison-stage buyers at a low CPA."
           : range === "30d"
-          ? "Paid media is contributing roughly 42% of total attributed revenue this month. Meta Ads leads on conversion volume, while Google Ads delivers the highest ROAS at 3.4×. LinkedIn Ads is disconnected — this is a high-opportunity channel for your ICP given the B2B SaaS profile."
-          : "Paid media generated a meaningful share of attributed revenue this quarter across Meta and Google. ROAS improved month-over-month as creative optimisation took effect. Expanding to LinkedIn Ads and TikTok Ads could add incremental pipeline next quarter based on industry benchmarks for your category.",
+          ? "Paid media is contributing roughly 42% of total attributed revenue this month. LinkedIn Ads leads on both conversion volume and ROAS at 4.8×, reflecting precise Series B ICP targeting. Google Search delivers steady category-intent traffic at 3.2×, while G2 and Capterra review-site placements are the highest-ROAS channel at 4.3× — buyers converting off comparison pages are pre-qualified."
+          : "Paid media generated a meaningful share of attributed revenue this quarter across LinkedIn, Google Search, and review-site placements. LinkedIn Ads ROAS improved month-over-month as ICP targeting tightened. Expanding G2 and Capterra placements could add incremental pipeline next quarter given their above-blended ROAS.",
         actions: range === "7d" ? [
-          { title: "Scale the top Meta campaign", description: "Your CFO-targeting campaign delivered 3.6× ROAS this week. Increase daily budget by 30% to capture the full audience window before week ends.", priority: "high", cta: "Scale budget" },
-          { title: "Connect LinkedIn Ads", description: "LinkedIn Ads is disconnected. Your ICP is CISOs and VP Sales — LinkedIn is the highest-ROI paid channel for B2B SaaS in your category.", priority: "high", cta: "Connect" },
-          { title: "Pause underperforming Google Display", description: "Display network campaigns are at 0.6× ROAS this week — below breakeven. Pause and reallocate budget to Search which is at 3.9×.", priority: "medium", cta: "Pause campaign" },
+          { title: "Scale the top LinkedIn campaign", description: "The Series B ABM campaign delivered 5.0× ROAS this week. Increase daily budget by 30% to capture the full audience window before week ends.", priority: "high", cta: "Scale budget" },
+          { title: "Expand G2 and Capterra placements", description: "Review-site placements are converting comparison-stage buyers at 4.3× ROAS this week — the highest of any channel. A modest budget increase would capture more comparison-page traffic.", priority: "high", cta: "Expand budget" },
+          { title: "Refresh Google Search keyword list", description: "Category-intent keywords are performing steadily at 3.2× ROAS. Adding competitor and comparison-intent terms this week could lift volume without hurting efficiency.", priority: "medium", cta: "Update keywords" },
         ] : range === "30d" ? [
-          { title: "Allocate more budget to Google Search", description: "Google Search campaigns are delivering 3.9× ROAS — the highest of any paid channel. Shifting 20% of Meta display budget to Search would improve overall blended ROAS.", priority: "high", cta: "Adjust budget" },
-          { title: "Connect LinkedIn Ads for ICP targeting", description: "LinkedIn Ads provides the most precise B2B targeting for your ICP. Estimated 2.4× ROAS based on industry benchmarks for Series B SaaS companies targeting VP-level buyers.", priority: "high", cta: "Connect" },
+          { title: "Expand LinkedIn Ads to CISO segment", description: "LinkedIn Ads is delivering 4.8× ROAS — the highest of any paid channel. Adding a CISO-targeting segment would extend reach into a higher-intent buying committee role.", priority: "high", cta: "Expand targeting" },
+          { title: "Increase G2 and Capterra budget", description: "Review-site placements are the highest-ROAS channel this month at 4.3×. Buyers converting from comparison pages are pre-qualified — increasing budget here has the best marginal return.", priority: "high", cta: "Adjust budget" },
           { title: "Set up conversion tracking for all campaigns", description: "3 active campaigns are not tracking post-click conversions. Adding proper UTM tracking and goal completion events would improve attribution accuracy by an estimated 34%.", priority: "medium", cta: "Set up tracking" },
         ] : [
-          { title: "Build a paid media attribution model", description: "This quarter's paid data is sufficient for a multi-touch attribution model. Combining Meta, Google, and website intent data would reveal the true channel contribution to pipeline.", priority: "high", cta: "Build model" },
-          { title: "Plan Q3 paid media expansion", description: "Based on this quarter's ROAS data, LinkedIn Ads and TikTok Ads are the highest-ROI expansion opportunities. Budget recommendations: LinkedIn $8k/month, TikTok $3k/month.", priority: "medium", cta: "Plan expansion" },
-          { title: "Audit creative performance", description: "Video ads delivered 1.8× higher click-through rate than static images this quarter. A creative refresh strategy for Q3 should prioritise short-form video across Meta and TikTok.", priority: "medium", cta: "Audit creatives" },
+          { title: "Build a paid media attribution model", description: "This quarter's paid data is sufficient for a multi-touch attribution model. Combining LinkedIn, Google Search, and review-site data would reveal the true channel contribution to pipeline.", priority: "high", cta: "Build model" },
+          { title: "Plan Q3 paid media expansion", description: "Based on this quarter's ROAS data, G2 and Capterra placements and LinkedIn Ads are the highest-ROI expansion opportunities. Budget recommendations: LinkedIn +$4k/month, G2/Capterra +$2k/month.", priority: "medium", cta: "Plan expansion" },
+          { title: "Audit creative performance", description: "LinkedIn video ads delivered 1.8× higher click-through rate than static images this quarter. A creative refresh strategy for Q3 should prioritize short-form video.", priority: "medium", cta: "Audit creatives" },
         ],
       },
-      totalSpend: { value: Math.round(20300 * mult), change: 14, sparkline: spark(), prefix: "$" },
-      totalRevenue: { value: Math.round(66660 * mult), change: 22, sparkline: spark(), prefix: "$" },
-      roas: { value: 3.3, change: 8, sparkline: spark() },
-      cac: { value: 1240, change: -12, sparkline: spark(), prefix: "$" },
+      totalSpend: { value: Math.round(34000 * mult), change: 14, sparkline: spark(), prefix: "$" },
+      totalRevenue: { value: Math.round(142000 * mult), change: 22, sparkline: spark(), prefix: "$" },
+      roas: { value: 4.2, change: 8, sparkline: spark() },
+      cac: { value: 17000, change: -12, sparkline: spark(), prefix: "$" },
       campaigns: [
-        { id: "c1", name: "CFO Pipeline — Retargeting", platform: "Meta Ads", status: "active", spend: Math.round(4800 * mult), revenue: Math.round(17280 * mult), roas: 3.6, impressions: Math.round(142000 * mult), clicks: Math.round(3840 * mult), conversions: Math.round(58 * mult), cpa: 82, cpc: 1.25 },
-        { id: "c2", name: "B2B SaaS Search — Brand", platform: "Google Ads", status: "active", spend: Math.round(6200 * mult), revenue: Math.round(24180 * mult), roas: 3.9, impressions: Math.round(88000 * mult), clicks: Math.round(5280 * mult), conversions: Math.round(72 * mult), cpa: 86, cpc: 1.17 },
-        { id: "c3", name: "Pipeline Intelligence Keywords", platform: "Google Ads", status: "active", spend: Math.round(3400 * mult), revenue: Math.round(11730 * mult), roas: 3.5, impressions: Math.round(52000 * mult), clicks: Math.round(2860 * mult), conversions: Math.round(38 * mult), cpa: 89, cpc: 1.19 },
-        { id: "c4", name: "VP Sales — Lookalike", platform: "Meta Ads", status: "active", spend: Math.round(2900 * mult), revenue: Math.round(8700 * mult), roas: 3.0, impressions: Math.round(96000 * mult), clicks: Math.round(2400 * mult), conversions: Math.round(32 * mult), cpa: 91, cpc: 1.21 },
-        { id: "c5", name: "Narrative ROI — Awareness", platform: "Meta Ads", status: "paused", spend: Math.round(1800 * mult), revenue: Math.round(4050 * mult), roas: 2.3, impressions: Math.round(210000 * mult), clicks: Math.round(1680 * mult), conversions: Math.round(18 * mult), cpa: 100, cpc: 1.07 },
-        { id: "c6", name: "Google Display — Retargeting", platform: "Google Ads", status: "active", spend: Math.round(1200 * mult), revenue: Math.round(720 * mult), roas: 0.6, impressions: Math.round(380000 * mult), clicks: Math.round(760 * mult), conversions: Math.round(8 * mult), cpa: 150, cpc: 1.58 },
+        { id: "c1", name: "Series B ABM — LinkedIn", platform: "LinkedIn Ads", status: "active", spend: Math.round(12000 * mult), revenue: Math.round(60000 * mult), roas: 5.0, impressions: Math.round(96000 * mult), clicks: Math.round(3840 * mult), conversions: Math.round(62 * mult), cpa: 194, cpc: 3.13 },
+        { id: "c2", name: "VP Engineering Retargeting — LinkedIn", platform: "LinkedIn Ads", status: "active", spend: Math.round(6000 * mult), revenue: Math.round(26400 * mult), roas: 4.4, impressions: Math.round(58000 * mult), clicks: Math.round(2320 * mult), conversions: Math.round(28 * mult), cpa: 214, cpc: 2.59 },
+        { id: "c3", name: "Brand + Competitor Keywords — Google Search", platform: "Google Search", status: "active", spend: Math.round(8000 * mult), revenue: Math.round(26400 * mult), roas: 3.3, impressions: Math.round(96000 * mult), clicks: Math.round(4800 * mult), conversions: Math.round(38 * mult), cpa: 211, cpc: 1.67 },
+        { id: "c4", name: "Category Intent Keywords — Google Search", platform: "Google Search", status: "active", spend: Math.round(4000 * mult), revenue: Math.round(12000 * mult), roas: 3.0, impressions: Math.round(52000 * mult), clicks: Math.round(2340 * mult), conversions: Math.round(18 * mult), cpa: 222, cpc: 1.71 },
+        { id: "c5", name: "Category Leader Placement — G2", platform: "G2 & Capterra", status: "active", spend: Math.round(2500 * mult), revenue: Math.round(11000 * mult), roas: 4.4, impressions: Math.round(38000 * mult), clicks: Math.round(1520 * mult), conversions: Math.round(16 * mult), cpa: 156, cpc: 1.64 },
+        { id: "c6", name: "Comparison Page Sponsorship — Capterra", platform: "G2 & Capterra", status: "active", spend: Math.round(1500 * mult), revenue: Math.round(6200 * mult), roas: 4.1, impressions: Math.round(24000 * mult), clicks: Math.round(960 * mult), conversions: Math.round(9 * mult), cpa: 167, cpc: 1.56 },
       ],
       platformBreakdown: [
-        { platform: "Meta Ads", spend: Math.round(9500 * mult), revenue: Math.round(30030 * mult), roas: 3.2, color: "#1877F2" },
-        { platform: "Google Ads", spend: Math.round(10800 * mult), revenue: Math.round(36630 * mult), roas: 3.4, color: "#4285F4" },
-        { platform: "LinkedIn Ads", spend: 0, revenue: 0, roas: 0, color: "#0A66C2" },
-        { platform: "TikTok Ads", spend: 0, revenue: 0, roas: 0, color: "#FF0050" },
+        { platform: "LinkedIn Ads", spend: Math.round(18000 * mult), revenue: Math.round(86400 * mult), roas: 4.8, color: "#0A66C2" },
+        { platform: "Google Search", spend: Math.round(12000 * mult), revenue: Math.round(38400 * mult), roas: 3.2, color: "#4285F4" },
+        { platform: "G2 & Capterra", spend: Math.round(4000 * mult), revenue: Math.round(17200 * mult), roas: 4.3, color: "#FF492C" },
       ],
       spendTrend: Array.from({ length: 14 }, (_, i) => ({
         date: new Date(2026, 1, 1 + i * 2).toISOString().split("T")[0],
-        spend: Math.round((1098 + Math.sin(i * 0.6) * 244 + i * 49) * mult),
-        revenue: Math.round((3622.5 + Math.sin(i * 0.4) * 795 + i * 168) * mult),
+        spend: Math.round((1822 + Math.sin(i * 0.6) * 407 + i * 82) * mult),
+        revenue: Math.round((7616 + Math.sin(i * 0.4) * 1702 + i * 342) * mult),
       })),
       bestCampaigns: [
-        { name: "B2B SaaS Search — Brand", platform: "Google Ads", revenue: Math.round(24180 * mult), conversions: Math.round(72 * mult), roas: 3.9 },
-        { name: "CFO Pipeline — Retargeting", platform: "Meta Ads", revenue: Math.round(17280 * mult), conversions: Math.round(58 * mult), roas: 3.6 },
-        { name: "Pipeline Intelligence Keywords", platform: "Google Ads", revenue: Math.round(11730 * mult), conversions: Math.round(38 * mult), roas: 3.5 },
+        { name: "Series B ABM — LinkedIn", platform: "LinkedIn Ads", revenue: Math.round(60000 * mult), conversions: Math.round(62 * mult), roas: 5.0 },
+        { name: "VP Engineering Retargeting — LinkedIn", platform: "LinkedIn Ads", revenue: Math.round(26400 * mult), conversions: Math.round(28 * mult), roas: 4.4 },
+        { name: "Category Leader Placement — G2", platform: "G2 & Capterra", revenue: Math.round(11000 * mult), conversions: Math.round(16 * mult), roas: 4.4 },
       ],
       bestAds: [
-        { name: "CEO Walkthrough Video — 30s", platform: "Meta Ads", revenue: Math.round(10650 * mult), conversions: Math.round(36 * mult), ctr: 4.2 },
-        { name: "Pipeline ROI Static — Dark BG", platform: "Meta Ads", revenue: Math.round(6600 * mult), conversions: Math.round(22 * mult), ctr: 3.8 },
-        { name: "B2B SaaS Search — Exact Match", platform: "Google Ads", revenue: Math.round(13800 * mult), conversions: Math.round(42 * mult), ctr: 6.1 },
+        { name: "Series B Growth Story — Video", platform: "LinkedIn Ads", revenue: Math.round(34800 * mult), conversions: Math.round(38 * mult), ctr: 4.5 },
+        { name: "VP Engineering Carousel — Static", platform: "LinkedIn Ads", revenue: Math.round(18200 * mult), conversions: Math.round(19 * mult), ctr: 3.1 },
+        { name: "Category Leader Badge — G2 Listing", platform: "G2 & Capterra", revenue: Math.round(9400 * mult), conversions: Math.round(13 * mult), ctr: 5.8 },
       ],
     },
     narrativeIntel: {

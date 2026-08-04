@@ -5,9 +5,8 @@ import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { useClientData } from "@/lib/data";
 import {
-  Brain, BarChart3, Target, Search, Globe, FileText, Mail, DollarSign, Puzzle, Lock,
+  Brain, BarChart3, Target, Search, Globe, FileText, Mail, DollarSign, Puzzle,
 } from "lucide-react";
-import { useState } from "react";
 import { LogoutButton } from "@/components/shared/LogoutButton";
 
 const sections = [
@@ -130,9 +129,6 @@ export function SectionList() {
   const pathname = usePathname();
   const active = getActiveSection(pathname);
   const data = useClientData();
-  const [lockedTooltip, setLockedTooltip] = useState<string | null>(null);
-
-  const isEnterprise = data.meta.stage === "Enterprise";
   const connectedIntegrations = data.integrations.filter((i) => i.connected);
 
   return (
@@ -152,14 +148,12 @@ export function SectionList() {
         {sections.map((section) => {
           const Icon = section.icon;
           const isActive = active === section.id;
-          const isLocked = section.id === "paid-media" && !isEnterprise;
-          const showTooltip = lockedTooltip === section.id;
 
           return (
             <div key={section.id}>
               <div className="relative mb-0.5">
                 {/* Active background glow */}
-                {isActive && !isLocked && (
+                {isActive && (
                   <motion.div
                     layoutId="splitNavActive"
                     className="absolute inset-0 rounded-xl"
@@ -171,7 +165,7 @@ export function SectionList() {
                   />
                 )}
                 {/* Active left accent */}
-                {isActive && !isLocked && (
+                {isActive && (
                   <div
                     className="absolute left-0 top-2.5 bottom-2.5 w-0.5 rounded-r-full"
                     style={{ background: "linear-gradient(180deg, var(--nos-accent) 0%, var(--nos-accent-2) 100%)" }}
@@ -179,93 +173,42 @@ export function SectionList() {
                 )}
 
                 <div className="relative flex items-center">
-                  {isLocked ? (
-                    /* Locked state — not clickable as a link */
-                    <button
-                      className="flex-1 flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left w-full cursor-not-allowed opacity-50"
-                      onClick={() => setLockedTooltip(showTooltip ? null : section.id)}
-                      onBlur={() => setLockedTooltip(null)}
-                      aria-label={`${section.label} — Enterprise only`}
+                  <Link
+                    href={section.path}
+                    prefetch={false}
+                    className="flex-1 flex items-center gap-2.5 px-3 py-2.5 rounded-xl"
+                  >
+                    {/* Icon container */}
+                    <div
+                      className="w-6 h-6 rounded-md flex items-center justify-center shrink-0"
+                      style={{
+                        background: isActive ? "var(--nos-accent-muted)" : "transparent",
+                      }}
                     >
-                      <div className="w-6 h-6 rounded-md flex items-center justify-center shrink-0">
-                        <Icon size={13} style={{ color: "var(--nos-text-muted)" }} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs font-medium truncate" style={{ color: "var(--nos-text-muted)" }}>
-                          {section.label}
-                        </p>
-                        <p className="text-[10px] mt-0.5 truncate" style={{ color: "var(--nos-text-muted)" }}>
-                          {section.kpiLabel}
-                        </p>
-                      </div>
-                      <Lock size={11} style={{ color: "var(--nos-text-muted)" }} className="shrink-0" />
-                    </button>
-                  ) : (
-                    <Link
-                      href={section.path}
-                      prefetch={false}
-                      className="flex-1 flex items-center gap-2.5 px-3 py-2.5 rounded-xl"
-                    >
-                      {/* Icon container */}
-                      <div
-                        className="w-6 h-6 rounded-md flex items-center justify-center shrink-0"
+                      <Icon
+                        size={13}
+                        style={{ color: isActive ? "var(--nos-accent)" : "var(--nos-text-muted)" }}
+                      />
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <p
+                        className="text-xs font-medium truncate"
                         style={{
-                          background: isActive ? "var(--nos-accent-muted)" : "transparent",
+                          color: isActive ? "var(--nos-text-primary)" : "var(--nos-text-secondary)",
                         }}
                       >
-                        <Icon
-                          size={13}
-                          style={{ color: isActive ? "var(--nos-accent)" : "var(--nos-text-muted)" }}
-                        />
-                      </div>
-
-                      <div className="flex-1 min-w-0">
-                        <p
-                          className="text-xs font-medium truncate"
-                          style={{
-                            color: isActive ? "var(--nos-text-primary)" : "var(--nos-text-secondary)",
-                          }}
-                        >
-                          {section.label}
-                        </p>
-                        <p
-                          className="text-[10px] mt-0.5 truncate"
-                          style={{ color: "var(--nos-text-muted)" }}
-                        >
-                          {section.kpiLabel}
-                        </p>
-                      </div>
-                    </Link>
-                  )}
-                </div>
-
-                {/* Lock tooltip */}
-                {isLocked && showTooltip && (
-                  <motion.div
-                    initial={{ opacity: 0, x: 8 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="absolute left-full top-0 ml-2 z-50 w-56 rounded-xl p-3 shadow-xl"
-                    style={{
-                      background: "var(--nos-bg-card)",
-                      border: "1px solid var(--border)",
-                      boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
-                    }}
-                  >
-                    <div className="flex items-start gap-2">
-                      <Lock size={13} className="mt-0.5 shrink-0" style={{ color: "var(--nos-neutral)" }} />
-                      <div>
-                        <p className="text-xs font-semibold text-[var(--nos-text-primary)] mb-1">Enterprise plan required</p>
-                        <p className="text-[11px] text-[var(--nos-text-muted)] leading-relaxed">
-                          Paid Media analytics is available on the Enterprise plan.{" "}
-                          <span className="font-medium" style={{ color: "var(--nos-text-secondary)" }}>
-                            {data.meta.name}
-                          </span>{" "}
-                          is currently on the <span className="font-medium" style={{ color: "var(--nos-neutral)" }}>{data.meta.stage}</span> plan. Upgrade to unlock cross-platform ad intelligence.
-                        </p>
-                      </div>
+                        {section.label}
+                      </p>
+                      <p
+                        className="text-[10px] mt-0.5 truncate"
+                        style={{ color: "var(--nos-text-muted)" }}
+                      >
+                        {section.kpiLabel}
+                      </p>
                     </div>
-                  </motion.div>
-                )}
+                  </Link>
+                </div>
               </div>
             </div>
           );

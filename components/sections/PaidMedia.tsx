@@ -23,7 +23,6 @@ import { ChartAxisLabels } from "@/components/charts/ChartAxisLabels";
 import { CardInfoButton } from "@/components/shared/CardInfoButton";
 import { Badge } from "@/components/ui/badge";
 import {
-  AlertTriangle,
   TrendingUp,
   TrendingDown,
   ChevronUp,
@@ -52,10 +51,16 @@ const itemVariants = {
 const PLATFORM_COLORS: Record<string, string> = {
   "Meta Ads": "#1877F2",
   "Google Ads": "#4285F4",
+  "Google Search": "#4285F4",
   "LinkedIn Ads": "#0A66C2",
   "TikTok Ads": "#FF0050",
   "X Ads": "#1DA1F2",
   "Reddit Ads": "#FF4500",
+  "Programmatic ABM": "#8B5CF6",
+  "Analyst and Trade Media": "#64748B",
+  "G2 & Capterra": "#FF492C",
+  "Instagram": "#E1306C",
+  "Facebook": "#1877F2",
 };
 
 function fmt(n: number): string {
@@ -201,8 +206,7 @@ interface SectionProps {
 
 export function PaidMedia({ variant = "a" }: SectionProps) {
   const data = useClientData();
-  const { paidMedia, meta } = data;
-  const isEnterprise = meta.stage === "Enterprise";
+  const { paidMedia } = data;
 
   const [sortKey, setSortKey] = useState<SortKey>("revenue");
   const [sortAsc, setSortAsc] = useState(false);
@@ -245,21 +249,6 @@ export function PaidMedia({ variant = "a" }: SectionProps) {
 
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-5">
-
-      {/* Enterprise gate banner */}
-      {!isEnterprise && (
-        <motion.div
-          variants={itemVariants}
-          className="flex items-center gap-3 rounded-xl px-4 py-3 border"
-          style={{ background: "rgba(251,191,36,0.06)", borderColor: "rgba(251,191,36,0.25)" }}
-        >
-          <AlertTriangle size={15} className="text-[var(--nos-neutral)] shrink-0" />
-          <p className="text-xs text-[var(--nos-text-secondary)]">
-            <span className="font-semibold text-[var(--nos-neutral)]">Enterprise feature</span>
-            {" "}— Paid Media analytics is available on Enterprise plans. You are viewing sample data.
-          </p>
-        </motion.div>
-      )}
 
       {/* AI TLDR */}
       <motion.div variants={itemVariants}>
