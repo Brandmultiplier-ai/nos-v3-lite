@@ -7,9 +7,10 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
   const days = range === "7d" ? 7 : range === "30d" ? 30 : 90;
 
   const generateDates = (n: number) => {
+    const end = new Date();
     return Array.from({ length: n }, (_, i) => {
-      const d = new Date(2026, 1, 1);
-      d.setDate(d.getDate() + i * (90 / n));
+      const d = new Date(end);
+      d.setDate(d.getDate() - (n - 1 - i) * (days / n));
       return d.toISOString().split("T")[0];
     });
   };
@@ -46,7 +47,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
     aiNarrative: range === "7d"
       ? "This week, two executive LinkedIn posts from Apex reached above-benchmark enterprise engagement. A CISO sequence launched Monday has already generated 5 positive replies in 4 days — above the expected 7-day rate. Enterprise search volume for 'IT infrastructure narrative' is spiking. Act on the intent surge this week."
       : range === "30d"
-      ? "Apex's LinkedIn thought leadership is generating the highest account engagement scores in the enterprise IT infrastructure category, with 78% of deal-influencing interactions traced to executive posts. Email sequences targeting CISOs have a 21% reply rate — 2.2× above industry benchmark. SEO is the fastest-growing pipeline channel with $290k attributed this quarter."
+      ? "Apex's LinkedIn thought leadership is generating the highest account engagement scores in the enterprise IT infrastructure category, with 78% of deal-influencing interactions traced to executive posts. Email sequences targeting CISOs have a 6.8% reply rate — 2.2× above industry benchmark. SEO is the fastest-growing pipeline channel with $96k attributed this month."
       : "Over the quarter, narrative-driven attributed revenue for Apex grew 22%, building on a ~$540k monthly baseline. LinkedIn executive posts have compounded into an authoritative brand signal in the CIO community. Email outreach is benefiting from this warm narrative foundation — CISO reply rates are consistently 2.2× benchmark. Search is emerging as a third significant pipeline source.",
     recommendedActions: range === "7d" ? [
       {
@@ -82,7 +83,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         priority: "high",
         icon: "Mail",
         title: "CISO sequence — cybersecurity narrative angle",
-        description: "CISO-targeted sequences with infrastructure security framing have 21% reply rates. Expanding this approach to a broader CISO list of 180 accounts has significant pipeline potential.",
+        description: "CISO-targeted sequences with infrastructure security framing have 6.8% reply rates. Expanding this approach to a broader CISO list of 180 accounts has significant pipeline potential.",
         cta: "Expand campaign",
       },
       {
@@ -171,7 +172,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         summary: range === "7d"
           ? "This week, Apex was cited in 3 new AI engine responses for CIO-level infrastructure queries. GEO visibility is at 61.4% — monitor for any shifts following EnterpriseLayer's new content this week, which targets overlapping queries."
           : range === "30d"
-          ? "Search intelligence is Apex's fastest-growing pipeline channel. GEO visibility at 61.4% means AI engines are increasingly citing Apex as the authoritative source for enterprise IT infrastructure and CIO-level queries. Organic search is attributing $290k in pipeline this quarter."
+          ? "Search intelligence is Apex's fastest-growing pipeline channel. GEO visibility at 61.4% means AI engines are increasingly citing Apex as the authoritative source for enterprise IT infrastructure and CIO-level queries. Organic search is attributing $96k in pipeline this month."
           : "Search has been the fastest-growing pipeline channel for Apex this quarter, growing from $180k to $290k in attributed pipeline. GEO visibility grew 5.2 points QoQ, and Apex now dominates AI engine citations for enterprise IT infrastructure queries. This channel is set to surpass email in pipeline contribution next quarter.",
         actions: range === "7d" ? [
           { title: "Protect GEO citation position this week", description: "EnterpriseLayer's new content targets overlapping AI engine queries. Submit updated Q&A responses to Perplexity and ChatGPT this week to protect your citation position.", priority: "high", cta: "Submit responses" },
@@ -512,7 +513,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         summary: range === "7d"
           ? "This week, the CISO sequence launched Monday already has 5 positive replies in 4 days — the fastest-pacing enterprise sequence this quarter. Three AEs have follow-ups pending. Get all 5 onto the calendar before end of week while the buying-committee attention window is open."
           : range === "30d"
-          ? "Cold outreach for Apex is performing exceptionally well, with CISO-targeting email sequences generating a 21% reply rate — 2.2× above enterprise benchmark. Prospects who arrive at email outreach after seeing LinkedIn posts reply at 2.1× the cold rate, validating the LinkedIn-first warm-up strategy."
+          ? "Cold outreach for Apex is performing well above enterprise benchmark, with CISO-targeting sequences generating a 6.8% reply rate — 2.2× the 3.1% median for enterprise IT infrastructure. Prospects who arrive at email outreach after seeing LinkedIn posts reply at 2.1× the cold rate, validating the LinkedIn-first warm-up strategy."
           : "Over the quarter, outreach generated $840k in email-attributed pipeline across 68 opportunities. The LinkedIn-first strategy has been fully validated — reps using it consistently outperform those who don't by 2.1× on reply rates. CISO sequences are the top-performing segment by both reply rate and average deal size.",
         actions: range === "7d" ? [
           { title: "Book all 5 CISO sequence replies this week", description: "5 positive replies from the Monday CISO sequence need meeting links sent today. Enterprise reply windows close quickly — all 5 should be on the calendar before Thursday.", priority: "high", cta: "Book meetings" },
@@ -529,10 +530,10 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         ],
       },
       emailPipeline: { value: Math.round(840000 * mult), change: range === "7d" ? 12 : range === "30d" ? 34 : 58, sparkline: spark(), prefix: "$" },
-      totalSent: { value: Math.round(62400 * mult), change: 28, sparkline: spark() },
-      openRate: { value: range === "7d" ? 60.8 : range === "30d" ? 63.4 : 66.9, change: range === "7d" ? 2 : range === "30d" ? 6 : 11, sparkline: spark() },
-      clickRate: { value: 7.8, change: 2, sparkline: spark() },
-      replyRate: { value: 3.0, change: range === "7d" ? 0 : range === "30d" ? 2.2 : 4.8, sparkline: spark() },
+      totalSent: { value: Math.round(18600 * mult), change: 28, sparkline: spark() },
+      openRate: { value: 34.2, change: range === "7d" ? 2 : range === "30d" ? 6 : 11, sparkline: spark() },
+      clickRate: { value: 4.1, change: 2, sparkline: spark() },
+      replyRate: { value: 6.8, change: range === "7d" ? 0 : range === "30d" ? 2.2 : 4.8, sparkline: spark() },
       opportunitiesCount: { value: Math.round(68 * mult), change: 38, sparkline: spark() },
       masterTrend: Array.from({ length: 14 }, (_, i) => {
         const base = Math.round(1200 + Math.sin(i * 0.5) * 400 + i * 60);
@@ -586,12 +587,12 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         { email: "gtm@apexsystems.com",      warmupScore: 71, deliverabilityScore: 74, spamScore: 2.8, blacklisted: false, daysWarmedUp: 18, status: "warming" },
       ],
       emailFunnel: [
-        { stage: "Contacted", count: Math.round(62400 * mult), rate: 100,  color: "#0EA5E9" },
-        { stage: "Opened",    count: Math.round(34944 * mult), rate: 56,   color: "#FBBF24" },
-        { stage: "Clicked",   count: Math.round(4892 * mult),  rate: 14,   color: "#F97316" },
-        { stage: "Replied",   count: Math.round(1859 * mult),  rate: 38,   color: "#A78BFA" },
-        { stage: "Meetings",  count: Math.round(409 * mult),   rate: 22,   color: "#7C7FFF" },
-        { stage: "Opps",      count: Math.round(266 * mult),   rate: 65,   color: "#34D399" },
+        { stage: "Contacted", count: Math.round(18600 * mult), rate: 100,  color: "#0EA5E9" },
+        { stage: "Opened",    count: Math.round(6361 * mult),  rate: 34.2, color: "#FBBF24" },
+        { stage: "Clicked",   count: Math.round(763 * mult),   rate: 12.0, color: "#F97316" },
+        { stage: "Replied",   count: Math.round(1265 * mult),  rate: 19.9, color: "#A78BFA" },
+        { stage: "Meetings",  count: Math.round(278 * mult),   rate: 22.0, color: "#7C7FFF" },
+        { stage: "Opps",      count: Math.round(181 * mult),   rate: 65.0, color: "#34D399" },
       ],
       crmPipelineFunnel: [
         { stage: "Request For Info", value: Math.round(2400000 * mult), deals: Math.round(42 * mult), pct: 100,  color: "#0EA5E9" },
@@ -725,7 +726,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         ] : range === "30d" ? [
           { title: "Expand LinkedIn Ads to CISO targeting", description: "LinkedIn Ads currently targets VP Engineering and VP Sales. Adding CISO as a segment would expand enterprise pipeline coverage. Estimated 2.8× ROAS based on similar B2B SaaS accounts in the segment.", priority: "high", cta: "Expand targeting" },
           { title: "Implement cross-platform attribution modelling", description: "With 5 platforms active, cross-channel attribution is increasingly important. A data-driven attribution model would improve budget allocation by up to 22% efficiency gain.", priority: "high", cta: "Build model" },
-          { title: "Scale TikTok for practitioner brand awareness", description: "TikTok Ads delivered 58M impressions at a $4 CPM this month. Increasing to $8k/month would double brand impression share among the practitioner persona that influences enterprise buying decisions.", priority: "medium", cta: "Scale budget" },
+          { title: "Scale TikTok for practitioner brand awareness", description: "Increasing TikTok spend to $8k/month would double brand impression share among the practitioner persona that influences enterprise buying decisions.", priority: "medium", cta: "Scale budget" },
         ] : [
           { title: "Build an enterprise paid media playbook", description: "Apex's paid media performance this quarter establishes clear channel benchmarks. Documenting a replicable playbook — audience targeting, creative strategy, budget allocation — would systematise the approach for sustained performance.", priority: "high", cta: "Build playbook" },
           { title: "Invest in video creative production", description: "Video ads delivered 2.4× higher ROAS than static this quarter. Investing in a quarterly creative production cycle with 8-10 short-form video assets would maintain creative freshness and competitive advantage.", priority: "high", cta: "Plan production" },
@@ -735,7 +736,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
       totalSpend: { value: Math.round(82200 * mult), change: 19, sparkline: spark(), prefix: "$" },
       totalRevenue: { value: Math.round(321300 * mult), change: 28, sparkline: spark(), prefix: "$" },
       roas: { value: 3.9, change: 12, sparkline: spark() },
-      cac: { value: 165000, change: -18, sparkline: spark(), prefix: "$" },
+      cac: { value: 41000, change: -18, sparkline: spark(), prefix: "$" },
       campaigns: [
         { id: "c1", name: "Tier-1 ABM — LinkedIn", platform: "LinkedIn Ads", status: "active", spend: Math.round(18000 * mult), revenue: Math.round(84000 * mult), roas: 4.7, impressions: Math.round(180000 * mult), clicks: Math.round(7200 * mult), conversions: Math.round(124 * mult), cpa: 145, cpc: 2.50 },
         { id: "c2", name: "Enterprise Pipeline — Google", platform: "Google Ads", status: "active", spend: Math.round(22000 * mult), revenue: Math.round(90900 * mult), roas: 4.1, impressions: Math.round(320000 * mult), clicks: Math.round(16000 * mult), conversions: Math.round(148 * mult), cpa: 149, cpc: 1.38 },

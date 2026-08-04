@@ -352,10 +352,10 @@ function IntegrationCard({
             </Badge>
           )}
         </div>
-        {integration.connected && integration.lastSync ? (
+        {integration.connected ? (
           <div className="flex items-center gap-1 mt-0.5">
             <RefreshCw size={10} className="text-[var(--nos-text-muted)]" />
-            <p className="text-[10px] text-[var(--nos-text-muted)]">Last sync: {integration.lastSync}</p>
+            <p className="text-[10px] text-[var(--nos-text-muted)]">Sample environment — no live sync.</p>
           </div>
         ) : (
           <p className="text-[10px] text-[var(--nos-text-muted)] mt-0.5">Not connected</p>

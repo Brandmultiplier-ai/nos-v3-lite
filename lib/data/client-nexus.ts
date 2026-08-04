@@ -7,9 +7,10 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
   const days = range === "7d" ? 7 : range === "30d" ? 30 : 90;
 
   const generateDates = (n: number) => {
+    const end = new Date();
     return Array.from({ length: n }, (_, i) => {
-      const d = new Date(2026, 1, 1);
-      d.setDate(d.getDate() + i * (90 / n));
+      const d = new Date(end);
+      d.setDate(d.getDate() - (n - 1 - i) * (days / n));
       return d.toISOString().split("T")[0];
     });
   };
@@ -825,7 +826,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
     pipelineBridge: {
       section: "Narrative Intel",
       attributed: Math.round(840000 * mult),
-      deals: Math.round(28 * mult),
+      deals: Math.round(54 * mult),
       velocity: 28,
     },
   };

@@ -203,6 +203,7 @@ export function SectionList() {
                   ) : (
                     <Link
                       href={section.path}
+                      prefetch={false}
                       className="flex-1 flex items-center gap-2.5 px-3 py-2.5 rounded-xl"
                     >
                       {/* Icon container */}
