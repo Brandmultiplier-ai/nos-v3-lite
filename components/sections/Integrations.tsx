@@ -119,6 +119,30 @@ function BrandLogo({ id, size = 32 }: { id: string; size?: number }) {
           <text x="16" y="23.5" textAnchor="middle" fontFamily="Georgia, 'Times New Roman', serif" fontSize="20" fontWeight="700" fill="#fff">V</text>
         </svg>
       );
+    /* Demandbase — monogram mark (serif D on navy) */
+    case "demandbase":
+      return (
+        <svg width={s} height={s} viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="7" fill="#0B1F3A" />
+          <text x="16" y="23.5" textAnchor="middle" fontFamily="Georgia, 'Times New Roman', serif" fontSize="20" fontWeight="700" fill="#fff">D</text>
+        </svg>
+      );
+    /* TechTarget — monogram mark (serif T on red) */
+    case "techtarget":
+      return (
+        <svg width={s} height={s} viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="7" fill="#C8102E" />
+          <text x="16" y="23.5" textAnchor="middle" fontFamily="Georgia, 'Times New Roman', serif" fontSize="20" fontWeight="700" fill="#fff">T</text>
+        </svg>
+      );
+    /* Gartner Digital Markets — monogram mark (serif G on purple) */
+    case "gartner-digital-markets":
+      return (
+        <svg width={s} height={s} viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="7" fill="#6B2E8C" />
+          <text x="16" y="23.5" textAnchor="middle" fontFamily="Georgia, 'Times New Roman', serif" fontSize="20" fontWeight="700" fill="#fff">G</text>
+        </svg>
+      );
     /* RB2B — official mark (black wordmark on lime green) */
     case "rb2b":
       return (

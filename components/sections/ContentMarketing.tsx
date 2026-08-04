@@ -38,12 +38,15 @@ const CHANNEL_COLORS: Record<string, string> = {
 };
 
 
-const GROWTH_SERIES = [
-  { key: "linkedin" as const, label: "LinkedIn", color: "var(--nos-ch-linkedin)" },
-  { key: "instagram" as const, label: "Instagram", color: "var(--nos-ch-instagram)" },
-  { key: "facebook" as const, label: "Facebook", color: "var(--nos-ch-facebook)" },
-  { key: "x" as const, label: "X", color: "var(--nos-ch-x)" },
-];
+const GROWTH_SERIES_META: Record<string, { label: string; color: string }> = {
+  linkedin: { label: "LinkedIn", color: "var(--nos-ch-linkedin)" },
+  instagram: { label: "Instagram", color: "var(--nos-ch-instagram)" },
+  facebook: { label: "Facebook", color: "var(--nos-ch-facebook)" },
+  x: { label: "X / Twitter", color: "var(--nos-ch-x)" },
+  youtube: { label: "YouTube", color: "#FF0000" },
+  newsletter: { label: "Newsletter", color: "var(--nos-ch-newsletter)" },
+};
+const GROWTH_SERIES_ORDER = ["linkedin", "instagram", "facebook", "x", "youtube", "newsletter"];
 
 function fmtNum(n: number) {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
@@ -76,6 +79,9 @@ const ChartTooltip = ({ active, payload, label }: { active?: boolean; payload?: 
 function SocialTab() {
   const { content } = useClientData();
   const { platformStats, audienceGrowthStacked, sentiment } = content;
+  const growthSeries = GROWTH_SERIES_ORDER
+    .filter((key) => audienceGrowthStacked[0] && key in audienceGrowthStacked[0])
+    .map((key) => ({ key, ...GROWTH_SERIES_META[key] }));
   const sentimentTotal = sentiment.positive + sentiment.neutral + sentiment.negative;
 
   return (
@@ -137,7 +143,7 @@ function SocialTab() {
                 <YAxis tick={{ fill: "var(--nos-text-muted)", fontSize: 10 }} tickLine={false} axisLine={false} tickFormatter={(v) => fmtNum(v)} />
                 <Tooltip content={<ChartTooltip />} />
                 <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11, color: "var(--nos-text-muted)" }} />
-                {GROWTH_SERIES.map((s) => (
+                {growthSeries.map((s) => (
                   <Area key={s.key} type="monotone" dataKey={s.key} name={s.label}
                     stroke={s.color} fill={`${s.color}18`}
                     strokeWidth={1.5} dot={false} stackId="1" isAnimationActive={false} />

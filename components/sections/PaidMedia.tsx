@@ -515,7 +515,7 @@ export function PaidMedia({ variant = "a" }: SectionProps) {
                   onClick={() => handleSort(col)}
                 >
                   <span className="flex items-center justify-end gap-1">
-                    {col === "spend" ? "Spend" : col === "revenue" ? "Revenue" : col === "roas" ? "ROAS" : col === "conversions" ? "Conv." : col.toUpperCase()}
+                    {col === "spend" ? "Spend" : col === "revenue" ? "Revenue" : col === "roas" ? "ROAS" : col === "conversions" ? "Conversions" : col === "cpa" ? "Cost / Conversion" : col.toUpperCase()}
                     <SortIcon col={col} />
                   </span>
                 </th>
@@ -556,9 +556,12 @@ export function PaidMedia({ variant = "a" }: SectionProps) {
             <span className="font-medium text-[var(--nos-text-secondary)]">X-axis:</span> Campaign name
           </p>
           <p className="text-[10px] text-[var(--nos-text-muted)]">
-            <span className="font-medium text-[var(--nos-text-secondary)]">Columns:</span> Spend · Revenue · ROAS · Conversions · CPA · CPC
+            <span className="font-medium text-[var(--nos-text-secondary)]">Columns:</span> Spend · Revenue · ROAS · Conversions · Cost / Conversion · CPC
           </p>
         </div>
+        <p className="mt-2 text-[10px] text-[var(--nos-text-muted)]">
+          Conversions are marketing-qualified actions—demo requests, content downloads, engaged accounts. Paid CAC above reflects closed-won customers sourced by paid.
+        </p>
       </motion.div>
     </motion.div>
   );

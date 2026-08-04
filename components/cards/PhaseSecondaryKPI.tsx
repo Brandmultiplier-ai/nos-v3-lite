@@ -69,12 +69,14 @@ export function PhaseSecondaryKPI({ phase, pair }: PhaseSecondaryKPIProps) {
             <span className="font-mono text-xl font-bold" style={{ color: "var(--nos-text-primary)" }}>
               {growthMetric.value}
             </span>
-            <div className="flex items-center gap-0.5">
-              <TrendIcon change={growthMetric.change} />
-              <span className="text-[10px] font-semibold" style={{ color: changeColor(growthMetric.change, growthInvert) }}>
-                {growthMetric.change > 0 ? "+" : ""}{growthMetric.change}%
-              </span>
-            </div>
+            {!growthMetric.suppressChange && (
+              <div className="flex items-center gap-0.5">
+                <TrendIcon change={growthMetric.change} />
+                <span className="text-[10px] font-semibold" style={{ color: changeColor(growthMetric.change, growthInvert) }}>
+                  {growthMetric.change > 0 ? "+" : ""}{growthMetric.change}%
+                </span>
+              </div>
+            )}
           </div>
           <p className="text-[9px] mt-0.5" style={{ color: "var(--nos-text-muted)" }}>Growth Metric</p>
         </div>

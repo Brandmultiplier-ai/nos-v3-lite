@@ -154,7 +154,7 @@ function SEOTab() {
             <HealthScoreCircle score={search.healthScore} />
             <DRBadge value={search.domainRating} />
             <div className="h-16 w-px hidden md:block self-center" style={{ background: "var(--border)" }} />
-            <StatCol label="Organic Traffic" value={search.organicSessions[search.organicSessions.length - 1]?.value ?? 0} change={search.pipelineFromOrganic.change} />
+            <StatCol label="Organic Traffic" value={search.organicTraffic?.value ?? search.organicSessions[search.organicSessions.length - 1]?.value ?? 0} change={search.organicTraffic?.change ?? search.pipelineFromOrganic.change} />
             <StatCol label="Traffic Value" value={search.trafficValue.value} change={search.trafficValue.change} prefix="$" />
             <StatCol label="Organic Keywords" value={search.organicKeywordsTotal.value} change={search.organicKeywordsTotal.change} />
             <StatCol label="Backlinks" value={search.backlinks.value} change={search.backlinks.change} />

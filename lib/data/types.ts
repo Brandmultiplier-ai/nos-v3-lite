@@ -174,6 +174,7 @@ export interface SearchData {
   backlinks: KPIMetric;
   referringDomains: KPIMetric;
   trafficValue: KPIMetric;
+  organicTraffic?: KPIMetric;
   organicSessions: { date: string; value: number }[];
   referringDomainsTrend: { date: string; value: number }[];
   keywords: KeywordRow[];
@@ -314,9 +315,11 @@ export interface LinkedInPost {
 export interface AudienceGrowthPoint {
   date: string;
   linkedin: number;
-  instagram: number;
-  facebook: number;
+  instagram?: number;
+  facebook?: number;
   x?: number;
+  youtube?: number;
+  newsletter?: number;
 }
 
 export interface SentimentData {
@@ -578,7 +581,7 @@ export interface PaidMediaData {
 
 /* ─────────────── Narrative Resonance Index + Phase Metrics ─────────────── */
 export interface PhaseMetricPair {
-  growthMetric: { name: string; value: string; change: number };
+  growthMetric: { name: string; value: string; change: number; suppressChange?: boolean };
   emotionalIndicator: { name: string; value: string; change: number };
 }
 

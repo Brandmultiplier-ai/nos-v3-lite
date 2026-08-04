@@ -145,14 +145,14 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
         { name: "StoryScale", x: 42, y: 78, isClient: false },
         { name: "Contentful MktOS", x: 30, y: 45, isClient: false },
       ],
-      movementTimeline: [
-        { date: "2025-09", x: 58, y: 62 },
-        { date: "2025-10", x: 62, y: 67 },
-        { date: "2025-11", x: 65, y: 72 },
-        { date: "2025-12", x: 68, y: 75 },
-        { date: "2026-01", x: 71, y: 78 },
-        { date: "2026-02", x: 74, y: 81 },
-      ],
+      movementTimeline: (() => {
+        const anchor = new Date();
+        const steps = [{ x: 58, y: 62 }, { x: 62, y: 67 }, { x: 65, y: 72 }, { x: 68, y: 75 }, { x: 71, y: 78 }, { x: 74, y: 81 }];
+        return steps.map((s, i) => {
+          const d = new Date(anchor.getFullYear(), anchor.getMonth() - (steps.length - 1 - i), 1);
+          return { date: d.toISOString().split("T")[0].slice(0, 7), x: s.x, y: s.y };
+        });
+      })(),
       competitors: [
         { name: "NarrateIQ", narrativeScore: 62, marketPresence: 68, lastSeen: "2 days ago", trend: "flat" },
         { name: "PipelineOS", narrativeScore: 70, marketPresence: 55, lastSeen: "1 day ago", trend: "up" },
@@ -229,19 +229,19 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
           { domain: "producthunt.com",    citations: 21,  change: 4,  category: "Community" },
         ],
       },
-      healthScore: 92,
-      domainRating: 68,
-      organicKeywordsTotal: { value: Math.round(29300 * mult), change: -4, sparkline: spark() },
-      backlinks: { value: Math.round(1340 * mult), change: 21, sparkline: spark() },
-      referringDomains: { value: Math.round(317 * mult), change: 99, sparkline: spark() },
-      trafficValue: { value: Math.round(218000 * mult), change: 18, sparkline: spark(), prefix: "$" },
+      healthScore: 84,
+      domainRating: 54,
+      organicKeywordsTotal: { value: 1200, change: -4, sparkline: spark() },
+      backlinks: { value: 4100, change: 21, sparkline: spark() },
+      referringDomains: { value: 640, change: 99, sparkline: spark() },
+      trafficValue: { value: Math.round(38000 * mult), change: 18, sparkline: spark(), prefix: "$" },
       organicSessions: buildTrendSeries(dates, 3200, 1, range),
       referringDomainsTrend: buildTrendSeries(dates, 220, 2, range),
       keywordBuckets: [
-        { bucket: "1-3", label: "#1–3", count: Math.round(17 * mult), change: 8 },
-        { bucket: "4-10", label: "#4–10", count: Math.round(27 * mult), change: 5 },
-        { bucket: "11-50", label: "#11–50", count: Math.round(174 * mult), change: 16 },
-        { bucket: "51-100", label: "#51–100", count: Math.round(83 * mult), change: -10 },
+        { bucket: "1-3", label: "#1–3", count: 17, change: 8 },
+        { bucket: "4-10", label: "#4–10", count: 27, change: 5 },
+        { bucket: "11-50", label: "#11–50", count: 174, change: 16 },
+        { bucket: "51-100", label: "#51–100", count: 83, change: -10 },
       ],
       countryBreakdown: [
         { code: "US", name: "United States", flag: "🇺🇸", traffic: Math.round(17700 * mult), trafficChange: -1700, lat: 38, lon: -97 },
@@ -304,7 +304,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
         ] : [
           { title: "Build an intent-to-pipeline workflow", description: "90 days of data validates the website intent signal. Build a formal workflow: hot score → SDR alert → 24h outreach sequence, to capture every future hot account.", priority: "high", cta: "Build workflow" },
           { title: "Improve the pricing page conversion rate", description: "The pricing page has the highest intent traffic but a 28% exit rate. A CRO test on the page layout could meaningfully increase demo requests.", priority: "medium", cta: "Plan CRO test" },
-          { title: "Expand ICP identification coverage", description: "Currently identifying 340 companies per month from 18,400 visitors — a 1.8% identification rate. Improving this with better de-anonymisation tools could reveal more opportunities.", priority: "medium", cta: "Review tools" },
+          { title: "Expand ICP identification coverage", description: "Currently identifying 340 companies per month from 18,400 visitors — a 1.8% identification rate. Improving this with better de-anonymization tools could reveal more opportunities.", priority: "medium", cta: "Review tools" },
         ],
       },
       visitors: { value: Math.round(18400 * mult), change: 14, sparkline: spark() },
@@ -416,18 +416,22 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
         { date: "2026-02-01", channel: "newsletter", title: "Narrative Operating System: Feb Edition", reach: 4200, engagementRate: 38, pipeline: 28000, content: "This month: How 3 Series B SaaS companies tripled pipeline velocity by fixing one thing..." },
       ],
       platformStats: [
-        { platform: "LinkedIn", color: "#0A66C2", followers: Math.round(14800 * mult), followersChange: 8, reach: Math.round(48000 * mult), engagementRate: 4.8, posts: Math.round(12 * mult) },
-        { platform: "Instagram", color: "#E1306C", followers: Math.round(8200 * mult), followersChange: 14, reach: Math.round(28000 * mult), engagementRate: 6.4, posts: Math.round(18 * mult), reelsWatchTime: 24, hookRate: 58 },
-        { platform: "Facebook", color: "#1877F2", followers: Math.round(5400 * mult), followersChange: 3, reach: Math.round(18000 * mult), engagementRate: 2.1, posts: Math.round(14 * mult) },
-        { platform: "X / Twitter", color: "#FFFFFF", followers: Math.round(3100 * mult), followersChange: -2, reach: Math.round(12000 * mult), engagementRate: 1.8, posts: Math.round(24 * mult) },
+        { platform: "LinkedIn", color: "#0A66C2", followers: 14800, followersChange: 8, reach: Math.round(48000 * mult), engagementRate: 4.8, posts: Math.round(12 * mult) },
+        { platform: "Instagram", color: "#E1306C", followers: 8200, followersChange: 14, reach: Math.round(28000 * mult), engagementRate: 6.4, posts: Math.round(18 * mult), reelsWatchTime: 24, hookRate: 58 },
+        { platform: "Facebook", color: "#1877F2", followers: 5400, followersChange: 3, reach: Math.round(18000 * mult), engagementRate: 2.1, posts: Math.round(14 * mult) },
+        { platform: "X / Twitter", color: "#FFFFFF", followers: 3100, followersChange: -2, reach: Math.round(12000 * mult), engagementRate: 1.8, posts: Math.round(24 * mult) },
       ],
-      audienceGrowthStacked: Array.from({ length: 12 }, (_, i) => ({
-        date: new Date(2026, i - 10 + 2, 1).toISOString().split("T")[0].slice(0, 7),
-        linkedin: Math.round(12400 + i * 200 + Math.sin(i * 0.4) * 80),
-        instagram: Math.round(6800 + i * 130 + Math.cos(i * 0.5) * 60),
-        facebook: Math.round(5200 + i * 30 + Math.sin(i * 0.3) * 40),
-        x: Math.round(3200 + i * 18 + Math.cos(i * 0.4) * 30),
-      })),
+      audienceGrowthStacked: Array.from({ length: 12 }, (_, i) => {
+        const anchor = new Date();
+        const d = new Date(anchor.getFullYear(), anchor.getMonth() - (11 - i), 1);
+        return {
+          date: d.toISOString().split("T")[0].slice(0, 7),
+          linkedin: Math.round(12400 + i * 200 + Math.sin(i * 0.4) * 80),
+          instagram: Math.round(6800 + i * 130 + Math.cos(i * 0.5) * 60),
+          facebook: Math.round(5200 + i * 30 + Math.sin(i * 0.3) * 40),
+          x: Math.round(3200 + i * 18 + Math.cos(i * 0.4) * 30),
+        };
+      }),
       sentiment: {
         positive: 72, neutral: 18, negative: 10,
         volume: Math.round(2840 * mult), volumeChange: 18,
@@ -550,15 +554,15 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
         ],
       },
       emailPipeline: { value: Math.round(280000 * mult), change: range === "7d" ? 10 : range === "30d" ? 26 : 44, sparkline: spark(), prefix: "$" },
-      totalSent: { value: Math.round(46200 * mult), change: range === "7d" ? 7 : range === "30d" ? 18 : 32, sparkline: spark() },
-      openRate: { value: range === "7d" ? 56.8 : range === "30d" ? 59.2 : 62.1, change: range === "7d" ? 1 : range === "30d" ? 4 : 8, sparkline: spark() },
-      clickRate: { value: 7.8, change: 2, sparkline: spark() },
-      replyRate: { value: 3.0, change: range === "7d" ? 0 : range === "30d" ? 1 : 3, sparkline: spark() },
+      totalSent: { value: Math.round(24800 * mult), change: range === "7d" ? 7 : range === "30d" ? 18 : 32, sparkline: spark() },
+      openRate: { value: range === "7d" ? 39.9 : range === "30d" ? 41.6 : 43.6, change: range === "7d" ? 1 : range === "30d" ? 4 : 8, sparkline: spark() },
+      clickRate: { value: 3.4, change: 2, sparkline: spark() },
+      replyRate: { value: 4.2, change: range === "7d" ? 0 : range === "30d" ? 1 : 3, sparkline: spark() },
       opportunitiesCount: { value: Math.round(43 * mult), change: range === "7d" ? 9 : range === "30d" ? 22 : 38, sparkline: spark() },
-      masterTrend: Array.from({ length: 14 }, (_, i) => {
-        const base = Math.round(800 + Math.sin(i * 0.5) * 300 + i * 40);
+      masterTrend: dates.map((date, i) => {
+        const base = Math.round(800 + Math.sin(i * 0.5) * 300 + i * 10);
         return {
-          date: new Date(2026, 2, 1 + i * 6).toISOString().split("T")[0],
+          date,
           sent: base,
           opens: Math.round(base * 0.59),
           uniqueOpens: Math.round(base * 0.52),
@@ -568,9 +572,9 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
       emailCampaigns: [
         {
           id: "e1", name: "CFO Persona — Pipeline Narrative", status: "active", sequence: 4,
-          sent: Math.round(280 * mult), opens: Math.round(166 * mult), replies: Math.round(34 * mult), meetings: Math.round(9 * mult), pipeline: Math.round(180000 * mult),
-          openRate: 59.2, replyRate: 12.1, positiveReplyRate: 7.4, bounceRate: 2.1,
-          leads: Math.round(280 * mult), completed: Math.round(67 * mult), bounced: Math.round(14 * mult), unsubscribed: Math.round(8 * mult),
+          sent: Math.round(12512 * mult), opens: Math.round(5766 * mult), replies: Math.round(600 * mult), meetings: Math.round(9 * mult), pipeline: Math.round(180000 * mult),
+          openRate: 46.1, replyRate: 4.8, positiveReplyRate: 7.4, bounceRate: 2.1,
+          leads: Math.round(12512 * mult), completed: Math.round(67 * mult), bounced: Math.round(14 * mult), unsubscribed: Math.round(8 * mult),
           sequenceSteps: [
             { step: "Step 1", sent: Math.round(280 * mult), opened: Math.round(166 * mult), replied: Math.round(21 * mult), openRate: 59.2, replyRate: 7.5 },
             { step: "Step 2", sent: Math.round(210 * mult), opened: Math.round(112 * mult), replied: Math.round(8 * mult), openRate: 53.4, replyRate: 3.8 },
@@ -581,9 +585,9 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
         },
         {
           id: "e2", name: "VP Marketing — Signal Stack", status: "active", sequence: 3,
-          sent: Math.round(180 * mult), opens: Math.round(98 * mult), replies: Math.round(18 * mult), meetings: Math.round(5 * mult), pipeline: Math.round(95000 * mult),
-          openRate: 54.4, replyRate: 10.0, positiveReplyRate: 6.1, bounceRate: 1.8,
-          leads: Math.round(180 * mult), completed: Math.round(42 * mult), bounced: Math.round(8 * mult), unsubscribed: Math.round(5 * mult),
+          sent: Math.round(8043 * mult), opens: Math.round(3417 * mult), replies: Math.round(318 * mult), meetings: Math.round(5 * mult), pipeline: Math.round(95000 * mult),
+          openRate: 42.5, replyRate: 4.0, positiveReplyRate: 6.1, bounceRate: 1.8,
+          leads: Math.round(8043 * mult), completed: Math.round(42 * mult), bounced: Math.round(8 * mult), unsubscribed: Math.round(5 * mult),
           sequenceSteps: [
             { step: "Step 1", sent: Math.round(180 * mult), opened: Math.round(98 * mult), replied: Math.round(12 * mult), openRate: 54.4, replyRate: 6.7 },
             { step: "Step 2", sent: Math.round(148 * mult), opened: Math.round(72 * mult), replied: Math.round(5 * mult), openRate: 48.6, replyRate: 3.4 },
@@ -593,9 +597,9 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
         },
         {
           id: "e3", name: "Re-engagement — Q4 2025 Prospects", status: "completed", sequence: 2,
-          sent: Math.round(95 * mult), opens: Math.round(32 * mult), replies: Math.round(7 * mult), meetings: Math.round(2 * mult), pipeline: Math.round(40000 * mult),
-          openRate: 33.7, replyRate: 7.4, positiveReplyRate: 3.2, bounceRate: 4.1,
-          leads: Math.round(95 * mult), completed: Math.round(82 * mult), bounced: Math.round(12 * mult), unsubscribed: Math.round(6 * mult),
+          sent: Math.round(4245 * mult), opens: Math.round(1117 * mult), replies: Math.round(124 * mult), meetings: Math.round(2 * mult), pipeline: Math.round(40000 * mult),
+          openRate: 26.3, replyRate: 2.9, positiveReplyRate: 3.2, bounceRate: 4.1,
+          leads: Math.round(4245 * mult), completed: Math.round(82 * mult), bounced: Math.round(12 * mult), unsubscribed: Math.round(6 * mult),
           sequenceSteps: [
             { step: "Step 1", sent: Math.round(95 * mult), opened: Math.round(32 * mult), replied: Math.round(5 * mult), openRate: 33.7, replyRate: 5.3 },
             { step: "Step 2", sent: Math.round(72 * mult), opened: Math.round(20 * mult), replied: Math.round(2 * mult), openRate: 27.8, replyRate: 2.8 },
@@ -610,12 +614,11 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
         { email: "outreach@nexfinity.com", warmupScore: 48, deliverabilityScore: 52, spamScore: 4.8, blacklisted: false, daysWarmedUp: 9, status: "at-risk" },
       ],
       emailFunnel: [
-        { stage: "Contacted", count: Math.round(46200 * mult), rate: 100, color: "#0EA5E9" },
-        { stage: "Opened",    count: Math.round(25872 * mult), rate: 56,  color: "#FBBF24" },
-        { stage: "Clicked",   count: Math.round(3622 * mult),  rate: 14,  color: "#F97316" },
-        { stage: "Replied",   count: Math.round(1376 * mult),  rate: 38,  color: "#A78BFA" },
-        { stage: "Meetings",  count: Math.round(303 * mult),   rate: 22,  color: "#7C7FFF" },
-        { stage: "Opps",      count: Math.round(197 * mult),   rate: 65,  color: "#34D399" },
+        { stage: "Contacted", count: Math.round(24800 * mult), rate: 100,  color: "#0EA5E9" },
+        { stage: "Opened",    count: Math.round(10300 * mult), rate: 41.6, color: "#FBBF24" },
+        { stage: "Replied",   count: Math.round(1042 * mult),  rate: 10.1, color: "#A78BFA" },
+        { stage: "Meetings",  count: Math.round(229 * mult),   rate: 22.0, color: "#7C7FFF" },
+        { stage: "Opps",      count: Math.round(43 * mult),    rate: 18.8, color: "#34D399" },
       ],
       crmPipelineFunnel: [
         { stage: "Request For Info", value: Math.round(840000 * mult), deals: Math.round(28 * mult), pct: 100,  color: "#0EA5E9" },
@@ -749,7 +752,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
         summary: range === "7d"
           ? "This week, LinkedIn Ads is running well above benchmark at 4.8× ROAS, leading conversion volume for the Series B ICP. Google Search continues to deliver reliable category-intent traffic at 3.2×. The G2 and Capterra review placements are the fastest-improving line, converting comparison-stage buyers at a low CPA."
           : range === "30d"
-          ? "Paid media is contributing roughly 42% of total attributed revenue this month. LinkedIn Ads leads on both conversion volume and ROAS at 4.8×, reflecting precise Series B ICP targeting. Google Search delivers steady category-intent traffic at 3.2×, while G2 and Capterra review-site placements are the highest-ROAS channel at 4.3× — buyers converting off comparison pages are pre-qualified."
+          ? "Paid media is contributing roughly 68% of total attributed revenue this month. LinkedIn Ads is the highest-ROAS channel at 4.8×, reflecting precise Series B ICP targeting. G2 and Capterra review-site placements follow at 4.3× and deliver the most evaluation-stage traffic in the mix—buyers arriving from comparison pages have already built a shortlist. Google Search rounds out the channel set at 3.2× on category-intent terms."
           : "Paid media generated a meaningful share of attributed revenue this quarter across LinkedIn, Google Search, and review-site placements. LinkedIn Ads ROAS improved month-over-month as ICP targeting tightened. Expanding G2 and Capterra placements could add incremental pipeline next quarter given their above-blended ROAS.",
         actions: range === "7d" ? [
           { title: "Scale the top LinkedIn campaign", description: "The Series B ABM campaign delivered 5.0× ROAS this week. Increase daily budget by 30% to capture the full audience window before week ends.", priority: "high", cta: "Scale budget" },
@@ -757,7 +760,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
           { title: "Refresh Google Search keyword list", description: "Category-intent keywords are performing steadily at 3.2× ROAS. Adding competitor and comparison-intent terms this week could lift volume without hurting efficiency.", priority: "medium", cta: "Update keywords" },
         ] : range === "30d" ? [
           { title: "Expand LinkedIn Ads to CISO segment", description: "LinkedIn Ads is delivering 4.8× ROAS — the highest of any paid channel. Adding a CISO-targeting segment would extend reach into a higher-intent buying committee role.", priority: "high", cta: "Expand targeting" },
-          { title: "Increase G2 and Capterra budget", description: "Review-site placements are the highest-ROAS channel this month at 4.3×. Buyers converting from comparison pages are pre-qualified — increasing budget here has the best marginal return.", priority: "high", cta: "Adjust budget" },
+          { title: "Increase G2 and Capterra budget", description: "Review-site placements return 4.3× and produce the most evaluation-stage traffic of any channel—buyers converting from comparison pages have already shortlisted. At $4k per month this is the smallest line in the mix and the one with the most headroom.", priority: "high", cta: "Adjust budget" },
           { title: "Set up conversion tracking for all campaigns", description: "3 active campaigns are not tracking post-click conversions. Adding proper UTM tracking and goal completion events would improve attribution accuracy by an estimated 34%.", priority: "medium", cta: "Set up tracking" },
         ] : [
           { title: "Build a paid media attribution model", description: "This quarter's paid data is sufficient for a multi-touch attribution model. Combining LinkedIn, Google Search, and review-site data would reveal the true channel contribution to pipeline.", priority: "high", cta: "Build model" },
@@ -771,26 +774,26 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
       cac: { value: 17000, change: -12, sparkline: spark(), prefix: "$" },
       campaigns: [
         { id: "c1", name: "Series B ABM — LinkedIn", platform: "LinkedIn Ads", status: "active", spend: Math.round(12000 * mult), revenue: Math.round(60000 * mult), roas: 5.0, impressions: Math.round(96000 * mult), clicks: Math.round(3840 * mult), conversions: Math.round(62 * mult), cpa: 194, cpc: 3.13 },
-        { id: "c2", name: "VP Engineering Retargeting — LinkedIn", platform: "LinkedIn Ads", status: "active", spend: Math.round(6000 * mult), revenue: Math.round(26400 * mult), roas: 4.4, impressions: Math.round(58000 * mult), clicks: Math.round(2320 * mult), conversions: Math.round(28 * mult), cpa: 214, cpc: 2.59 },
-        { id: "c3", name: "Brand + Competitor Keywords — Google Search", platform: "Google Search", status: "active", spend: Math.round(8000 * mult), revenue: Math.round(26400 * mult), roas: 3.3, impressions: Math.round(96000 * mult), clicks: Math.round(4800 * mult), conversions: Math.round(38 * mult), cpa: 211, cpc: 1.67 },
-        { id: "c4", name: "Category Intent Keywords — Google Search", platform: "Google Search", status: "active", spend: Math.round(4000 * mult), revenue: Math.round(12000 * mult), roas: 3.0, impressions: Math.round(52000 * mult), clicks: Math.round(2340 * mult), conversions: Math.round(18 * mult), cpa: 222, cpc: 1.71 },
-        { id: "c5", name: "Category Leader Placement — G2", platform: "G2 & Capterra", status: "active", spend: Math.round(2500 * mult), revenue: Math.round(11000 * mult), roas: 4.4, impressions: Math.round(38000 * mult), clicks: Math.round(1520 * mult), conversions: Math.round(16 * mult), cpa: 156, cpc: 1.64 },
-        { id: "c6", name: "Comparison Page Sponsorship — Capterra", platform: "G2 & Capterra", status: "active", spend: Math.round(1500 * mult), revenue: Math.round(6200 * mult), roas: 4.1, impressions: Math.round(24000 * mult), clicks: Math.round(960 * mult), conversions: Math.round(9 * mult), cpa: 167, cpc: 1.56 },
+        { id: "c2", name: "VP Engineering Retargeting — LinkedIn", platform: "LinkedIn Ads", status: "active", spend: Math.round(6000 * mult), revenue: Math.round(27000 * mult), roas: 4.5, impressions: Math.round(58000 * mult), clicks: Math.round(2320 * mult), conversions: Math.round(28 * mult), cpa: 214, cpc: 2.59 },
+        { id: "c3", name: "Brand + Competitor Keywords — Google Search", platform: "Google Search", status: "active", spend: Math.round(7000 * mult), revenue: Math.round(23000 * mult), roas: 3.3, impressions: Math.round(96000 * mult), clicks: Math.round(4800 * mult), conversions: Math.round(38 * mult), cpa: 211, cpc: 1.67 },
+        { id: "c4", name: "Category Intent Keywords — Google Search", platform: "Google Search", status: "active", spend: Math.round(5000 * mult), revenue: Math.round(15000 * mult), roas: 3.0, impressions: Math.round(52000 * mult), clicks: Math.round(2340 * mult), conversions: Math.round(18 * mult), cpa: 222, cpc: 1.71 },
+        { id: "c5", name: "Category Leader Placement — G2", platform: "G2 & Capterra", status: "active", spend: Math.round(2000 * mult), revenue: Math.round(9000 * mult), roas: 4.5, impressions: Math.round(38000 * mult), clicks: Math.round(1520 * mult), conversions: Math.round(16 * mult), cpa: 156, cpc: 1.64 },
+        { id: "c6", name: "Comparison Page Sponsorship — Capterra", platform: "G2 & Capterra", status: "active", spend: Math.round(2000 * mult), revenue: Math.round(8000 * mult), roas: 4.0, impressions: Math.round(24000 * mult), clicks: Math.round(960 * mult), conversions: Math.round(9 * mult), cpa: 167, cpc: 1.56 },
       ],
       platformBreakdown: [
-        { platform: "LinkedIn Ads", spend: Math.round(18000 * mult), revenue: Math.round(86400 * mult), roas: 4.8, color: "#0A66C2" },
-        { platform: "Google Search", spend: Math.round(12000 * mult), revenue: Math.round(38400 * mult), roas: 3.2, color: "#4285F4" },
-        { platform: "G2 & Capterra", spend: Math.round(4000 * mult), revenue: Math.round(17200 * mult), roas: 4.3, color: "#FF492C" },
+        { platform: "LinkedIn Ads", spend: Math.round(18000 * mult), revenue: Math.round(87000 * mult), roas: 4.8, color: "#0A66C2" },
+        { platform: "Google Search", spend: Math.round(12000 * mult), revenue: Math.round(38000 * mult), roas: 3.2, color: "#4285F4" },
+        { platform: "G2 & Capterra", spend: Math.round(4000 * mult), revenue: Math.round(17000 * mult), roas: 4.3, color: "#FF492C" },
       ],
-      spendTrend: Array.from({ length: 14 }, (_, i) => ({
-        date: new Date(2026, 1, 1 + i * 2).toISOString().split("T")[0],
-        spend: Math.round((1822 + Math.sin(i * 0.6) * 407 + i * 82) * mult),
-        revenue: Math.round((7616 + Math.sin(i * 0.4) * 1702 + i * 342) * mult),
+      spendTrend: dates.map((date, i) => ({
+        date,
+        spend: Math.round((1822 + Math.sin(i * 0.6) * 407 + i * 20) * mult),
+        revenue: Math.round((7616 + Math.sin(i * 0.4) * 1702 + i * 85) * mult),
       })),
       bestCampaigns: [
         { name: "Series B ABM — LinkedIn", platform: "LinkedIn Ads", revenue: Math.round(60000 * mult), conversions: Math.round(62 * mult), roas: 5.0 },
-        { name: "VP Engineering Retargeting — LinkedIn", platform: "LinkedIn Ads", revenue: Math.round(26400 * mult), conversions: Math.round(28 * mult), roas: 4.4 },
-        { name: "Category Leader Placement — G2", platform: "G2 & Capterra", revenue: Math.round(11000 * mult), conversions: Math.round(16 * mult), roas: 4.4 },
+        { name: "VP Engineering Retargeting — LinkedIn", platform: "LinkedIn Ads", revenue: Math.round(27000 * mult), conversions: Math.round(28 * mult), roas: 4.5 },
+        { name: "Category Leader Placement — G2", platform: "G2 & Capterra", revenue: Math.round(9000 * mult), conversions: Math.round(16 * mult), roas: 4.5 },
       ],
       bestAds: [
         { name: "Series B Growth Story — Video", platform: "LinkedIn Ads", revenue: Math.round(34800 * mult), conversions: Math.round(38 * mult), ctr: 4.5 },
@@ -802,11 +805,11 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
       nri: { current: 4.4, target: 4, tier: "DFY", trend: "up" },
       phaseMetrics: {
         phase1: {
-          growthMetric: { name: "Market perception", value: "+18%", change: 18 },
+          growthMetric: { name: "Market perception", value: "+18%", change: 18, suppressChange: true },
           emotionalIndicator: { name: "Sentiment score", value: "74/100", change: 8 },
         },
         phase2: {
-          growthMetric: { name: "Lead conversion", value: "+31%", change: 31 },
+          growthMetric: { name: "Lead conversion", value: "+31%", change: 31, suppressChange: true },
           emotionalIndicator: { name: "Engagement time", value: "4m 12s", change: 14 },
         },
         phase3: {
@@ -814,7 +817,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
           emotionalIndicator: { name: "NPS", value: "+42", change: 12 },
         },
         phase4: {
-          growthMetric: { name: "Deal size", value: "+22%", change: 22 },
+          growthMetric: { name: "Deal size", value: "+22%", change: 22, suppressChange: true },
           emotionalIndicator: { name: "Affinity index", value: "68/100", change: 9 },
         },
         phase5: {

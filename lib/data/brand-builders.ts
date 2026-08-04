@@ -90,13 +90,17 @@ export function makeNexusBrand(mult: number): BrandData {
         change: 5,
         sparkline: spark(),
       },
-      development: Array.from({ length: 12 }, (_, i) => ({
-        date: new Date(2025, 6 + i, 1).toISOString().split("T")[0],
-        increase: Math.round(18 + Math.sin(i * 0.6) * 8 + i * 0.5),
-        decrease: Math.round(8 + Math.cos(i * 0.5) * 4),
-        paid: Math.round(12 + Math.sin(i * 0.8) * 5 + i * 0.3),
-        organic: Math.round(10 + Math.cos(i * 0.7) * 3 + i * 0.2),
-      })),
+      development: Array.from({ length: 12 }, (_, i) => {
+        const anchor = new Date();
+        const d = new Date(anchor.getFullYear(), anchor.getMonth() - (11 - i), 1);
+        return {
+          date: d.toISOString().split("T")[0],
+          increase: Math.round(18 + Math.sin(i * 0.6) * 8 + i * 0.5),
+          decrease: Math.round(8 + Math.cos(i * 0.5) * 4),
+          paid: Math.round(12 + Math.sin(i * 0.8) * 5 + i * 0.3),
+          organic: Math.round(10 + Math.cos(i * 0.7) * 3 + i * 0.2),
+        };
+      }),
       byChannel: [
         {
           network: "linkedin",
@@ -175,7 +179,7 @@ export function makeMeridianBrand(mult: number): BrandData {
         trust: { score: 68, change: 5 },
       },
       {
-        name: "Cascade Commerce",
+        name: "BrandFlow Co",
         isClient: false,
         brandScore: { score: 79, change: -1 },
         awareness: { score: 78, change: 3 },
@@ -183,7 +187,7 @@ export function makeMeridianBrand(mult: number): BrandData {
         trust: { score: 72, change: 1 },
       },
       {
-        name: "BrandMatrix",
+        name: "ContentPulse",
         isClient: false,
         brandScore: { score: 68, change: 6 },
         awareness: { score: 65, change: 8 },
@@ -191,7 +195,7 @@ export function makeMeridianBrand(mult: number): BrandData {
         trust: { score: 60, change: -3 },
       },
       {
-        name: "VentureMark",
+        name: "SocialROI Pro",
         isClient: false,
         brandScore: { score: 58, change: -3 },
         awareness: { score: 54, change: -5 },
@@ -210,13 +214,17 @@ export function makeMeridianBrand(mult: number): BrandData {
         change: 12,
         sparkline: spark(),
       },
-      development: Array.from({ length: 12 }, (_, i) => ({
-        date: new Date(2025, 6 + i, 1).toISOString().split("T")[0],
-        increase: Math.round(25 + Math.sin(i * 0.5) * 10 + i * 0.4),
-        decrease: Math.round(10 + Math.cos(i * 0.6) * 5),
-        paid: Math.round(18 + Math.sin(i * 0.7) * 7 + i * 0.2),
-        organic: Math.round(14 + Math.cos(i * 0.8) * 4 + i * 0.3),
-      })),
+      development: Array.from({ length: 12 }, (_, i) => {
+        const anchor = new Date();
+        const d = new Date(anchor.getFullYear(), anchor.getMonth() - (11 - i), 1);
+        return {
+          date: d.toISOString().split("T")[0],
+          increase: Math.round(25 + Math.sin(i * 0.5) * 10 + i * 0.4),
+          decrease: Math.round(10 + Math.cos(i * 0.6) * 5),
+          paid: Math.round(18 + Math.sin(i * 0.7) * 7 + i * 0.2),
+          organic: Math.round(14 + Math.cos(i * 0.8) * 4 + i * 0.3),
+        };
+      }),
       byChannel: [
         {
           network: "instagram",
@@ -294,7 +302,7 @@ export function makeApexBrand(mult: number): BrandData {
         trust: { score: 79, change: 5 },
       },
       {
-        name: "EnterpriseNarrative",
+        name: "EnterpriseLayer",
         isClient: false,
         brandScore: { score: 75, change: -2 },
         awareness: { score: 80, change: -3 },
@@ -302,7 +310,7 @@ export function makeApexBrand(mult: number): BrandData {
         trust: { score: 74, change: 1 },
       },
       {
-        name: "Pinnacle GTM",
+        name: "CoreTech Systems",
         isClient: false,
         brandScore: { score: 71, change: 5 },
         awareness: { score: 68, change: 6 },
@@ -310,7 +318,7 @@ export function makeApexBrand(mult: number): BrandData {
         trust: { score: 66, change: -1 },
       },
       {
-        name: "CoreSignal",
+        name: "InfraScale",
         isClient: false,
         brandScore: { score: 55, change: -1 },
         awareness: { score: 58, change: 2 },
@@ -329,13 +337,17 @@ export function makeApexBrand(mult: number): BrandData {
         change: 6,
         sparkline: spark(),
       },
-      development: Array.from({ length: 12 }, (_, i) => ({
-        date: new Date(2025, 6 + i, 1).toISOString().split("T")[0],
-        increase: Math.round(12 + Math.sin(i * 0.7) * 5 + i * 0.3),
-        decrease: Math.round(5 + Math.cos(i * 0.4) * 3),
-        paid: Math.round(8 + Math.sin(i * 0.6) * 4 + i * 0.1),
-        organic: Math.round(6 + Math.cos(i * 0.5) * 2 + i * 0.15),
-      })),
+      development: Array.from({ length: 12 }, (_, i) => {
+        const anchor = new Date();
+        const d = new Date(anchor.getFullYear(), anchor.getMonth() - (11 - i), 1);
+        return {
+          date: d.toISOString().split("T")[0],
+          increase: Math.round(12 + Math.sin(i * 0.7) * 5 + i * 0.3),
+          decrease: Math.round(5 + Math.cos(i * 0.4) * 3),
+          paid: Math.round(8 + Math.sin(i * 0.6) * 4 + i * 0.1),
+          organic: Math.round(6 + Math.cos(i * 0.5) * 2 + i * 0.15),
+        };
+      }),
       byChannel: [
         {
           network: "linkedin",

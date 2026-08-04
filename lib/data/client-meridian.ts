@@ -145,14 +145,14 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
         { name: "SocialROI Pro", x: 38, y: 48, isClient: false },
         { name: "NarrativeLab", x: 62, y: 81, isClient: false },
       ],
-      movementTimeline: [
-        { date: "2025-09", x: 44, y: 58 },
-        { date: "2025-10", x: 47, y: 62 },
-        { date: "2025-11", x: 50, y: 65 },
-        { date: "2025-12", x: 53, y: 68 },
-        { date: "2026-01", x: 56, y: 70 },
-        { date: "2026-02", x: 58, y: 72 },
-      ],
+      movementTimeline: (() => {
+        const anchor = new Date();
+        const steps = [{ x: 44, y: 58 }, { x: 47, y: 62 }, { x: 50, y: 65 }, { x: 53, y: 68 }, { x: 56, y: 70 }, { x: 58, y: 72 }];
+        return steps.map((s, i) => {
+          const d = new Date(anchor.getFullYear(), anchor.getMonth() - (steps.length - 1 - i), 1);
+          return { date: d.toISOString().split("T")[0].slice(0, 7), x: s.x, y: s.y };
+        });
+      })(),
       competitors: [
         { name: "BrandFlow Co", narrativeScore: 58, marketPresence: 72, lastSeen: "1 day ago", trend: "up" },
         { name: "ContentPulse", narrativeScore: 65, marketPresence: 45, lastSeen: "3 days ago", trend: "flat" },
@@ -225,19 +225,19 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
           { domain: "linkedin.com",         citations: 21, change: 5,  category: "Social" },
         ],
       },
-      healthScore: 84,
-      domainRating: 52,
-      organicKeywordsTotal: { value: Math.round(14200 * mult), change: 6, sparkline: spark() },
-      backlinks: { value: Math.round(620 * mult), change: 14, sparkline: spark() },
-      referringDomains: { value: Math.round(188 * mult), change: 42, sparkline: spark() },
-      trafficValue: { value: Math.round(94000 * mult), change: 12, sparkline: spark(), prefix: "$" },
+      healthScore: 79,
+      domainRating: 41,
+      organicKeywordsTotal: { value: 720, change: 6, sparkline: spark() },
+      backlinks: { value: 1900, change: 14, sparkline: spark() },
+      referringDomains: { value: 310, change: 42, sparkline: spark() },
+      trafficValue: { value: Math.round(14000 * mult), change: 12, sparkline: spark(), prefix: "$" },
       organicSessions: buildTrendSeries(dates, 1800, 4, range),
       referringDomainsTrend: buildTrendSeries(dates, 140, 5, range),
       keywordBuckets: [
-        { bucket: "1-3", label: "#1–3", count: Math.round(8 * mult), change: 3 },
-        { bucket: "4-10", label: "#4–10", count: Math.round(14 * mult), change: 2 },
-        { bucket: "11-50", label: "#11–50", count: Math.round(92 * mult), change: 8 },
-        { bucket: "51-100", label: "#51–100", count: Math.round(48 * mult), change: -5 },
+        { bucket: "1-3", label: "#1–3", count: 8, change: 3 },
+        { bucket: "4-10", label: "#4–10", count: 14, change: 2 },
+        { bucket: "11-50", label: "#11–50", count: 92, change: 8 },
+        { bucket: "51-100", label: "#51–100", count: 48, change: -5 },
       ],
       countryBreakdown: [
         { code: "US", name: "United States", flag: "🇺🇸", traffic: Math.round(8200 * mult), trafficChange: 420, lat: 38, lon: -97 },
@@ -407,18 +407,22 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
         { date: "2026-02-05", channel: "linkedin", title: "Why Meridian dropped vanity metrics", reach: 11200, engagementRate: 5.6, pipeline: 28000, content: "We stopped tracking follower count 6 months ago. Pipeline from content is up 34% since then..." },
       ],
       platformStats: [
-        { platform: "Instagram", color: "#E1306C", followers: Math.round(28400 * mult), followersChange: 12, reach: Math.round(94000 * mult), engagementRate: 6.8, posts: Math.round(18 * mult), reelsWatchTime: 38, hookRate: 64 },
-        { platform: "Facebook", color: "#1877F2", followers: Math.round(14200 * mult), followersChange: 3, reach: Math.round(42000 * mult), engagementRate: 2.9, posts: Math.round(14 * mult) },
-        { platform: "LinkedIn", color: "#0A66C2", followers: Math.round(6800 * mult), followersChange: 9, reach: Math.round(28000 * mult), engagementRate: 4.1, posts: Math.round(10 * mult) },
-        { platform: "Newsletter", color: "#34D399", followers: Math.round(6800 * mult), followersChange: 18, reach: Math.round(6800 * mult), engagementRate: 44, posts: Math.round(4 * mult) },
+        { platform: "Instagram", color: "#E1306C", followers: 28400, followersChange: 12, reach: Math.round(94000 * mult), engagementRate: 6.8, posts: Math.round(18 * mult), reelsWatchTime: 38, hookRate: 64 },
+        { platform: "Facebook", color: "#1877F2", followers: 14200, followersChange: 3, reach: Math.round(42000 * mult), engagementRate: 2.9, posts: Math.round(14 * mult) },
+        { platform: "LinkedIn", color: "#0A66C2", followers: 6800, followersChange: 9, reach: Math.round(28000 * mult), engagementRate: 4.1, posts: Math.round(10 * mult) },
+        { platform: "Newsletter", color: "#34D399", followers: 6800, followersChange: 18, reach: Math.round(6800 * mult), engagementRate: 44, posts: Math.round(4 * mult) },
       ],
-      audienceGrowthStacked: Array.from({ length: 12 }, (_, i) => ({
-        date: new Date(2026, i - 10 + 2, 1).toISOString().split("T")[0].slice(0, 7),
-        linkedin: Math.round(5800 + i * 90 + Math.sin(i * 0.4) * 40),
-        instagram: Math.round(24200 + i * 340 + Math.cos(i * 0.5) * 140),
-        facebook: Math.round(13600 + i * 50 + Math.sin(i * 0.3) * 30),
-        x: Math.round(1200 + i * 10),
-      })),
+      audienceGrowthStacked: Array.from({ length: 12 }, (_, i) => {
+        const anchor = new Date();
+        const d = new Date(anchor.getFullYear(), anchor.getMonth() - (11 - i), 1);
+        return {
+          date: d.toISOString().split("T")[0].slice(0, 7),
+          linkedin: Math.round(5800 + i * 90 + Math.sin(i * 0.4) * 40),
+          instagram: Math.round(24200 + i * 340 + Math.cos(i * 0.5) * 140),
+          facebook: Math.round(13600 + i * 50 + Math.sin(i * 0.3) * 30),
+          x: Math.round(1200 + i * 10),
+        };
+      }),
       sentiment: {
         positive: 81, neutral: 14, negative: 5,
         volume: Math.round(4120 * mult), volumeChange: 28,
@@ -529,16 +533,16 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
       clickRate: { value: 7.8, change: 2, sparkline: spark() },
       replyRate: { value: 3.0, change: range === "7d" ? 0 : range === "30d" ? 1.4 : 3.2, sparkline: spark() },
       opportunitiesCount: { value: Math.round(28 * mult), change: 16, sparkline: spark() },
-      masterTrend: Array.from({ length: 14 }, (_, i) => {
-        const base = Math.round(500 + Math.sin(i * 0.5) * 180 + i * 25);
-        return { date: new Date(2026, 2, 1 + i * 6).toISOString().split("T")[0], sent: base, opens: Math.round(base * 0.53), uniqueOpens: Math.round(base * 0.47), replies: Math.round(base * 0.052) };
+      masterTrend: dates.map((date, i) => {
+        const base = Math.round(500 + Math.sin(i * 0.5) * 180 + i * 6);
+        return { date, sent: base, opens: Math.round(base * 0.53), uniqueOpens: Math.round(base * 0.47), replies: Math.round(base * 0.052) };
       }),
       emailCampaigns: [
         {
           id: "e1", name: "Brand Director — Multi-Channel ROI", status: "active", sequence: 3,
-          sent: Math.round(160 * mult), opens: Math.round(85 * mult), replies: Math.round(24 * mult), meetings: Math.round(7 * mult), pipeline: Math.round(68000 * mult),
-          openRate: 52.8, replyRate: 15.0, positiveReplyRate: 9.2, bounceRate: 2.4,
-          leads: Math.round(160 * mult), completed: Math.round(48 * mult), bounced: Math.round(10 * mult), unsubscribed: Math.round(6 * mult),
+          sent: Math.round(12622 * mult), opens: Math.round(7021 * mult), replies: Math.round(417 * mult), meetings: Math.round(7 * mult), pipeline: Math.round(68000 * mult),
+          openRate: 55.6, replyRate: 3.3, positiveReplyRate: 9.2, bounceRate: 2.4,
+          leads: Math.round(12622 * mult), completed: Math.round(48 * mult), bounced: Math.round(10 * mult), unsubscribed: Math.round(6 * mult),
           sequenceSteps: [
             { step: "Step 1", sent: Math.round(160 * mult), opened: Math.round(85 * mult), replied: Math.round(15 * mult), openRate: 52.8, replyRate: 9.4 },
             { step: "Step 2", sent: Math.round(130 * mult), opened: Math.round(62 * mult), replied: Math.round(7 * mult), openRate: 47.7, replyRate: 5.4 },
@@ -548,9 +552,9 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
         },
         {
           id: "e2", name: "CMO Persona — Attribution Story", status: "active", sequence: 3,
-          sent: Math.round(120 * mult), opens: Math.round(58 * mult), replies: Math.round(14 * mult), meetings: Math.round(4 * mult), pipeline: Math.round(42000 * mult),
-          openRate: 48.3, replyRate: 11.7, positiveReplyRate: 6.8, bounceRate: 1.9,
-          leads: Math.round(120 * mult), completed: Math.round(32 * mult), bounced: Math.round(7 * mult), unsubscribed: Math.round(4 * mult),
+          sent: Math.round(9467 * mult), opens: Math.round(4819 * mult), replies: Math.round(246 * mult), meetings: Math.round(4 * mult), pipeline: Math.round(42000 * mult),
+          openRate: 50.9, replyRate: 2.6, positiveReplyRate: 6.8, bounceRate: 1.9,
+          leads: Math.round(9467 * mult), completed: Math.round(32 * mult), bounced: Math.round(7 * mult), unsubscribed: Math.round(4 * mult),
           sequenceSteps: [
             { step: "Step 1", sent: Math.round(120 * mult), opened: Math.round(58 * mult), replied: Math.round(9 * mult), openRate: 48.3, replyRate: 7.5 },
             { step: "Step 2", sent: Math.round(98 * mult), opened: Math.round(42 * mult), replied: Math.round(4 * mult), openRate: 42.9, replyRate: 4.1 },
@@ -560,9 +564,9 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
         },
         {
           id: "e3", name: "Newsletter Co-Promo Outreach", status: "completed", sequence: 2,
-          sent: Math.round(80 * mult), opens: Math.round(38 * mult), replies: Math.round(11 * mult), meetings: Math.round(3 * mult), pipeline: Math.round(28000 * mult),
-          openRate: 47.5, replyRate: 13.8, positiveReplyRate: 7.5, bounceRate: 2.8,
-          leads: Math.round(80 * mult), completed: Math.round(70 * mult), bounced: Math.round(8 * mult), unsubscribed: Math.round(4 * mult),
+          sent: Math.round(6311 * mult), opens: Math.round(3156 * mult), replies: Math.round(189 * mult), meetings: Math.round(3 * mult), pipeline: Math.round(28000 * mult),
+          openRate: 50.0, replyRate: 3.0, positiveReplyRate: 7.5, bounceRate: 2.8,
+          leads: Math.round(6311 * mult), completed: Math.round(70 * mult), bounced: Math.round(8 * mult), unsubscribed: Math.round(4 * mult),
           sequenceSteps: [
             { step: "Step 1", sent: Math.round(80 * mult), opened: Math.round(38 * mult), replied: Math.round(8 * mult), openRate: 47.5, replyRate: 10.0 },
             { step: "Step 2", sent: Math.round(62 * mult), opened: Math.round(22 * mult), replied: Math.round(3 * mult), openRate: 35.5, replyRate: 4.8 },
@@ -576,12 +580,11 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
         { email: "reach@meridianbrands.com", warmupScore: 61, deliverabilityScore: 65, spamScore: 3.1, blacklisted: false, daysWarmedUp: 14, status: "warming" },
       ],
       emailFunnel: [
-        { stage: "Contacted", count: Math.round(28400 * mult), rate: 100, color: "#0EA5E9" },
-        { stage: "Opened",    count: Math.round(15904 * mult), rate: 56,  color: "#FBBF24" },
-        { stage: "Clicked",   count: Math.round(2227 * mult),  rate: 14,  color: "#F97316" },
-        { stage: "Replied",   count: Math.round(846 * mult),   rate: 38,  color: "#A78BFA" },
-        { stage: "Meetings",  count: Math.round(186 * mult),   rate: 22,  color: "#7C7FFF" },
-        { stage: "Opps",      count: Math.round(121 * mult),   rate: 65,  color: "#34D399" },
+        { stage: "Contacted", count: Math.round(28400 * mult), rate: 100,  color: "#0EA5E9" },
+        { stage: "Opened",    count: Math.round(15000 * mult), rate: 52.8, color: "#FBBF24" },
+        { stage: "Replied",   count: Math.round(846 * mult),   rate: 5.6,  color: "#A78BFA" },
+        { stage: "Meetings",  count: Math.round(186 * mult),   rate: 22.0, color: "#7C7FFF" },
+        { stage: "Opps",      count: Math.round(28 * mult),    rate: 15.1, color: "#34D399" },
       ],
       crmPipelineFunnel: [
         { stage: "Request For Info", value: Math.round(380000 * mult), deals: Math.round(18 * mult), pct: 100,  color: "#0EA5E9" },
@@ -741,10 +744,10 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
         { platform: "Facebook", spend: Math.round(7000 * mult), revenue: Math.round(23700 * mult), roas: 3.4, color: "#1877F2" },
         { platform: "Google Search", spend: Math.round(5000 * mult), revenue: Math.round(14500 * mult), roas: 2.9, color: "#4285F4" },
       ],
-      spendTrend: Array.from({ length: 14 }, (_, i) => ({
-        date: new Date(2026, 1, 1 + i * 2).toISOString().split("T")[0],
-        spend: Math.round((1500 + Math.sin(i * 0.5) * 340 + i * 62) * mult),
-        revenue: Math.round((5429 + Math.cos(i * 0.4) * 1100 + i * 268) * mult),
+      spendTrend: dates.map((date, i) => ({
+        date,
+        spend: Math.round((1500 + Math.sin(i * 0.5) * 340 + i * 15) * mult),
+        revenue: Math.round((5429 + Math.cos(i * 0.4) * 1100 + i * 65) * mult),
       })),
       bestCampaigns: [
         { name: "D2C Brand — Instagram Reels", platform: "Instagram", revenue: Math.round(23100 * mult), conversions: Math.round(96 * mult), roas: 4.2 },
@@ -761,11 +764,11 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
       nri: { current: 3.1, target: 3, tier: "DWY", trend: "stable" },
       phaseMetrics: {
         phase1: {
-          growthMetric: { name: "Market perception", value: "+12%", change: 12 },
+          growthMetric: { name: "Market perception", value: "+12%", change: 12, suppressChange: true },
           emotionalIndicator: { name: "Sentiment score", value: "61/100", change: 5 },
         },
         phase2: {
-          growthMetric: { name: "Lead conversion", value: "+19%", change: 19 },
+          growthMetric: { name: "Lead conversion", value: "+19%", change: 19, suppressChange: true },
           emotionalIndicator: { name: "Engagement time", value: "3m 04s", change: 9 },
         },
         phase3: {
@@ -773,7 +776,7 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
           emotionalIndicator: { name: "NPS", value: "+28", change: 7 },
         },
         phase4: {
-          growthMetric: { name: "Deal size", value: "+14%", change: 14 },
+          growthMetric: { name: "Deal size", value: "+14%", change: 14, suppressChange: true },
           emotionalIndicator: { name: "Affinity index", value: "52/100", change: 4 },
         },
         phase5: {
