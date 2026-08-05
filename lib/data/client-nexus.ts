@@ -445,7 +445,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
       },
       // ── LinkedIn (Taplio) ──
       linkedinKPIs: {
-        followers:    { value: Math.round(14800 * mult), change: 30.04, sparkline: spark() },
+        followers:    { value: 14800, change: 30.04, sparkline: spark() },
         impressions:  { value: Math.round(3779000 * mult), change: -26.88, sparkline: spark() },
         engagements:  { value: Math.round(17978 * mult), change: -19.54, sparkline: spark() },
         posts:        { value: Math.round(58 * mult), change: 23.4, sparkline: spark() },
@@ -573,7 +573,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
         {
           id: "e1", name: "CFO Persona — Pipeline Narrative", status: "active", sequence: 4,
           sent: Math.round(12512 * mult), opens: Math.round(5766 * mult), replies: Math.round(600 * mult), meetings: Math.round(9 * mult), pipeline: Math.round(180000 * mult),
-          openRate: 46.1, replyRate: 4.8, positiveReplyRate: 7.4, bounceRate: 2.1,
+          openRate: 46.1, replyRate: 4.8, positiveReplyRate: 2.9, bounceRate: 2.1,
           leads: Math.round(12512 * mult), completed: Math.round(67 * mult), bounced: Math.round(14 * mult), unsubscribed: Math.round(8 * mult),
           sequenceSteps: [
             { step: "Step 1", sent: Math.round(280 * mult), opened: Math.round(166 * mult), replied: Math.round(21 * mult), openRate: 59.2, replyRate: 7.5 },
@@ -586,7 +586,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
         {
           id: "e2", name: "VP Marketing — Signal Stack", status: "active", sequence: 3,
           sent: Math.round(8043 * mult), opens: Math.round(3417 * mult), replies: Math.round(318 * mult), meetings: Math.round(5 * mult), pipeline: Math.round(95000 * mult),
-          openRate: 42.5, replyRate: 4.0, positiveReplyRate: 6.1, bounceRate: 1.8,
+          openRate: 42.5, replyRate: 4.0, positiveReplyRate: 2.4, bounceRate: 1.8,
           leads: Math.round(8043 * mult), completed: Math.round(42 * mult), bounced: Math.round(8 * mult), unsubscribed: Math.round(5 * mult),
           sequenceSteps: [
             { step: "Step 1", sent: Math.round(180 * mult), opened: Math.round(98 * mult), replied: Math.round(12 * mult), openRate: 54.4, replyRate: 6.7 },
@@ -598,7 +598,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
         {
           id: "e3", name: "Re-engagement — Q4 2025 Prospects", status: "completed", sequence: 2,
           sent: Math.round(4245 * mult), opens: Math.round(1117 * mult), replies: Math.round(124 * mult), meetings: Math.round(2 * mult), pipeline: Math.round(40000 * mult),
-          openRate: 26.3, replyRate: 2.9, positiveReplyRate: 3.2, bounceRate: 4.1,
+          openRate: 26.3, replyRate: 2.9, positiveReplyRate: 1.7, bounceRate: 4.1,
           leads: Math.round(4245 * mult), completed: Math.round(82 * mult), bounced: Math.round(12 * mult), unsubscribed: Math.round(6 * mult),
           sequenceSteps: [
             { step: "Step 1", sent: Math.round(95 * mult), opened: Math.round(32 * mult), replied: Math.round(5 * mult), openRate: 33.7, replyRate: 5.3 },
@@ -621,12 +621,12 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
         { stage: "Opps",      count: Math.round(43 * mult),    rate: 18.8, color: "#34D399" },
       ],
       crmPipelineFunnel: [
-        { stage: "Request For Info", value: Math.round(840000 * mult), deals: Math.round(28 * mult), pct: 100,  color: "#0EA5E9" },
-        { stage: "Presentation",     value: Math.round(620000 * mult), deals: Math.round(20 * mult), pct: 73.8, color: "#6366F1" },
-        { stage: "Qualified",        value: Math.round(460000 * mult), deals: Math.round(14 * mult), pct: 54.8, color: "#A78BFA" },
-        { stage: "Negotiation",      value: Math.round(310000 * mult), deals: Math.round(9 * mult),  pct: 36.9, color: "#FBBF24" },
-        { stage: "Won",              value: Math.round(260000 * mult), deals: Math.round(5 * mult),  pct: 17.9, color: "#34D399" },
-        { stage: "Lost",             value: Math.round(92000 * mult),  deals: Math.round(6 * mult),  pct: 11.0, color: "#FF4455" },
+        { stage: "Request For Info", value: Math.round(1100000 * mult), deals: Math.round(46 * mult), pct: 100, color: "#0EA5E9" },
+        { stage: "Presentation",     value: Math.round(814000 * mult),  deals: Math.round(34 * mult), pct: 74,  color: "#6366F1" },
+        { stage: "Qualified",        value: Math.round(605000 * mult),  deals: Math.round(25 * mult), pct: 55,  color: "#A78BFA" },
+        { stage: "Negotiation",      value: Math.round(407000 * mult),  deals: Math.round(17 * mult), pct: 37,  color: "#FBBF24" },
+        { stage: "Won",              value: Math.round(198000 * mult),  deals: Math.round(8 * mult),  pct: 18,  color: "#34D399" },
+        { stage: "Lost",             value: Math.round(121000 * mult),  deals: Math.round(5 * mult),  pct: 11,  color: "#FF4455" },
       ],
       replyWaterfall: [
         { step: "Step 1", value: 100 },
@@ -752,7 +752,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
         summary: range === "7d"
           ? "This week, LinkedIn Ads is running well above benchmark at 4.8× ROAS, leading conversion volume for the Series B ICP. Google Search continues to deliver reliable category-intent traffic at 3.2×. The G2 and Capterra review placements are the fastest-improving line, converting comparison-stage buyers at a low CPA."
           : range === "30d"
-          ? "Paid media is contributing roughly 68% of total attributed revenue this month. LinkedIn Ads is the highest-ROAS channel at 4.8×, reflecting precise Series B ICP targeting. G2 and Capterra review-site placements follow at 4.3× and deliver the most evaluation-stage traffic in the mix—buyers arriving from comparison pages have already built a shortlist. Google Search rounds out the channel set at 3.2× on category-intent terms."
+          ? "Paid media is contributing roughly 68% of total attributed revenue this month. LinkedIn Ads is the highest-ROAS channel at 4.8×, reflecting precise Series B ICP targeting. G2 and Capterra review-site placements follow at 4.3× and deliver the most evaluation-stage traffic in the mix — buyers arriving from comparison pages have already built a shortlist. Google Search rounds out the channel set at 3.2× on category-intent terms."
           : "Paid media generated a meaningful share of attributed revenue this quarter across LinkedIn, Google Search, and review-site placements. LinkedIn Ads ROAS improved month-over-month as ICP targeting tightened. Expanding G2 and Capterra placements could add incremental pipeline next quarter given their above-blended ROAS.",
         actions: range === "7d" ? [
           { title: "Scale the top LinkedIn campaign", description: "The Series B ABM campaign delivered 5.0× ROAS this week. Increase daily budget by 30% to capture the full audience window before week ends.", priority: "high", cta: "Scale budget" },
@@ -760,7 +760,7 @@ function makeNexus(range: "7d" | "30d" | "90d"): ClientData {
           { title: "Refresh Google Search keyword list", description: "Category-intent keywords are performing steadily at 3.2× ROAS. Adding competitor and comparison-intent terms this week could lift volume without hurting efficiency.", priority: "medium", cta: "Update keywords" },
         ] : range === "30d" ? [
           { title: "Expand LinkedIn Ads to CISO segment", description: "LinkedIn Ads is delivering 4.8× ROAS — the highest of any paid channel. Adding a CISO-targeting segment would extend reach into a higher-intent buying committee role.", priority: "high", cta: "Expand targeting" },
-          { title: "Increase G2 and Capterra budget", description: "Review-site placements return 4.3× and produce the most evaluation-stage traffic of any channel—buyers converting from comparison pages have already shortlisted. At $4k per month this is the smallest line in the mix and the one with the most headroom.", priority: "high", cta: "Adjust budget" },
+          { title: "Increase G2 and Capterra budget", description: "Review-site placements return 4.3× and produce the most evaluation-stage traffic of any channel — buyers converting from comparison pages have already shortlisted. At $4k per month this is the smallest line in the mix and the one with the most headroom.", priority: "high", cta: "Adjust budget" },
           { title: "Set up conversion tracking for all campaigns", description: "3 active campaigns are not tracking post-click conversions. Adding proper UTM tracking and goal completion events would improve attribution accuracy by an estimated 34%.", priority: "medium", cta: "Set up tracking" },
         ] : [
           { title: "Build a paid media attribution model", description: "This quarter's paid data is sufficient for a multi-touch attribution model. Combining LinkedIn, Google Search, and review-site data would reveal the true channel contribution to pipeline.", priority: "high", cta: "Build model" },

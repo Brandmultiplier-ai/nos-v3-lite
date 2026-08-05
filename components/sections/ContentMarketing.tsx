@@ -53,6 +53,14 @@ function fmtNum(n: number) {
   if (n >= 1_000) return `${(n / 1_000).toFixed(0)}K`;
   return String(Math.round(n));
 }
+function fmtFollowers(n: number) {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) {
+    const k = n / 1_000;
+    return `${k % 1 === 0 ? k.toFixed(0) : k.toFixed(1)}K`;
+  }
+  return String(Math.round(n));
+}
 function fmtMoney(n: number) {
   if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`;
   if (n >= 1_000) return `$${(n / 1_000).toFixed(0)}K`;
@@ -98,7 +106,7 @@ function SocialTab() {
               <div className="flex items-start justify-between gap-3 min-w-0">
                 <div className="min-w-0 flex-1">
                   <p className="text-[10px] font-semibold uppercase tracking-wide truncate mb-0.5" style={{ color: "var(--nos-text-muted)" }}>Followers</p>
-                  <p className="text-sm font-bold" style={{ fontFamily: "var(--font-geist-mono)", color: "var(--nos-text-primary)" }}>{fmtNum(p.followers)}</p>
+                  <p className="text-sm font-bold" style={{ fontFamily: "var(--font-geist-mono)", color: "var(--nos-text-primary)" }}>{fmtFollowers(p.followers)}</p>
                   <p className="text-[9px] font-semibold" style={{ color: p.followersChange >= 0 ? "var(--nos-positive)" : "var(--nos-negative)" }}>
                     {p.followersChange >= 0 ? "+" : ""}{p.followersChange}%
                   </p>

@@ -560,7 +560,7 @@ export function PaidMedia({ variant = "a" }: SectionProps) {
           </p>
         </div>
         <p className="mt-2 text-[10px] text-[var(--nos-text-muted)]">
-          Conversions are marketing-qualified actions—demo requests, content downloads, engaged accounts. Paid CAC above reflects closed-won customers sourced by paid.
+          Conversions are marketing-qualified actions — demo requests, content downloads, engaged accounts. Paid CAC above reflects closed-won customers sourced by paid.
         </p>
       </motion.div>
     </motion.div>

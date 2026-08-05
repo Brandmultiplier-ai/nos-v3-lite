@@ -236,7 +236,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
       trafficValue: { value: Math.round(214000 * mult), change: 28, sparkline: spark(), prefix: "$" },
       organicTraffic: { value: Math.round(18400 * mult), change: 28, sparkline: spark() },
       organicSessions: buildTrendSeries(dates, 18400, 7, range),
-      referringDomainsTrend: buildTrendSeries(dates, 680, 8, range),
+      referringDomainsTrend: buildTrendSeries(dates, 3140, 8, range),
       keywordBuckets: [
         { bucket: "1-3", label: "#1–3", count: 118, change: 10 },
         { bucket: "4-10", label: "#4–10", count: 205, change: -10 },
@@ -291,7 +291,7 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         summary: range === "7d"
           ? "This week, 4 enterprise accounts with $500k+ deal potential visited pricing and case study pages. Three are repeat visitors. At $186k average deal size, each is a high-priority outreach target — route to AEs today before their buying-committee evaluation window closes."
           : range === "30d"
-          ? "Website signals for Apex are extremely high-quality — visitors are primarily enterprise decision-makers (CIOs, CISOs, and VPs of IT) with long session times and deep page engagement. The 280 identified companies represents a rich outreach list: ABM on these visitors is one of the highest-ROI plays given Apex's $186k average deal size."
+          ? "Website signals for Apex are extremely high-quality — visitors are primarily enterprise decision-makers (CIOs, CISOs, and VPs of IT) with long session times and deep page engagement. The identified-company list remains a rich outreach pool: ABM on these visitors is one of the highest-ROI plays given Apex's $186k average deal size."
           : "Over the quarter, 868 unique enterprise companies visited intent-heavy pages — 28% more than Q3. The ABM workflow triggered by hot account signals generated 68 opportunities this quarter. Website intent data has proven to be Apex's most reliable account identification signal for enterprise sales.",
         actions: range === "7d" ? [
           { title: "Route this week's hot enterprise accounts to AEs now", description: "4 enterprise accounts visited pricing 2+ times this week. At Apex's $186k average deal size, each represents a major opportunity — assign to AEs with intent context within 24 hours.", priority: "high", cta: "Route accounts" },
@@ -300,11 +300,11 @@ function makeApex(range: "7d" | "30d" | "90d"): ClientData {
         ] : range === "30d" ? [
           { title: "Build ABM sequences for hot accounts", description: "38 enterprise accounts scored 'Hot' with no open opportunity. Assign them to AEs immediately for personalized ABM outreach.", priority: "high", cta: "Build ABM play" },
           { title: "Add enterprise-specific CTAs", description: "Current CTAs are generic. Add 'Book an Enterprise Assessment' CTA on pricing and case study pages — enterprise buyers respond better to consultative offers.", priority: "high", cta: "Update CTAs" },
-          { title: "Reduce JS errors on product pages", description: "JS errors affect 8.4% of enterprise visits — for a buyer evaluating a technical platform, a broken experience can kill deals.", priority: "high", cta: "Fix errors" },
+          { title: "Reduce JS errors on product pages", description: "JS errors are affecting enterprise visits — for a buyer evaluating a technical platform, a broken experience can kill deals.", priority: "high", cta: "Fix errors" },
         ] : [
           { title: "Scale the hot-account ABM workflow", description: "68 opportunities this quarter came from the hot-account ABM workflow. Automating the AE assignment and first-touch sequence would scale this without adding SDR capacity.", priority: "high", cta: "Automate workflow" },
           { title: "Build an enterprise buyer journey map", description: "90 days of session data reveals the typical enterprise buying journey on the website. Map this journey and optimize each stage's content and CTA to reduce friction.", priority: "medium", cta: "Build journey map" },
-          { title: "Invest in enterprise CRO testing", description: "With 280 monthly enterprise company identifications, even a 5% improvement in demo request rate would add 14 qualified opportunities per month at current visit volume.", priority: "medium", cta: "Plan CRO tests" },
+          { title: "Invest in enterprise CRO testing", description: "With consistent monthly enterprise company identification, even a modest improvement in demo request rate would add meaningful qualified opportunities at current visit volume.", priority: "medium", cta: "Plan CRO tests" },
         ],
       },
       visitors: { value: Math.round(12800 * mult), change: 16, sparkline: spark() },

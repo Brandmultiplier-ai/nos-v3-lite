@@ -435,7 +435,7 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
         ],
       },
       linkedinKPIs: {
-        followers:    { value: Math.round(6800 * mult), change: 22.1, sparkline: spark() },
+        followers:    { value: 6800, change: 22.1, sparkline: spark() },
         impressions:  { value: Math.round(1240000 * mult), change: 14.2, sparkline: spark() },
         engagements:  { value: Math.round(8200 * mult), change: 8.4, sparkline: spark() },
         posts:        { value: Math.round(10 * mult), change: 11.1, sparkline: spark() },
@@ -541,7 +541,7 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
         {
           id: "e1", name: "Brand Director — Multi-Channel ROI", status: "active", sequence: 3,
           sent: Math.round(12622 * mult), opens: Math.round(7021 * mult), replies: Math.round(417 * mult), meetings: Math.round(7 * mult), pipeline: Math.round(68000 * mult),
-          openRate: 55.6, replyRate: 3.3, positiveReplyRate: 9.2, bounceRate: 2.4,
+          openRate: 55.6, replyRate: 3.3, positiveReplyRate: 2.0, bounceRate: 2.4,
           leads: Math.round(12622 * mult), completed: Math.round(48 * mult), bounced: Math.round(10 * mult), unsubscribed: Math.round(6 * mult),
           sequenceSteps: [
             { step: "Step 1", sent: Math.round(160 * mult), opened: Math.round(85 * mult), replied: Math.round(15 * mult), openRate: 52.8, replyRate: 9.4 },
@@ -553,7 +553,7 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
         {
           id: "e2", name: "CMO Persona — Attribution Story", status: "active", sequence: 3,
           sent: Math.round(9467 * mult), opens: Math.round(4819 * mult), replies: Math.round(246 * mult), meetings: Math.round(4 * mult), pipeline: Math.round(42000 * mult),
-          openRate: 50.9, replyRate: 2.6, positiveReplyRate: 6.8, bounceRate: 1.9,
+          openRate: 50.9, replyRate: 2.6, positiveReplyRate: 1.6, bounceRate: 1.9,
           leads: Math.round(9467 * mult), completed: Math.round(32 * mult), bounced: Math.round(7 * mult), unsubscribed: Math.round(4 * mult),
           sequenceSteps: [
             { step: "Step 1", sent: Math.round(120 * mult), opened: Math.round(58 * mult), replied: Math.round(9 * mult), openRate: 48.3, replyRate: 7.5 },
@@ -565,7 +565,7 @@ function makeMeridian(range: "7d" | "30d" | "90d"): ClientData {
         {
           id: "e3", name: "Newsletter Co-Promo Outreach", status: "completed", sequence: 2,
           sent: Math.round(6311 * mult), opens: Math.round(3156 * mult), replies: Math.round(189 * mult), meetings: Math.round(3 * mult), pipeline: Math.round(28000 * mult),
-          openRate: 50.0, replyRate: 3.0, positiveReplyRate: 7.5, bounceRate: 2.8,
+          openRate: 50.0, replyRate: 3.0, positiveReplyRate: 1.8, bounceRate: 2.8,
           leads: Math.round(6311 * mult), completed: Math.round(70 * mult), bounced: Math.round(8 * mult), unsubscribed: Math.round(4 * mult),
           sequenceSteps: [
             { step: "Step 1", sent: Math.round(80 * mult), opened: Math.round(38 * mult), replied: Math.round(8 * mult), openRate: 47.5, replyRate: 10.0 },

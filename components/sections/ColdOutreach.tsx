@@ -281,7 +281,7 @@ function EmailTab() {
         {/* Email engagement funnel — Instantly.ai style */}
         <DashboardCard
           title="Email Engagement Funnel"
-          subtitle="Contacted → Opened → Clicked → Replied → Meetings → Opps"
+          subtitle="Contacted → Opened → Replied → Meetings → Opps"
           info="Step-by-step email funnel showing how prospects convert through each engagement stage. Each row shows absolute count and conversion rate vs. the previous step."
         >
           {/* Color legend */}
