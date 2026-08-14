@@ -43,7 +43,6 @@ Login (`app/login`) is gated by a small server-side allowlist of passcodes defin
 | Env var | Used for | Expiry |
 |---------|----------|--------|
 | `DASHBOARD_PASSWORD` | Internal / sales-call passcode. Current value: `demo-NOS1`. | Never |
-| `SPC_ACCESS_CODE` | Distinct passcode issued to SPC only, so it can be revoked/rotated without touching the sales code. | Hardcoded in `lib/auth-codes.ts` — expires **Oct 31, 2026** |
 | `N8N_LOG_WEBHOOK_URL` | Optional. If set, every login attempt (success/failure) is POSTed to this n8n webhook with timestamp, which code was used, IP, geo (country/city/region via Vercel's free geo headers), and user agent — cheap signal on whether a code was actually used. | n/a |
 
 Set these in `.env.local` for local dev and in your Vercel project's Environment Variables for deployed environments. None of these are committed to the repo.

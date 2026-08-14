@@ -21,14 +21,6 @@ const ACCESS_CODES: AccessCode[] = [
     password: process.env.DASHBOARD_PASSWORD,
     expiresAt: null,
   },
-  {
-    id: "spc",
-    label: "SPC",
-    password: process.env.SPC_ACCESS_CODE,
-    // Interview invitations go out by Aug 30; process runs past that.
-    // Comfortably past any interview, short enough to die on its own.
-    expiresAt: "2026-10-31T23:59:59-04:00",
-  },
 ];
 
 /**
